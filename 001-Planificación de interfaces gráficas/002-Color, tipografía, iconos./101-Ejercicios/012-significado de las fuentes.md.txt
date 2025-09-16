@@ -1,0 +1,4 @@
+Letra de palo = Limpieza, seriedad, claridad
+Serifas = documentos, periodicos, elegancia, estilo
+Cursiva (handwritten) = Acabado personal, humano, cercano, cálido
+Monoespaciado = Maquina de escribir, recta, militar
