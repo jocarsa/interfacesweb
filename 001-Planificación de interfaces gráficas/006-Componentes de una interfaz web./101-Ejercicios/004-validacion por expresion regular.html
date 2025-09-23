@@ -1,0 +1,17 @@
+<input type="text" class="dni" maxlength=9>
+<script>
+  // Que cumpla con los parametros numéricos
+  // Un DNI tiene 8 numeros y una letra - y la letra se calcula mediante un algoritmo
+  
+  // Selecciono el elemento cuya clase es DNI, y cuando salga de ese campo
+  document.querySelector(".dni").onblur = function(){
+    let contenido = this.value; // El contenido es el valor del elemento atrapado
+    const regexp = /^[0-9]{8}[A-Z]$/;
+    if(regexp.test(contenido)){
+      this.style.border = "1px solid green"
+    }else{
+      this.style.border = "1px solid red"
+    }
+  }
+  
+</script>

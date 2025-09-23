@@ -1,0 +1,112 @@
+<input type="text" class="dni" maxlength=9>
+<script>
+  // Que cumpla con los parametros numéricos
+  // Un DNI tiene 8 numeros y una letra - y la letra se calcula mediante un algoritmo
+  
+  // Selecciono el elemento cuya clase es DNI, y cuando salga de ese campo
+  document.querySelector(".dni").onblur = function(){
+    let contenido = this.value; // El contenido es el valor del elemento atrapado
+    let caracter1 = contenido[0];
+    let caracter2 = contenido[1];
+    let caracter3 = contenido[2];
+    let caracter4 = contenido[3];
+    let caracter5 = contenido[4];
+    let caracter6 = contenido[5];
+    let caracter7 = contenido[6];
+    let caracter8 = contenido[7];
+    let caracter9 = contenido[8];
+    
+    let numeros = "0123456789";
+    let dni = true;
+    
+    // Primero repaso el contenido del caracter 1 /////////////////////////////////////////////////////////
+    dni = false
+    for(let i = 0;i<10;i++){
+      // Para cada uno de los numero comparo si el numero es igual al caracter
+      if(caracter1 == numeros[i]){
+        // Si es igual, saco mensaje
+        console.log("El caracter 1 si que es un numero")
+        dni = true;
+      }
+    }
+    // Primero repaso el contenido del caracter 2 /////////////////////////////////////////////////////////
+    dni = false
+    for(let i = 0;i<10;i++){
+      // Para cada uno de los numero comparo si el numero es igual al caracter
+      if(caracter2 == numeros[i]){
+        // Si es igual, saco mensaje
+        console.log("El caracter 1 si que es un numero")
+        dni = true;
+      }
+    }
+    // Primero repaso el contenido del caracter 3 /////////////////////////////////////////////////////////
+    dni = false
+    for(let i = 0;i<10;i++){
+      // Para cada uno de los numero comparo si el numero es igual al caracter
+      if(caracter3 == numeros[i]){
+        // Si es igual, saco mensaje
+        console.log("El caracter 1 si que es un numero")
+        dni = true;
+      }
+    }
+    // Primero repaso el contenido del caracter 4 /////////////////////////////////////////////////////////
+    dni = false
+    for(let i = 0;i<10;i++){
+      // Para cada uno de los numero comparo si el numero es igual al caracter
+      if(caracter4 == numeros[i]){
+        // Si es igual, saco mensaje
+        console.log("El caracter 1 si que es un numero")
+        dni = true;
+      }
+    }
+    // Primero repaso el contenido del caracter 5 /////////////////////////////////////////////////////////
+    dni = false
+    for(let i = 0;i<10;i++){
+      // Para cada uno de los numero comparo si el numero es igual al caracter
+      if(caracter5 == numeros[i]){
+        // Si es igual, saco mensaje
+        console.log("El caracter 1 si que es un numero")
+        dni = true;
+      }
+    }
+    // Primero repaso el contenido del caracter 6 /////////////////////////////////////////////////////////
+    dni = false
+    for(let i = 0;i<10;i++){
+      // Para cada uno de los numero comparo si el numero es igual al caracter
+      if(caracter6 == numeros[i]){
+        // Si es igual, saco mensaje
+        console.log("El caracter 1 si que es un numero")
+        dni = true;
+      }
+    }
+    // Primero repaso el contenido del caracter 7 /////////////////////////////////////////////////////////
+    dni = false
+    for(let i = 0;i<10;i++){
+      // Para cada uno de los numero comparo si el numero es igual al caracter
+      if(caracter7 == numeros[i]){
+        // Si es igual, saco mensaje
+        console.log("El caracter 1 si que es un numero")
+        dni = true;
+      }
+    }
+    // Primero repaso el contenido del caracter 8 /////////////////////////////////////////////////////////
+    dni = false
+    for(let i = 0;i<10;i++){
+      // Para cada uno de los numero comparo si el numero es igual al caracter
+      if(caracter8 == numeros[i]){
+        // Si es igual, saco mensaje
+        console.log("El caracter 1 si que es un numero")
+        dni = true;
+      }
+    }
+    
+    
+    
+    if(dni == true){
+      alert("Lo que has introducido es un DNI valido")
+    }else{
+      alert("lo que has introducido no es un DNI")
+    }
+  }
+  
+</script>
