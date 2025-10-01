@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <body>
+    <video id="video" autoplay playsinline style="display:none"></video>
+    <canvas id="canvas" width="640" height="480"></canvas>
+
+    <script type="module">
+      import { FilesetResolver, HandLandmarker } 
+        from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.9";
+
+      const video = document.getElementById("video");
+      const ctx = document.getElementById("canvas").getContext("2d");
+
+      // Cargar modelo
+      const vision = await FilesetResolver.forVisionTasks(
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.9/wasm"
+      );
+      const hand = await HandLandmarker.createFromOptions(vision, {
+        baseOptions: {
+          modelAssetPath:
+            "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task"
+        },
+        runningMode: "video"
+      });
+
+      // Cámara
+      const stream = await navigator.mediaDevices.getUserMedia({video:true});
+      video.srcObject = stream;
+
+      // Bucle simple
+      function loop() {
+        if (video.readyState >= 2) {
+          const res = hand.detectForVideo(video, performance.now());
+          ctx.drawImage(video,0,0,640,480);
+          (res.landmarks||[]).forEach(landmarks=>{
+            landmarks.forEach(p=>{
+              ctx.fillRect(p.x*640, p.y*480, 5, 5);
+            });
+          });
+        }
+        requestAnimationFrame(loop);
+      }
+      video.onloadeddata = ()=>loop();
+    </script>
+  </body>
+</html>
+

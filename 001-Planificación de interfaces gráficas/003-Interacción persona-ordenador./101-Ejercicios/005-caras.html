@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <body>
+    <video id="video" autoplay playsinline style="display:none"></video>
+    <canvas id="canvas" width="640" height="480"></canvas>
+
+    <script type="module">
+      import { FilesetResolver, FaceLandmarker }
+        from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.9";
+
+      const video = document.getElementById("video");
+      const ctx = document.getElementById("canvas").getContext("2d");
+
+      // Cargar modelo de cara
+      const vision = await FilesetResolver.forVisionTasks(
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.9/wasm"
+      );
+      const face = await FaceLandmarker.createFromOptions(vision, {
+        baseOptions: {
+          modelAssetPath:
+            "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task"
+        },
+        runningMode: "video",
+        numFaces: 1
+      });
+
+      // Cámara
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      video.srcObject = stream;
+
+      // Bucle mínimo
+      function loop() {
+        if (video.readyState >= 2) {
+          const res = face.detectForVideo(video, performance.now());
+          ctx.drawImage(video, 0, 0, 640, 480);
+          (res.faceLandmarks || []).forEach(landmarks => {
+            landmarks.forEach(p => {
+              ctx.fillRect(p.x * 640, p.y * 480, 2, 2); // dibuja puntitos
+            });
+          });
+        }
+        requestAnimationFrame(loop);
+      }
+      video.onloadeddata = () => loop();
+    </script>
+  </body>
+</html>
+

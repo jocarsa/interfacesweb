@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+  <body>
+    <canvas width=512 height=512 id="lienzo"></canvas>
+    <script>
+      // Primero atrapo al elemento
+      const lienzo = document.getElementById("lienzo");
+      // Ahora creo un contexto para dibujar
+      const contexto = lienzo.getContext("2d");
+      // Dibujo un rectángulo
+      contexto.fillRect(40,40,50,50);
+    </script>
+  </body>
+</html>

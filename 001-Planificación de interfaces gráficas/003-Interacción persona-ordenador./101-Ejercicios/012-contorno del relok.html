@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <body>
+    <canvas width=512 height=512 id="lienzo"></canvas>
+    <script>
+      // Un temporizador es como un despertador
+      var temporizador = setTimeout("bucle()",1000);
+      const lienzo = document.getElementById("lienzo")
+      const contexto = lienzo.getContext("2d")
+      
+      // Esta es la función que se va a repetir
+      function bucle(){
+          // Creo el contorno del reloj
+          contexto.beginPath();
+          contexto.arc(
+            256,
+            256,
+            200,
+            0,
+            Math.PI*2
+          )
+          contexto.stroke();
+          // Ahora dibujo una linea
+          contexto.beginPath()          // Empiezo a dibujar
+          contexto.moveTo(256,256)      // Muevo el cursor hasta una posicion
+          contexto.lineTo(456,256)      // Dibujo una linea
+          contexto.stroke()             // Realmente dibujo la linea
+          // Apaga el temporizador anterior
+          clearTimeout(temporizador)
+          // Crea un nuevo temporizador para dentro de un segundo
+          temporizador = setTimeout("bucle()",1000);
+      }
+      
+    </script>
+  </body>
+</html>

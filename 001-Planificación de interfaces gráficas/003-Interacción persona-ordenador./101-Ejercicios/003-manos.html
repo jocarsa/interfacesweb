@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>MediaPipe Hands (mínimo)</title>
+    <style>
+      body { margin: 0; display: grid; place-items: center; height: 100vh; background: #111; }
+      #wrap { position: relative; width: 640px; height: 480px; }
+      video, canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+      canvas { pointer-events: none; }
+    </style>
+  </head>
+  <body>
+    <div id="wrap">
+      <video id="video" autoplay playsinline muted></video>
+      <canvas id="canvas" width="640" height="480"></canvas>
+    </div>
+
+    <!-- MediaPipe Tasks Vision (ESM via CDN) -->
+    <script type="module">
+      import {
+        FilesetResolver,
+        HandLandmarker
+      } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.9";
+
+      const video = document.getElementById("video");
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      // Carga el modelo y empieza la cámara
+      const vision = await FilesetResolver.forVisionTasks(
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.9/wasm"
+      );
+
+      const handLandmarker = await HandLandmarker.createFromOptions(vision, {
+        baseOptions: {
+          modelAssetPath:
+            "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task"
+        },
+        numHands: 2,                // detecta hasta 2 manos
+        runningMode: "video"        // modo video (frame-by-frame)
+      });
+
+      // Pide la cámara
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      video.srcObject = stream;
+
+      // Dibuja landmarks en cada frame
+      function draw(results) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Dibuja el frame del vídeo
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // Dibuja puntos y conexiones de cada mano
+        (results.landmarks || []).forEach(landmarks => {
+          // Conexiones simples (opcional, solo algunas para mantenerlo mínimo)
+          const lines = [
+            [0,1],[1,2],[2,3],[3,4],      // pulgar
+            [5,6],[6,7],[7,8],            // índice
+            [9,10],[10,11],[11,12],       // medio
+            [13,14],[14,15],[15,16],      // anular
+            [17,18],[18,19],[19,20],      // meñique
+            [0,5],[5,9],[9,13],[13,17],[17,0] // palma aproximada
+          ];
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = "lime";
+          lines.forEach(([a,b]) => {
+            const pa = landmarks[a], pb = landmarks[b];
+            ctx.beginPath();
+            ctx.moveTo(pa.x * canvas.width, pa.y * canvas.height);
+            ctx.lineTo(pb.x * canvas.width, pb.y * canvas.height);
+            ctx.stroke();
+          });
+
+          // Puntos
+          ctx.fillStyle = "deepskyblue";
+          landmarks.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x * canvas.width, p.y * canvas.height, 3, 0, Math.PI * 2);
+            ctx.fill();
+          });
+        });
+      }
+
+      // Bucle de inferencia
+      function loop() {
+        if (video.readyState >= 2) {
+          const nowMs = performance.now();
+          const results = handLandmarker.detectForVideo(video, nowMs);
+          draw(results);
+        }
+        requestAnimationFrame(loop);
+      }
+
+      // Arranca cuando el vídeo está listo
+      video.onloadeddata = () => requestAnimationFrame(loop);
+    </script>
+  </body>
+</html>
+

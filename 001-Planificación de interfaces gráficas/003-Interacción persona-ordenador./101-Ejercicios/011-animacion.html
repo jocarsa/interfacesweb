@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <body>
+    <canvas width=512 height=512 id="lienzo"></canvas>
+    <script>
+      // Un temporizador es como un despertador
+      var temporizador = setTimeout("bucle()",1000);
+      
+      // Esta es la función que se va a repetir
+      function bucle(){
+          // Saca un mensaje por consola
+          console.log("Estas dentro del bucle")
+          // Apaga el temporizador anterior
+          clearTimeout(temporizador)
+          // Crea un nuevo temporizador para dentro de un segundo
+          temporizador = setTimeout("bucle()",1000);
+      }
+      
+    </script>
+  </body>
+</html>

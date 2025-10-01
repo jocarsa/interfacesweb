@@ -8,5 +8,8 @@
 La URL es: https://jocarsa.github.io/validardni/validardni.js
 La URL es: https://jocarsa.github.io/validarnumerocoma/validarnumerocoma.js
 
+
+https://[usuario].github.com/[repositorio]/[archivo]
+
 7.- Creo un archivo html que llama a la libreria js
 

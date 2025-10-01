@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <body>
+    <canvas width=512 height=512 id="lienzo"></canvas>
+    <script>
+      // Primero atrapo al elemento
+      const lienzo = document.getElementById("lienzo");
+      // Ahora creo un contexto para dibujar
+      const contexto = lienzo.getContext("2d");
+      // Dibujo un rectángulo
+      contexto.fillRect(40,40,50,50);
+      const numerocirculos = 400;
+      for(let cuentacirculo = 0;cuentacirculo<numerocirculos;cuentacirculo++){
+        // Dibujo un circulo
+        contexto.beginPath() // Ahora voy a empezar a dibujar
+        contexto.arc(
+          Math.random()*512,// Valor de centro x
+          Math.random()*512,// Valor de centro y
+          10,               // Radio 30
+          0,                // Desde el angulo cero
+          Math.PI*2         // Hasta el angulo 360
+        )
+        contexto.fill()     // Y ahora rellena con color
+      }
+    </script>
+  </body>
+</html>

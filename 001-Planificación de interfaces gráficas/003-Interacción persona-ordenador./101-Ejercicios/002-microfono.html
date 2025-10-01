@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <button onclick="startRecognition()">🎤 Start</button>
+    <p id="salida"></p>
+
+    <script>
+      function startRecognition(){
+        // Variable atrapa o bien la capacidad de reconocimiento del navegador
+        const reconocimiento = window.SpeechRecognition || window.webkitSpeechRecognition;
+        console.log(reconocimiento)
+        
+        // Crea una nueva instancia de de la variable que hemos atrapado arriba
+        const reconocer = new reconocimiento();
+        reconocer.lang = "es-ES";         // Propiedad idioma de la libreria
+        reconocer.interimResults = false; // Espera al final del audio
+        reconocer.maxAlternatives = 1;    // Solo quiero la más parecida
+
+        reconocer.start();                // Método para arrancar el reconocimiento
+        
+        // Función que se va a ejecutar si el reconocimiento es exitoso
+        reconocer.onresult = (event) => {
+          // Coge el elemento que tiene el id "salida"
+          let salida = document.getElementById("salida");
+          // Atrapa el resultado de la transcripción
+          console.log(event)
+          let transcripcion = event.results[0][0].transcript;
+          // Y en el elemento pon el texto
+          salida.innerText(transcripcion)
+        };
+        
+        // Función que se va a ejecutar si el reconocimiento da error
+        reconocer.onerror = (event) => {
+          console.error("Recognition error", event.error);
+        };
+      }
+    </script>
+  </body>
+</html>
+
