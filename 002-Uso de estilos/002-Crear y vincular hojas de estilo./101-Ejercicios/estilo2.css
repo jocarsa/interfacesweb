@@ -1,0 +1,22 @@
+body{
+  background:LightSkyBlue;
+  font-family:sans-serif;
+}
+form{
+  background:white;
+  margin:auto;
+  padding:20px;
+  width:300px;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+input{
+  padding:5px;
+  border:1px solid LightSkyBlue;
+}
+input[type="submit"]{
+  background:LightSkyBlue;
+  color:white;
+  border:none;
+}
