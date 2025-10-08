@@ -1,12 +1,13 @@
 body{
   background:LightSkyBlue;
   font-family:sans-serif;
+  display:flex;     /* NUEVO */
 }
-form{
+form,table{         /* NUEVO */
   background:white;
   margin:auto;
   padding:20px;
-  width:300px;
+                    /* He quitado del width */
   display:flex;
   flex-direction:column;
   gap:2px;

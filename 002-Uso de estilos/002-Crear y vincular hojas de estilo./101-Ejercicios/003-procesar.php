@@ -26,4 +26,10 @@
   VALUES ('$_POST[titulo]','$_POST[isbn]','$_POST[autor]','$_POST[editorial]','$_POST[categoria]',$_POST[num_paginas])");                                   // Insertamos un libro
   echo "✅ Libro insertado";                             // Hacemos un echo
 ?>
+<meta http-equiv="refresh" content="5; url=003-biblioteca.php">
+
+
+
+
+
 
