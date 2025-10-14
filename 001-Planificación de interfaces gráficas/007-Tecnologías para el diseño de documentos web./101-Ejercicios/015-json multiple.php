@@ -48,7 +48,7 @@
         </tr>
       </tbody>
     </table>
-    <form action="014-guardamos.php" method="POST">
+    <form action="016-guardamos.php" method="POST">
       <?php
         foreach ($cliente as $clave => $valor) {
             echo "<input 
