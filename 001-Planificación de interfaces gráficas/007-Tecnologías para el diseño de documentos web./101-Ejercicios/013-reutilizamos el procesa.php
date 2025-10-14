@@ -1,6 +1,13 @@
 <!doctype html>
 <html>
   <head>
+    <title>CRUD</title>
+    <!--
+      Create = Formulario
+      Read = Tabla
+      Update = Boton + formulario
+      Delete = Boton
+    -->
   </head>
   <body>
     <?php
@@ -12,15 +19,7 @@
         "telefono" => "+34 600 123 456",
         "calle" => "Calle Mayor, 45",
         "ciudad" => "Valencia",
-        "provincia" => "Valencia",
-        "codigo_postal" => "46001",
-        "pais" => "España",
-        "empresa_nombre" => "López Consultores S.L.",
-        "empresa_cif" => "B12345678",
-        "empresa_direccion" => "Av. del Puerto, 123",
-        "empresa_actividad" => "Consultoría empresarial",
-        "fecha_alta" => "2024-09-15",
-        "activo" => true
+        "profesion" => "Médico"
       ];
       
       $claves = array_keys($cliente);
@@ -39,8 +38,28 @@
         </tr>
       </thead>
       <tbody>
-      
+        <tr>
+          <?php
+            foreach ($cliente as $clave => $valor) {
+                echo "<td>".$valor."</td>
+          ";
+            }
+          ?>
+        </tr>
       </tbody>
     </table>
+    <form action="?" method="POST">
+      <?php
+        foreach ($cliente as $clave => $valor) {
+            echo "<input 
+              type='text' 
+              placeholder='".$clave."' 
+              name='".$clave."' 
+              '><br>
+      ";
+        }
+      ?>
+      <input type="submit">
+    </form>
   </body>
 </html>
