@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Plantillas</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <nav>
+    </nav>
+    <template id="elementomenu">
+      <button>
+        <span>L</span>
+        Letra
+      </button>
+    </template>
+    <script>
+      let contenedor = document.querySelector("nav");           // Contenedor
+      let plantilla = document.querySelector("#elementomenu");  // Plantilla en memoria
+      let clon = plantilla.content.cloneNode(true);             // Clon en memoria
+      contenedor.appendChild(clon);                             // Pongo la plantilla en c
+    </script>
+  </body>
+</html>
