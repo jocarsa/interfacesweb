@@ -63,10 +63,29 @@
       
       /////////////////////////////// POBLAR TARJETAS ////////////////////////////////////////////
       
+      let tarjetas = [
+        {"titulo":"Titulo 1","texto":"texto 1","rowspan":"1","colspan":"1"},
+        {"titulo":"Titulo 2","texto":"texto 2","rowspan":"1","colspan":"1"},
+        {"titulo":"Titulo 3","texto":"texto 3","rowspan":"1","colspan":"1"},
+        {"titulo":"Titulo 4","texto":"texto 4","rowspan":"2","colspan":"1"},
+        {"titulo":"Titulo 5","texto":"texto 1","rowspan":"2","colspan":"2"},
+        {"titulo":"Titulo 6","texto":"texto 2","rowspan":"1","colspan":"1"},
+        {"titulo":"Titulo 7","texto":"texto 3","rowspan":"1","colspan":"1"},
+        {"titulo":"Titulo 8","texto":"texto 4","rowspan":"1","colspan":"1"},
+        {"titulo":"Titulo 9","texto":"texto 1","rowspan":"1","colspan":"1"},
+        {"titulo":"Titulo 10","texto":"texto 2","rowspan":"1","colspan":"1"},
+        {"titulo":"Titulo 11","texto":"texto 3","rowspan":"1","colspan":"1"},
+        {"titulo":"Titulo 12","texto":"texto 4","rowspan":"1","colspan":"1"}
+      ]
+      
       let contenedortarjetas = document.querySelector("main");
       let plantillatarjeta = document.querySelector("#plantillatarjeta");
-      for(let i = 0;i<10;i++){
+      for(let i = 0;i<tarjetas.length;i++){
         let clontarjeta = plantillatarjeta.content.cloneNode(true); 
+        clontarjeta.querySelector("header").textContent = tarjetas[i].titulo
+        clontarjeta.querySelector("section").textContent = tarjetas[i].texto
+        clontarjeta.querySelector("article").style.gridRow = "span "+tarjetas[i].rowspan
+        clontarjeta.querySelector("article").style.gridColumn = "span "+tarjetas[i].colspan
         contenedortarjetas.appendChild(clontarjeta)
       }
       

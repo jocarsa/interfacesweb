@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="http://jocarsa.github.io/cssreset/cssreset.css">
     <style>
-      body{display:flex;}
+      body{display:flex;font-family:sans-serif;font-size:10px;}
       nav{flex:1;padding:10px;display:flex;flex-direction:column;gap:10px;}
-      main{flex:8;background:lightblue;}
+      main{flex:8;background:MistyRose;}
       button{
         border:none;background:purple;border-radius:50px;
         padding:5px;width:150px;color:white;text-align:left;
@@ -18,7 +18,7 @@
       }
       main{display:grid;grid-template-columns:auto auto auto auto;gap:10px;padding:10px;}
       .tarjeta{background:white;border-radius:5px;box-shadow:0px 2px 4px rgba(0,0,0,0.3);overflow:hidden;}
-      .tarjeta header{background:lightgrey;padding:10px;}
+      .tarjeta header{background:purple;color:white;padding:10px;}
       .tarjeta section{padding:10px;}
     </style>
   </head>
@@ -63,10 +63,29 @@
       
       /////////////////////////////// POBLAR TARJETAS ////////////////////////////////////////////
       
+      let tarjetas = [
+        {"titulo":"Titulo 1","texto":"texto 1","rowspan":"1","colspan":"1"},
+        {"titulo":"Titulo 2","texto":"texto 2","rowspan":"1","colspan":"1"},
+        {"titulo":"Titulo 3","texto":"texto 3","rowspan":"1","colspan":"1"},
+        {"titulo":"Titulo 4","texto":"texto 4","rowspan":"2","colspan":"1"},
+        {"titulo":"Titulo 5","texto":"texto 1","rowspan":"2","colspan":"2"},
+        {"titulo":"Titulo 6","texto":"texto 2","rowspan":"1","colspan":"1"},
+        {"titulo":"Titulo 7","texto":"texto 3","rowspan":"1","colspan":"1"},
+        {"titulo":"Titulo 8","texto":"texto 4","rowspan":"1","colspan":"1"},
+        {"titulo":"Titulo 9","texto":"texto 1","rowspan":"1","colspan":"1"},
+        {"titulo":"Titulo 10","texto":"texto 2","rowspan":"1","colspan":"1"},
+        {"titulo":"Titulo 11","texto":"texto 3","rowspan":"1","colspan":"1"},
+        {"titulo":"Titulo 12","texto":"texto 4","rowspan":"1","colspan":"1"}
+      ]
+      
       let contenedortarjetas = document.querySelector("main");
       let plantillatarjeta = document.querySelector("#plantillatarjeta");
-      for(let i = 0;i<10;i++){
+      for(let i = 0;i<tarjetas.length;i++){
         let clontarjeta = plantillatarjeta.content.cloneNode(true); 
+        clontarjeta.querySelector("header").textContent = tarjetas[i].titulo
+        clontarjeta.querySelector("section").textContent = tarjetas[i].texto
+        clontarjeta.querySelector("article").style.gridRow = "span "+tarjetas[i].rowspan
+        clontarjeta.querySelector("article").style.gridColumn = "span "+tarjetas[i].colspan
         contenedortarjetas.appendChild(clontarjeta)
       }
       
