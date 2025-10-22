@@ -140,11 +140,21 @@
           clontarjeta.querySelector("section").textContent = tarjetas[i].texto
           clontarjeta.querySelector("article").style.gridRow = "span "+tarjetas[i].rowspan
           clontarjeta.querySelector("article").style.gridColumn = "span "+tarjetas[i].colspan
+          
           // Este selector crea un atributo personalizado para el boton
           clontarjeta.querySelector(".eliminar").setAttribute("rosalee_eliminar",i)
+         
           // Este otro selector le añade un evento de click
           clontarjeta.querySelector(".eliminar").onclick = function(){
-            alert("Voy a eliminar la tarjeta, pero no sé muy bien cómo")
+            
+            // Primero elimino el elemento que tiene este atributo en el array
+            tarjetas.splice(this.getAttribute("rosalee_eliminar"),1)
+            
+            // Actualizo el contenido del localstorage
+            localStorage.setItem("cartitas",JSON.stringify(tarjetas));
+            
+            // Fuerzo un repintado
+            repintar()
           }
           contenedortarjetas.appendChild(clontarjeta)
         }
