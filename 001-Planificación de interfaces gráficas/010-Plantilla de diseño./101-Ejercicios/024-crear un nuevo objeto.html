@@ -102,6 +102,13 @@
       
       let boton_guardatarjeta = document.querySelector("#guardatarjeta")
       boton_guardatarjeta.onclick = function(){
+        let objeto = {
+          "titulo":"Titulo 1",
+          "texto":"texto 1",
+          "rowspan":"1",
+          "colspan":"1"
+        }
+        tarjetas.push(objeto)
         document.querySelector("#contienemodal").style.display = "none"
       }
       
