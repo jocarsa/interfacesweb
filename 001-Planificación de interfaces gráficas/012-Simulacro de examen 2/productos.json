@@ -1,0 +1,23 @@
+[
+  {"nombre": "Auriculares", "precio": 39.99},
+  {"nombre": "Teclado", "precio": 25.50},
+  {"nombre": "Ratón", "precio": 19.00},
+  {"nombre": "Monitor 24\"", "precio": 149.99},
+  {"nombre": "Disco duro externo 1TB", "precio": 59.90},
+  {"nombre": "Memoria USB 64GB", "precio": 12.99},
+  {"nombre": "Alfombrilla", "precio": 7.50},
+  {"nombre": "Altavoces Bluetooth", "precio": 45.00},
+  {"nombre": "Micrófono USB", "precio": 34.95},
+  {"nombre": "Cámara web HD", "precio": 29.99},
+  {"nombre": "Silla ergonómica", "precio": 189.00},
+  {"nombre": "Soporte para portátil", "precio": 24.90},
+  {"nombre": "Hub USB-C", "precio": 17.99},
+  {"nombre": "Cargador rápido 65W", "precio": 28.75},
+  {"nombre": "Cable HDMI 2m", "precio": 8.20},
+  {"nombre": "Router WiFi 6", "precio": 79.99},
+  {"nombre": "Tableta gráfica", "precio": 69.00},
+  {"nombre": "Pendrive 128GB", "precio": 18.49},
+  {"nombre": "Mochila para portátil", "precio": 32.00},
+  {"nombre": "Lámpara LED de escritorio", "precio": 22.95}
+]
+
