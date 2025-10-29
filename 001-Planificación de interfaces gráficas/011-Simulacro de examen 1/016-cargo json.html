@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style>
+        @font-face{
+        font-family:ubuntu;
+        src:url(Ubuntu-R.ttf);
+      }
+      html,body{height:100%;width:100%;overflow:hidden;padding:0px;margin:0px;font-family:ubuntu}
+      body{display:flex;flex-direction:column;}
+      header{background:LightSteelBlue;flex:1;padding:10px;}
+      nav{background:LightSteelBlue;flex:1;padding:10px;display:flex;flex-direction:column;gap:10px;}
+      section{background:AliceBlue;flex:6;padding:10px;}
+      footer{background:LightSteelBlue;flex:1;padding:10px;}
+      main{display:flex;flex:18;}
+      nav button{background:aliceblue;border:none;width:100%;padding:10px;}
+      section table{width:100%;border-collapse:collapse;}
+      section table td{padding:10px;}
+      section table thead{background:LightSteelBlue;color:white;}
+      section button{background:LightSteelBlue;border:none;padding:10px;margin-bottom:10px;}
+      #contienemodal{position:absolute;top:0px;left:0px;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;display:none;}
+      #modal{width:500px;height:500px;padding:20px;background:white;box-shadow:0px 10px 20px black;display:flex;flex-direction:column;gap:10px;}
+      #modal input{padding:10px;}
+      
+    </style>
+  </head>
+  <body>
+    <header>
+      cabecera
+    </header>
+    <main>
+      <nav>
+        <button>⚙ Enlace 1</button>
+        <button>⚙ Enlace 1</button>
+        <button>⚙ Enlace 1</button>
+        <button>⚙ Enlace 1</button>
+        <button>⚙ Enlace 1</button>
+        <button>⚙ Enlace 1</button>
+        <button>⚙ Enlace 1</button>
+      </nav>
+      <section>
+        <button id="nuevo">Crear nuevo</button>
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Apellidos</th>
+              <th>Email</th>
+              <th>Direccion</th>
+              <th>Telefono</th>
+              <th>Localidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Nombre</td>
+              <td>Apellidos</td>
+              <td>Email</td>
+              <td>Direccion</td>
+              <td>Telefono</td>
+              <td>Localidad</td>
+            </tr>
+            <tr>
+              <td>Nombre</td>
+              <td>Apellidos</td>
+              <td>Email</td>
+              <td>Direccion</td>
+              <td>Telefono</td>
+              <td>Localidad</td>
+            </tr>
+            <tr>
+              <td>Nombre</td>
+              <td>Apellidos</td>
+              <td>Email</td>
+              <td>Direccion</td>
+              <td>Telefono</td>
+              <td>Localidad</td>
+            </tr>
+            <tr>
+              <td>Nombre</td>
+              <td>Apellidos</td>
+              <td>Email</td>
+              <td>Direccion</td>
+              <td>Telefono</td>
+              <td>Localidad</td>
+            </tr>
+            <tr>
+              <td>Nombre</td>
+              <td>Apellidos</td>
+              <td>Email</td>
+              <td>Direccion</td>
+              <td>Telefono</td>
+              <td>Localidad</td>
+            </tr>
+            <tr>
+              <td>Nombre</td>
+              <td>Apellidos</td>
+              <td>Email</td>
+              <td>Direccion</td>
+              <td>Telefono</td>
+              <td>Localidad</td>
+            </tr>
+            <tr>
+              <td>Nombre</td>
+              <td>Apellidos</td>
+              <td>Email</td>
+              <td>Direccion</td>
+              <td>Telefono</td>
+              <td>Localidad</td>
+            </tr>
+            <tr>
+              <td>Nombre</td>
+              <td>Apellidos</td>
+              <td>Email</td>
+              <td>Direccion</td>
+              <td>Telefono</td>
+              <td>Localidad</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+    <footer>
+      piedepagina
+    </footer>
+    <div id="contienemodal">
+      <div id="modal">
+        
+          <label>Introduce el nombre del cliente</label>
+          <input type="text" id="nombre">
+          
+          <label>Introduce los apellidos del cliente</label>
+          <input type="text" id="apellidos">
+          
+          <label>Introduce el email del cliente</label>
+          <input type="text" id="email">
+          
+          <label>Introduce la direccion del cliente</label>
+          <input type="text" id="direccion">
+          
+          <label>Introduce el telefono del cliente</label>
+          <input type="text" id="telefono">
+          
+          <label>Introduce la localidad del cliente</label>
+          <input type="text" id="localidad">
+          
+          <button>Guardar</button>
+        
+      </div>
+    </div>
+    <script>
+      let boton_nuevo = document.querySelector("#nuevo")
+      let modal = document.querySelector("#contienemodal")
+      boton_nuevo.onclick = function(){
+        modal.style.display = "flex"
+      }
+      let campos = document.querySelectorAll("input")
+      campos.forEach(function(campo){
+        campo.onblur = function(){
+          if(this.value == ""){
+            this.style.border = "1px solid red";
+          }else{
+            this.style.border = "1px solid grey";
+          }
+        }
+      })
+    </script>
+  </body>
+</html>

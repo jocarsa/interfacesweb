@@ -1,0 +1,163 @@
+[
+  {
+    "Nombre": "Laura",
+    "Apellidos": "Gómez Martínez",
+    "Email": "laura.gomez@example.com",
+    "Direccion": "Calle Mayor 12, 1ºA",
+    "Telefono": "612345678",
+    "Localidad": "Valencia"
+  },
+  {
+    "Nombre": "Carlos",
+    "Apellidos": "Ruiz Fernández",
+    "Email": "carlos.ruiz@example.com",
+    "Direccion": "Avenida del Cid 45",
+    "Telefono": "678901234",
+    "Localidad": "Madrid"
+  },
+  {
+    "Nombre": "Marta",
+    "Apellidos": "Sánchez López",
+    "Email": "marta.sanchez@example.com",
+    "Direccion": "Calle Luna 3, 2ºB",
+    "Telefono": "699123456",
+    "Localidad": "Sevilla"
+  },
+  {
+    "Nombre": "Javier",
+    "Apellidos": "Pérez Navarro",
+    "Email": "javier.perez@example.com",
+    "Direccion": "Calle del Sol 9",
+    "Telefono": "633789012",
+    "Localidad": "Murcia"
+  },
+  {
+    "Nombre": "Lucía",
+    "Apellidos": "Torres Jiménez",
+    "Email": "lucia.torres@example.com",
+    "Direccion": "Camino Real 18",
+    "Telefono": "625432198",
+    "Localidad": "Granada"
+  },
+  {
+    "Nombre": "Andrés",
+    "Apellidos": "Morales García",
+    "Email": "andres.morales@example.com",
+    "Direccion": "Calle Cervantes 7",
+    "Telefono": "611987654",
+    "Localidad": "Alicante"
+  },
+  {
+    "Nombre": "Paula",
+    "Apellidos": "Vidal Romero",
+    "Email": "paula.vidal@example.com",
+    "Direccion": "Avenida Blasco Ibáñez 102",
+    "Telefono": "698741236",
+    "Localidad": "Castellón"
+  },
+  {
+    "Nombre": "Sergio",
+    "Apellidos": "Gil Cano",
+    "Email": "sergio.gil@example.com",
+    "Direccion": "Calle Jardines 4",
+    "Telefono": "677889900",
+    "Localidad": "Elche"
+  },
+  {
+    "Nombre": "Elena",
+    "Apellidos": "Martín Ferrer",
+    "Email": "elena.martin@example.com",
+    "Direccion": "Plaza del Mercado 22",
+    "Telefono": "634556789",
+    "Localidad": "Zaragoza"
+  },
+  {
+    "Nombre": "Adrián",
+    "Apellidos": "Ortega Serrano",
+    "Email": "adrian.ortega@example.com",
+    "Direccion": "Calle Libertad 10",
+    "Telefono": "622334455",
+    "Localidad": "Bilbao"
+  },
+  {
+    "Nombre": "Clara",
+    "Apellidos": "Domínguez Castro",
+    "Email": "clara.dominguez@example.com",
+    "Direccion": "Avenida de la Paz 67",
+    "Telefono": "690112233",
+    "Localidad": "Málaga"
+  },
+  {
+    "Nombre": "Miguel",
+    "Apellidos": "Navarro León",
+    "Email": "miguel.navarro@example.com",
+    "Direccion": "Calle San Vicente 2",
+    "Telefono": "611334455",
+    "Localidad": "Valladolid"
+  },
+  {
+    "Nombre": "Ana",
+    "Apellidos": "López Ramos",
+    "Email": "ana.lopez@example.com",
+    "Direccion": "Camino de Ronda 45",
+    "Telefono": "622556677",
+    "Localidad": "Córdoba"
+  },
+  {
+    "Nombre": "Pablo",
+    "Apellidos": "Herrera Molina",
+    "Email": "pablo.herrera@example.com",
+    "Direccion": "Calle del Río 9",
+    "Telefono": "644998877",
+    "Localidad": "Toledo"
+  },
+  {
+    "Nombre": "Isabel",
+    "Apellidos": "Castillo Rubio",
+    "Email": "isabel.castillo@example.com",
+    "Direccion": "Calle Nueva 14",
+    "Telefono": "699887766",
+    "Localidad": "Burgos"
+  },
+  {
+    "Nombre": "Raúl",
+    "Apellidos": "Flores Díaz",
+    "Email": "raul.flores@example.com",
+    "Direccion": "Paseo Marítimo 5",
+    "Telefono": "677554433",
+    "Localidad": "San Sebastián"
+  },
+  {
+    "Nombre": "Patricia",
+    "Apellidos": "Santos Ibáñez",
+    "Email": "patricia.santos@example.com",
+    "Direccion": "Calle Alta 33",
+    "Telefono": "611778899",
+    "Localidad": "Gijón"
+  },
+  {
+    "Nombre": "David",
+    "Apellidos": "Campos Rojas",
+    "Email": "david.campos@example.com",
+    "Direccion": "Calle Colón 6",
+    "Telefono": "688990011",
+    "Localidad": "Albacete"
+  },
+  {
+    "Nombre": "Nuria",
+    "Apellidos": "Reyes Peña",
+    "Email": "nuria.reyes@example.com",
+    "Direccion": "Calle Mayor 89",
+    "Telefono": "655443322",
+    "Localidad": "Pamplona"
+  },
+  {
+    "Nombre": "Rubén",
+    "Apellidos": "Cortés Aguilar",
+    "Email": "ruben.cortes@example.com",
+    "Direccion": "Avenida del Puerto 17",
+    "Telefono": "699221133",
+    "Localidad": "Valencia"
+  }
+]
+

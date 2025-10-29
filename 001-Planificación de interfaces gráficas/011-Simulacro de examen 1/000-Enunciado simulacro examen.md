@@ -42,7 +42,7 @@ Al pulsar un botón “Añadir elemento”, debe aparecer un modal o bloque emer
 
 Botón “Guardar”.
 
-Al guardar, el nuevo elemento debe añadirse visualmente al listado.
+Al guardar, el nuevo elemento debe añadirse visualmente al listado. (no perdáis el tiempo con este punto)
 
 Implementa una validación básica: si el campo está vacío, muestra un aviso (alert() o borde rojo).
 
