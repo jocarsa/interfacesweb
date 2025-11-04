@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Modal</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <main>
+      <p>Este es el contenido de la web</p>
+      <button>Pulsame y te enseño el modal</button>
+    </main>
+    <style>
+      #contenedormodal{
+        /* Con esto hago un telón negro */
+        position:fixed;         /* Va a su rollo */
+        width:100%;             /* Ocupa toda la anchura */
+        height:100%;            /* Ocupa toda la altura */
+        background:rgba(0,0,0,0.5); /* Su fondo es negro */
+        top:0px;                /* Empieza arriba */
+        left:0px;               /* Empieza a la izquierda */
+        display:none;           /* Centro con flex */
+        align-items:center;     /* Centro en vertical */
+        justify-content:center; /* Centro en horizontal */
+       }
+       #modal{
+         width:400px;           /* Anchura */
+         height:400px;          /* Altura */
+         background:white;      /* Fondo blanco */
+         padding:20px;          /* Margen interior */
+         border-radius:5px;
+         box-shadow:0px 10px 20px black;
+       }
+    </style>
+    <div id="contenedormodal">
+      <div id="modal">
+      </div>
+    </div>
+  </body>
+</html>
