@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Modal</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <main>
+      <img src="img/2024-04-28-19-35-35.jpg">
+      <img src="img/2024-04-28-19-35-40.jpg"> 
+      <img src="img/2024-04-28-19-36-06.jpg"> 
+      <img src="img/2024-04-28-19-36-07.jpg"> 
+      <img src="img/2024-04-28-19-38-03.jpg"> 
+      <img src="img/2024-04-28-19-38-28.jpg">
+      <img src="img/2024-04-28-19-38-45.jpg">
+      <img src="img/2024-04-28-19-47-23.jpg">
+      <img src="img/2024-04-28-19-49-02color.jpg">
+      <img src="img/2024-04-28-19-35-35.jpg">
+      <img src="img/2024-04-28-19-35-40.jpg"> 
+      <img src="img/2024-04-28-19-36-06.jpg"> 
+      <img src="img/2024-04-28-19-36-07.jpg"> 
+      <img src="img/2024-04-28-19-38-03.jpg"> 
+      <img src="img/2024-04-28-19-38-28.jpg">
+      <img src="img/2024-04-28-19-38-45.jpg">
+      <img src="img/2024-04-28-19-47-23.jpg">
+      <img src="img/2024-04-28-19-49-02color.jpg">
+      <img src="img/2024-04-28-19-35-35.jpg">
+      <img src="img/2024-04-28-19-35-40.jpg"> 
+      <img src="img/2024-04-28-19-36-06.jpg"> 
+      <img src="img/2024-04-28-19-36-07.jpg"> 
+      <img src="img/2024-04-28-19-38-03.jpg"> 
+      <img src="img/2024-04-28-19-38-28.jpg">
+      <img src="img/2024-04-28-19-38-45.jpg">
+      <img src="img/2024-04-28-19-47-23.jpg">
+      <img src="img/2024-04-28-19-49-02color.jpg">
+    </main>
+    
+    <style> 
+      main{
+        display:grid;   /* Voy a crear una rejilla */
+        grid-template-columns:auto auto auto auto auto auto auto auto;   /* Elijo cuantas columnas quiero */
+        gap:20px;   /* Separación entre celdas */
+      }
+      main img{width:100%;}
+      #modal img{height:100%;}
+    </style>
+    <style>
+      #contenedormodal{
+        /* Con esto hago un telón negro */
+        position:fixed;         /* Va a su rollo */
+        width:100%;             /* Ocupa toda la anchura */
+        height:100%;            /* Ocupa toda la altura */
+        background:rgba(0,0,0,0.5); /* Su fondo es negro */
+        top:0px;                /* Empieza arriba */
+        left:0px;               /* Empieza a la izquierda */
+        display:none;           /* Centro con flex */
+        align-items:center;     /* Centro en vertical */
+        justify-content:center; /* Centro en horizontal */
+       }
+       #modal{
+         width:400px;           /* Anchura */
+         height:400px;          /* Altura */
+         background:white;      /* Fondo blanco */
+         padding:20px;          /* Margen interior */
+         border-radius:5px;
+         box-shadow:0px 10px 20px black;
+         text-align:center;
+       }
+    </style>
+    <div id="contenedormodal">
+      <div id="modal">
+        <button id="anterior">⬅</button>
+        <img src="">
+        <button id="siguiente">➡</button>
+      </div>
+    </div>
+    <script>
+      let imagenes = document.querySelectorAll("img")
+      console.log(imagenes)
+      
+      imagenes.forEach(function(imagen){
+        imagen.onclick = function(){
+          document.querySelector("#contenedormodal").style.display = "flex";
+          let imagen_origen = this.getAttribute("src")
+          let imagen_destino = document.querySelector("#modal img")
+          imagen_destino.setAttribute("src",imagen_origen)
+        }
+      })
+      // Cuando haga click en el fondo del modal
+      document.querySelector("#contenedormodal").onclick = function(){
+        this.style.display = "none";  // Se esconde el modal
+      }
+    </script>
+  </body>
+</html>
