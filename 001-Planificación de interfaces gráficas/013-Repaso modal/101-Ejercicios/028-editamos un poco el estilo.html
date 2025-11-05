@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Modal</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <main>
+      <img src="img/2024-04-28-19-35-35.jpg" alt="Descripción de la imagen 1">
+      <img src="img/2024-04-28-19-35-40.jpg" alt="Descripción de la imagen 2"> 
+      <img src="img/2024-04-28-19-36-06.jpg" alt="Descripción de la imagen 3"> 
+      <img src="img/2024-04-28-19-36-07.jpg" alt="Descripción de la imagen 4"> 
+      <img src="img/2024-04-28-19-38-03.jpg" alt="Descripción de la imagen 5"> 
+      <img src="img/2024-04-28-19-38-28.jpg" alt="Descripción de la imagen 6">
+      <img src="img/2024-04-28-19-38-45.jpg" alt="Descripción de la imagen 7">
+      <img src="img/2024-04-28-19-47-23.jpg" alt="Descripción de la imagen 8">
+      <img src="img/2024-04-28-19-49-02color.jpg" alt="Descripción de la imagen 9">
+      <img src="img/2024-04-28-19-35-35.jpg" alt="Descripción de la imagen 10">
+      <img src="img/2024-04-28-19-35-40.jpg" alt="Descripción de la imagen 11"> 
+      <img src="img/2024-04-28-19-36-06.jpg" alt="Descripción de la imagen 12"> 
+      <img src="img/2024-04-28-19-36-07.jpg" alt="Descripción de la imagen 13"> 
+      <img src="img/2024-04-28-19-38-03.jpg" alt="Descripción de la imagen 14"> 
+      <img src="img/2024-04-28-19-38-28.jpg" alt="Descripción de la imagen 15">
+      <img src="img/2024-04-28-19-38-45.jpg" alt="Descripción de la imagen 16">
+      <img src="img/2024-04-28-19-47-23.jpg" alt="Descripción de la imagen 17">
+      <img src="img/2024-04-28-19-49-02color.jpg" alt="Descripción de la imagen 18">
+      <img src="img/2024-04-28-19-35-35.jpg" alt="Descripción de la imagen 19">
+      <img src="img/2024-04-28-19-35-40.jpg" alt="Descripción de la imagen 20"> 
+      <img src="img/2024-04-28-19-36-06.jpg" alt="Descripción de la imagen 21"> 
+      <img src="img/2024-04-28-19-36-07.jpg" alt="Descripción de la imagen 22"> 
+      <img src="img/2024-04-28-19-38-03.jpg" alt="Descripción de la imagen 23"> 
+      <img src="img/2024-04-28-19-38-28.jpg" alt="Descripción de la imagen 24">
+      <img src="img/2024-04-28-19-38-45.jpg" alt="Descripción de la imagen 25">
+      <img src="img/2024-04-28-19-47-23.jpg" alt="Descripción de la imagen 26">
+      <img src="img/2024-04-28-19-49-02color.jpg" alt="Descripción de la imagen 27">
+    </main>
+    
+    <style> 
+      body{background:black;}
+      main{
+        display:grid;   /* Voy a crear una rejilla */
+        grid-template-columns:auto auto auto auto auto auto auto auto;   /* Elijo cuantas columnas quiero */
+        gap:20px;   /* Separación entre celdas */
+      }
+      main img{width:100%;transition:all 1s;border-radius:5px;border:1px solid white;}
+      main img:hover{transform:scale(1.1,1.1);}
+      #modal img{height:90%;}
+      
+    </style>
+    <style>
+      #contenedormodal{
+        /* Con esto hago un telón negro */
+        position:fixed;         /* Va a su rollo */
+        width:100%;             /* Ocupa toda la anchura */
+        height:100%;            /* Ocupa toda la altura */
+        background:rgba(0,0,0,0.5); /* Su fondo es negro */
+        top:0px;                /* Empieza arriba */
+        left:0px;               /* Empieza a la izquierda */
+        display:none;           /* Centro con flex */
+        align-items:center;     /* Centro en vertical */
+        justify-content:center; /* Centro en horizontal */
+        backdrop-filter: blur(5px);
+       }
+       #modal{
+         width:400px;           /* Anchura */
+         height:400px;          /* Altura */
+         background:white;      /* Fondo blanco */
+         padding:20px;          /* Margen interior */
+         border-radius:5px;
+         box-shadow:0px 10px 20px black;
+         text-align:center;
+         display:flex;
+         justify-content:space-between;
+         align-items:center;
+         backdrop-filter: blur(20px);
+       }
+       #modal button{
+         border:none; /* No quiero borde */
+         background:white; /* El fondo es blanco */
+         box-shadow:0px 2px 4px black; /* Sombrita */
+         border-radius:100px; /* Borde redondeado */
+         width:30px; /* Anchura de 30 pixeles */
+         height:30px; /* Altura de 30 pixeles */
+       }
+       #contienepieza{
+        width:100%;
+        height:100%;
+       }
+    </style>
+    <div id="contenedormodal">
+      <div id="modal">
+        <button id="anterior">⬅</button>
+        <div id="contienepieza">
+          <img src="">
+          <p>Hola</p>
+        </div>
+        <button id="siguiente">➡</button>
+      </div>
+    </div>
+    <script>
+      var imagen_activa = undefined;    // Al principio no sé quién es la imagen activa
+      let imagenes = document.querySelectorAll("img")
+      console.log(imagenes)
+      
+      imagenes.forEach(function(imagen){
+        imagen.onclick = function(){
+          imagen_activa = this        // Ahora ya se quien es la imagen activa
+          document.querySelector("#contenedormodal").style.display = "flex";
+          let imagen_origen = this.getAttribute("src")
+          let imagen_destino = document.querySelector("#modal img")
+          imagen_destino.setAttribute("src",imagen_origen)
+          document.querySelector("#contienepieza p").textContent = this.getAttribute("alt")
+        }
+      })
+      // Cuando haga click en el fondo del modal
+      document.querySelector("#contenedormodal").onclick = function(){
+        this.style.display = "none";  // Se esconde el modal
+        
+      }
+      // Vamos a gestionar los botones
+      document.querySelector("#siguiente").onclick = function(event){
+        console.log("Vamos a la siguiente imagen")
+        // Cogemos la siguiente imagen
+        const siguiente = imagen_activa.nextElementSibling;
+        // De esa imagen cogemos el atributo src
+        let imagen_origen = siguiente.getAttribute("src")
+        // Cogemos la imagen de destino
+        let imagen_destino = document.querySelector("#modal img")
+        // Y le planchamos la imagen (el src)
+        imagen_destino.setAttribute("src",imagen_origen)
+        document.querySelector("#contienepieza p").textContent = siguiente.getAttribute("alt")
+        // Actualizamos lo que consideramos la imagen activa
+        imagen_activa = siguiente
+        
+        event.stopPropagation();    // Evita que se dispare por accidente el ocultar
+      }
+      document.querySelector("#anterior").onclick = function(event){
+        console.log("Vamos a la siguiente imagen")
+        // Cogemos la siguiente imagen
+        const siguiente = imagen_activa.previousElementSibling;
+        // De esa imagen cogemos el atributo src
+        let imagen_origen = siguiente.getAttribute("src")
+        // Cogemos la imagen de destino
+        let imagen_destino = document.querySelector("#modal img")
+        document.querySelector("#contienepieza p").textContent = siguiente.getAttribute("alt")
+        // Y le planchamos la imagen (el src)
+        imagen_destino.setAttribute("src",imagen_origen)
+        // Actualizamos lo que consideramos la imagen activa
+        imagen_activa = siguiente
+        
+        event.stopPropagation();    // Evita que se dispare por accidente el ocultar
+      }
+    </script>
+  </body>
+</html>
