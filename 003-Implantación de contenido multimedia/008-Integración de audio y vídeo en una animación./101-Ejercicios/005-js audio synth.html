@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+  <head>
+  	<style>
+      canvas{border:1px solid grey;}
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      // ===== Canvas =====
+      let lienzo = document.querySelector("canvas")
+      let contexto = lienzo.getContext("2d")
+      lienzo.width = 512
+      lienzo.height = 512
+
+      let x = 256
+      let y = 256
+      let r = 10
+      let angulo = Math.random() * Math.PI * 2
+      let v = 3
+
+      // ===== Audio synth (ricochet) =====
+      const AC = window.AudioContext || window.webkitAudioContext
+      const audioCtx = new AC()
+
+      function ricochet(intensidad = 1){
+        // Algunos navegadores exigen interacción del usuario; intentamos reanudar si está suspendido
+        if (audioCtx.state === "suspended") audioCtx.resume()
+
+        const t0 = audioCtx.currentTime
+        const dur = 0.10
+
+        const osc = audioCtx.createOscillator()
+        const gain = audioCtx.createGain()
+        const filter = audioCtx.createBiquadFilter()
+
+        // “Ping” corto: seno + barrido rápido de frecuencia
+        osc.type = "sine"
+        const f0 = 900 + Math.random() * 400
+        const f1 = 250 + Math.random() * 150
+        osc.frequency.setValueAtTime(f0, t0)
+        osc.frequency.exponentialRampToValueAtTime(f1, t0 + dur)
+
+        // Envolvente rápida
+        const amp = 0.12 * Math.min(1, Math.max(0.2, intensidad))
+        gain.gain.setValueAtTime(0.0001, t0)
+        gain.gain.exponentialRampToValueAtTime(amp, t0 + 0.004)
+        gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur)
+
+        // Un toque metálico con filtro (opcional)
+        filter.type = "highpass"
+        filter.frequency.setValueAtTime(200, t0)
+
+        osc.connect(filter)
+        filter.connect(gain)
+        gain.connect(audioCtx.destination)
+
+        osc.start(t0)
+        osc.stop(t0 + dur)
+      }
+
+      // Reanudar audio con primer click/tap (compatibilidad)
+      document.body.addEventListener("pointerdown", () => audioCtx.resume(), { once: true })
+
+      // ===== Loop =====
+      let temporizador = setTimeout("bucle()", 10)
+
+      function bucle(){
+        x += Math.cos(angulo) * v
+        y += Math.sin(angulo) * v
+
+        let rebote = false
+
+        // Rebote vertical (pared izquierda/derecha)
+        if (x > lienzo.width - r) { x = lienzo.width - r; angulo = Math.PI - angulo; rebote = true }
+        else if (x < r)          { x = r;              angulo = Math.PI - angulo; rebote = true }
+
+        // Rebote horizontal (pared arriba/abajo)
+        if (y > lienzo.height - r) { y = lienzo.height - r; angulo = -angulo; rebote = true }
+        else if (y < r)            { y = r;               angulo = -angulo; rebote = true }
+
+        if (rebote) ricochet(1)
+
+        contexto.clearRect(0,0,512,512)
+        contexto.beginPath()
+        contexto.arc(x,y,r,0,Math.PI*2)
+        contexto.fill()
+
+        clearTimeout(temporizador)
+        temporizador = setTimeout("bucle()", 10)
+      }
+    </script>
+  </body>
+</html>

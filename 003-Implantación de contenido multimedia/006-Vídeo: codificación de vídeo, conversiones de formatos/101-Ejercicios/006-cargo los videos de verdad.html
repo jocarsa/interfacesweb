@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style>
+      html,body{width:100%;height:100%;padding:0px;margin:0px;}
+      #contienemodal{position:absolute;top:0px;left:0px;
+      background:rgba(0,0,0,0.5);display:flex;
+      justify-content:center;align-items:center;width:100%;height:100%;display:none;}
+      #modal{background:white;width:600px;height:400px;padding:20px;}
+      video{width:100%;}
+    </style>
+  </head>
+  <body>
+    <button video="uno.mp4">🎬<br>Video 1</button>
+    <button video="dos.mp4">🎬<br>Video 2</button>
+    <button video="tres.mp4">🎬<br>Video 3</button>
+    <button video="cuatro.mp4">🎬<br>Video 4</button>
+
+    <div id="contienemodal">
+      <div id="modal">
+        <video src="cerrar.mp4" controls></video>
+      </div>
+    </div>
+    <script>
+      let botones = document.querySelectorAll("button")
+      let video = document.querySelector("video")
+      botones.forEach(function(boton){
+      	boton.onclick = function(){
+          document.querySelector("#contienemodal").style.display = "flex";
+        	console.log("Voy a cargar el video ",boton.getAttribute("video"))
+          video.src = "video/"+boton.getAttribute("video")
+        }
+      })
+      let fondomodal = document.querySelector("#contienemodal")
+      fondomodal.onclick = function(){
+      	document.querySelector("#contienemodal").style.display = "none";
+      }
+    </script>
+  </body>
+</html>

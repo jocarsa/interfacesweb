@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      #rojo{
+        width:100px;height:100px;background:red;
+      	animation:muevemueve 10s;position:relative;
+        animation-iteration-count:infinite;
+      }
+      @keyframes muevemueve{
+        0%{left:0px;top:0px;background:red;}
+        25%{left:100px;top:0px;background:green;}
+        50%{left:100px;top:100px;background:blue;}
+        75%{left:0px;top:100px;background:yellow;}
+        100%{left:0px;top:0px;background:red;}
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div id="rojo">
+    </div>
+  </body>
+</html>

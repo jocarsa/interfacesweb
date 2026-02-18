@@ -10737,17 +10737,478 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 </html>
 ```
 
+### modal
+<small>Creado: 2026-02-18 17:00</small>
+
+`002-modal.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <style>
+      html,body{width:100%;height:100%;padding:0px;margin:0px;}
+      #contienemodal{position:absolute;top:0px;left:0px;
+      background:rgba(0,0,0,0.5);display:flex;
+      justify-content:center;align-items:center;width:100%;height:100%;display:none;}
+      #modal{background:white;width:600px;height:400px;padding:20px;}
+      video{width:100%;}
+    </style>
+  </head>
+  <body>
+    <button>Abrir video</button>
+    <div id="contienemodal">
+      <div id="modal">
+        <video src="cerrar.mp4" controls></video>
+      </div>
+    </div>
+  </body>
+</html>
+```
+
+### un poco de javascript
+<small>Creado: 2026-02-18 17:01</small>
+
+`003-un poco de javascript.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <style>
+      html,body{width:100%;height:100%;padding:0px;margin:0px;}
+      #contienemodal{position:absolute;top:0px;left:0px;
+      background:rgba(0,0,0,0.5);display:flex;
+      justify-content:center;align-items:center;width:100%;height:100%;display:none;}
+      #modal{background:white;width:600px;height:400px;padding:20px;}
+      video{width:100%;}
+    </style>
+  </head>
+  <body>
+    <button>Abrir video</button>
+    <div id="contienemodal">
+      <div id="modal">
+        <video src="cerrar.mp4" controls></video>
+      </div>
+    </div>
+    <script>
+      let boton = document.querySelector("button")
+      boton.onclick = function(){
+      	document.querySelector("#contienemodal").style.display = "flex";
+      }
+    </script>
+  </body>
+</html>
+```
+
+### rejilla
+<small>Creado: 2026-02-18 17:09</small>
+
+`004-rejilla.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style>
+      html,body{width:100%;height:100%;padding:0px;margin:0px;}
+      #contienemodal{position:absolute;top:0px;left:0px;
+      background:rgba(0,0,0,0.5);display:flex;
+      justify-content:center;align-items:center;width:100%;height:100%;display:none;}
+      #modal{background:white;width:600px;height:400px;padding:20px;}
+      video{width:100%;}
+    </style>
+  </head>
+  <body>
+    <button>🎬<br>Video 1</button>
+    <button>🎬<br>Video 2</button>
+    <button>🎬<br>Video 3</button>
+    <button>🎬<br>Video 4</button>
+    <button>🎬<br>Video 5</button>
+    <button>🎬<br>Video 6</button>
+    <button>🎬<br>Video 7</button>
+    <button>🎬<br>Video 8</button>
+    <button>🎬<br>Video 9</button>
+    <button>🎬<br>Video 10</button>
+    <button>🎬<br>Video 11</button>
+    <button>🎬<br>Video 12</button>
+    <button>🎬<br>Video 13</button>
+    <button>🎬<br>Video 14</button>
+    <div id="contienemodal">
+      <div id="modal">
+        <video src="cerrar.mp4" controls></video>
+      </div>
+    </div>
+    <script>
+      let botones = document.querySelectorAll("button")
+      botones.forEach(function(boton){
+      	boton.onclick = function(){
+          document.querySelector("#contienemodal").style.display = "flex";
+        }
+      })
+      
+    </script>
+  </body>
+</html>
+```
+
+### parametros en los botones
+<small>Creado: 2026-02-18 18:31</small>
+
+`005-parametros en los botones.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style>
+      html,body{width:100%;height:100%;padding:0px;margin:0px;}
+      #contienemodal{position:absolute;top:0px;left:0px;
+      background:rgba(0,0,0,0.5);display:flex;
+      justify-content:center;align-items:center;width:100%;height:100%;display:none;}
+      #modal{background:white;width:600px;height:400px;padding:20px;}
+      video{width:100%;}
+    </style>
+  </head>
+  <body>
+    <button video="uno.mp4">🎬<br>Video 1</button>
+    <button video="dos.mp4">🎬<br>Video 2</button>
+    <button video="tres.mp4">🎬<br>Video 3</button>
+    <button video="cuatro.mp4">🎬<br>Video 4</button>
+
+    <div id="contienemodal">
+      <div id="modal">
+        <video src="cerrar.mp4" controls></video>
+      </div>
+    </div>
+    <script>
+      let botones = document.querySelectorAll("button")
+      botones.forEach(function(boton){
+      	boton.onclick = function(){
+          document.querySelector("#contienemodal").style.display = "flex";
+        	console.log("Voy a cargar el video ",boton.getAttribute("video"))
+        }
+      })
+      let fondomodal = document.querySelector("#contienemodal")
+      fondomodal.onclick = function(){
+      	document.querySelector("#contienemodal").style.display = "none";
+      }
+    </script>
+  </body>
+</html>
+```
+
+### cargo los videos de verdad
+<small>Creado: 2026-02-18 18:32</small>
+
+`006-cargo los videos de verdad.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style>
+      html,body{width:100%;height:100%;padding:0px;margin:0px;}
+      #contienemodal{position:absolute;top:0px;left:0px;
+      background:rgba(0,0,0,0.5);display:flex;
+      justify-content:center;align-items:center;width:100%;height:100%;display:none;}
+      #modal{background:white;width:600px;height:400px;padding:20px;}
+      video{width:100%;}
+    </style>
+  </head>
+  <body>
+    <button video="uno.mp4">🎬<br>Video 1</button>
+    <button video="dos.mp4">🎬<br>Video 2</button>
+    <button video="tres.mp4">🎬<br>Video 3</button>
+    <button video="cuatro.mp4">🎬<br>Video 4</button>
+
+    <div id="contienemodal">
+      <div id="modal">
+        <video src="cerrar.mp4" controls></video>
+      </div>
+    </div>
+    <script>
+      let botones = document.querySelectorAll("button")
+      let video = document.querySelector("video")
+      botones.forEach(function(boton){
+      	boton.onclick = function(){
+          document.querySelector("#contienemodal").style.display = "flex";
+        	console.log("Voy a cargar el video ",boton.getAttribute("video"))
+          video.src = "video/"+boton.getAttribute("video")
+        }
+      })
+      let fondomodal = document.querySelector("#contienemodal")
+      fondomodal.onclick = function(){
+      	document.querySelector("#contienemodal").style.display = "none";
+      }
+    </script>
+  </body>
+</html>
+```
+
 
 <a id="animaciones"></a>
 ## Animaciones.
 
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/003-Implantaci%C3%B3n%20de%20contenido%20multimedia/007-Animaciones.)
 
+### animacion css
+<small>Creado: 2026-02-18 18:34</small>
+
+`001-animacion css.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <style>
+      #rojo{width:100px;height:100px;background:red;}
+    </style>
+  </head>
+  <body>
+    <div id="rojo">
+    </div>
+  </body>
+</html>
+```
+
+### llamamos y creamos animacion
+<small>Creado: 2026-02-18 18:39</small>
+
+`002-llamamos y creamos animacion.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <style>
+      #rojo{
+        width:100px;height:100px;background:red;
+      	animation:muevemueve 10s;position:relative;
+        animation-iteration-count:infinite;
+      }
+      @keyframes muevemueve{
+        0%{left:0px;top:0px;background:red;}
+        25%{left:100px;top:0px;background:green;}
+        50%{left:100px;top:100px;background:blue;}
+        75%{left:0px;top:100px;background:yellow;}
+        100%{left:0px;top:0px;background:red;}
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div id="rojo">
+    </div>
+  </body>
+</html>
+```
+
+### funciones de animacion
+<small>Creado: 2026-02-18 18:41</small>
+
+`003-funciones de animacion.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <style>
+      #rojo{
+        width:100px;height:100px;background:red;
+      	animation:muevemueve 10s;position:relative;
+        animation-iteration-count:infinite;
+        animation-timing-function:linear;
+      }
+      @keyframes muevemueve{
+        0%{left:0px;top:0px;background:red;}
+        25%{left:100px;top:0px;background:green;}
+        50%{left:100px;top:100px;background:blue;}
+        75%{left:0px;top:100px;background:yellow;}
+        100%{left:0px;top:0px;background:red;}
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div id="rojo">
+    </div>
+  </body>
+</html>
+```
+
 
 <a id="integracion-de-audio-y-video-en-una-animacion"></a>
 ## Integración de audio y vídeo en una animación.
 
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/003-Implantaci%C3%B3n%20de%20contenido%20multimedia/008-Integraci%C3%B3n%20de%20audio%20y%20v%C3%ADdeo%20en%20una%20animaci%C3%B3n.)
+
+### repaso canvas
+<small>Creado: 2026-02-18 18:51</small>
+
+`001-repaso canvas.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      let lienzo = document.querySelector("canvas")
+      let contexto = lienzo.getContext("2d")
+      lienzo.width = 512
+      lienzo.height = 512
+      
+      contexto.beginPath()
+      contexto.arc(256,256,10,0,Math.PI*2)
+      contexto.fill()
+    </script>
+  </body>
+</html>
+```
+
+### animacion
+<small>Creado: 2026-02-18 18:57</small>
+
+`002-animacion.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      let lienzo = document.querySelector("canvas")
+      let contexto = lienzo.getContext("2d")
+      let temporizador = setTimeout("bucle()",1000)
+      lienzo.width = 512
+      lienzo.height = 512
+      let x = 256
+      let y = 256
+      let angulo = Math.random()*Math.PI*2
+      
+      function bucle(){
+        x += Math.cos(angulo)							// Movemos la pelota en X
+        y += Math.sin(angulo)							// Movemos la pelota en Y
+        contexto.clearRect(0,0,512,512)		// Primero borra lo anterior
+      	contexto.beginPath()
+        contexto.arc(x,y,10,0,Math.PI*2)
+        contexto.fill()
+        clearTimeout(temporizador)
+        temporizador = setTimeout("bucle()",10)
+      }
+      
+    </script>
+  </body>
+</html>
+```
+
+### rebote contra las paredes
+<small>Creado: 2026-02-18 18:58</small>
+
+`003-rebote contra las paredes.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      let lienzo = document.querySelector("canvas")
+      let contexto = lienzo.getContext("2d")
+      let temporizador = setTimeout("bucle()",1000)
+      lienzo.width = 512
+      lienzo.height = 512
+      let x = 256
+      let y = 256
+      let angulo = Math.random()*Math.PI*2
+      
+      function bucle(){
+        x += Math.cos(angulo)							// Movemos la pelota en X
+        y += Math.sin(angulo)							// Movemos la pelota en Y
+        if(x > 512 || x < 0 || y > 512 || y < 0){
+        	angulo += Math.PI
+        }
+        contexto.clearRect(0,0,512,512)		// Primero borra lo anterior
+      	contexto.beginPath()
+        contexto.arc(x,y,10,0,Math.PI*2)
+        contexto.fill()
+        clearTimeout(temporizador)
+        temporizador = setTimeout("bucle()",10)
+      }
+      
+    </script>
+  </body>
+</html>
+```
+
+### angulo complementario
+<small>Creado: 2026-02-18 18:59</small>
+
+`004-angulo complementario.html`
+
+```html
+<!doctype html>
+<html>
+  <head></head>
+  <body>
+    <canvas></canvas>
+    <script>
+      let lienzo = document.querySelector("canvas")
+      let contexto = lienzo.getContext("2d")
+      lienzo.width = 512
+      lienzo.height = 512
+
+      let x = 256
+      let y = 256
+      let r = 10
+      let angulo = Math.random() * Math.PI * 2
+
+      let temporizador = setTimeout("bucle()", 10)
+
+      function bucle(){
+        x += Math.cos(angulo)
+        y += Math.sin(angulo)
+
+        // Rebote en paredes verticales (izquierda/derecha): reflejo horizontal
+        if (x > lienzo.width - r) {
+          x = lienzo.width - r
+          angulo = Math.PI - angulo
+        } else if (x < r) {
+          x = r
+          angulo = Math.PI - angulo
+        }
+
+        // Rebote en paredes horizontales (arriba/abajo): reflejo vertical
+        if (y > lienzo.height - r) {
+          y = lienzo.height - r
+          angulo = -angulo
+        } else if (y < r) {
+          y = r
+          angulo = -angulo
+        }
+
+        contexto.clearRect(0,0,512,512)
+        contexto.beginPath()
+        contexto.arc(x,y,r,0,Math.PI*2)
+        contexto.fill()
+
+        clearTimeout(temporizador)
+        temporizador = setTimeout("bucle()", 10)
+      }
+    </script>
+  </body>
+</html>
+```
 
 
 

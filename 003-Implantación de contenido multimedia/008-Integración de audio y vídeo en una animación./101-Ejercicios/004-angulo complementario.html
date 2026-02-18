@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+  <head>
+  	<style>
+      canvas{border:1px solid grey;}
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      let lienzo = document.querySelector("canvas")
+      let contexto = lienzo.getContext("2d")
+      lienzo.width = 512
+      lienzo.height = 512
+
+      let x = 256
+      let y = 256
+      let r = 10
+      let angulo = Math.random() * Math.PI * 2
+
+      let temporizador = setTimeout("bucle()", 10)
+
+      function bucle(){
+        x += Math.cos(angulo)
+        y += Math.sin(angulo)
+
+        // Rebote en paredes verticales (izquierda/derecha): reflejo horizontal
+        if (x > lienzo.width - r) {
+          x = lienzo.width - r
+          angulo = Math.PI - angulo
+        } else if (x < r) {
+          x = r
+          angulo = Math.PI - angulo
+        }
+
+        // Rebote en paredes horizontales (arriba/abajo): reflejo vertical
+        if (y > lienzo.height - r) {
+          y = lienzo.height - r
+          angulo = -angulo
+        } else if (y < r) {
+          y = r
+          angulo = -angulo
+        }
+
+        contexto.clearRect(0,0,512,512)
+        contexto.beginPath()
+        contexto.arc(x,y,r,0,Math.PI*2)
+        contexto.fill()
+
+        clearTimeout(temporizador)
+        temporizador = setTimeout("bucle()", 10)
+      }
+    </script>
+  </body>
+</html>

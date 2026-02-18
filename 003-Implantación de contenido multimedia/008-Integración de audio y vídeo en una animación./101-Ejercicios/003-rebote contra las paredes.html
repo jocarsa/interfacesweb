@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      let lienzo = document.querySelector("canvas")
+      let contexto = lienzo.getContext("2d")
+      let temporizador = setTimeout("bucle()",1000)
+      lienzo.width = 512
+      lienzo.height = 512
+      let x = 256
+      let y = 256
+      let angulo = Math.random()*Math.PI*2
+      
+      function bucle(){
+        x += Math.cos(angulo)							// Movemos la pelota en X
+        y += Math.sin(angulo)							// Movemos la pelota en Y
+        if(x > 512 || x < 0 || y > 512 || y < 0){
+        	angulo += Math.PI
+        }
+        contexto.clearRect(0,0,512,512)		// Primero borra lo anterior
+      	contexto.beginPath()
+        contexto.arc(x,y,10,0,Math.PI*2)
+        contexto.fill()
+        clearTimeout(temporizador)
+        temporizador = setTimeout("bucle()",10)
+      }
+      
+    </script>
+  </body>
+</html>
