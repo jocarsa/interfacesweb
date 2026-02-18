@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      #reproductor{
+      	width:300px;
+      }
+      #reproductor img{width:100%;}
+      #rango{width:100%;}
+    </style>
+  </head>
+  <body>
+    <div id="reproductor">
+      <div id="portada">
+        <img src="portada.png">
+      </div>
+      <input type="range" id="rango">
+      <button id="play">Play</button>
+      <button id="pausa">Pausa</button>
+    </div>
+    <script>
+      let audio = new Audio();
+      let rango = document.querySelector("#rango")
+      let temporizador;
+      rango.value = 0
+      audio.src = "Let you go.mp3";
+      console.log(audio)
+      document.querySelector("#play").onclick = function(){
+        console.log("ok play")
+        console.log(audio)
+      	audio.play()
+        temporizador = setTimeout("bucle()",1000)
+      }
+      document.querySelector("#pausa").onclick = function(){
+      	audio.pause()
+      }
+      rango.onchange = function(){
+      	audio.currentTime = this.value*(audio.duration/100)
+      }
+      function bucle(){
+		
+        rango.value = (audio.currentTime/audio.duration)*100
+      	clearTimeout(temporizador)
+        temporizador = setTimeout("bucle()",1000)
+      }
+    </script>
+  </body>
+</html>

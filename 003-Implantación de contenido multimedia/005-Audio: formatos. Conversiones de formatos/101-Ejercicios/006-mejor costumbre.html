@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <button id="play">Play</button>
+    <button id="pausa">Pausa</button>
+    <script>
+      let audio = new Audio();
+      audio.src = "Let you go.mp3";
+      document.querySelector("#play").onclick = function(){
+        console.log("ok play")
+      	audio.play()
+      }
+      document.querySelector("#pausa").onclick = function(){
+      	audio.pause()
+      }
+    </script>
+  </body>
+</html>
