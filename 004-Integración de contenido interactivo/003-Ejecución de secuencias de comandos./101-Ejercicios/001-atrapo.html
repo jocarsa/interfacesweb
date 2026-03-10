@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Voice → AI → Voice</title>
+</head>
+
+<body>
+
+<button onclick="startEcho()">🎤 Speak</button>
+
+<p><b>You said:</b> <span id="q"></span></p>
+<p><b>AI says:</b> <span id="a"></span></p>
+
+<script>
+async function startEcho(){
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SpeechRecognition){
+    alert("SpeechRecognition not supported in this browser.");
+    return;
+  }
+
+  const reconocer = new SpeechRecognition();
+  reconocer.lang = "es-ES";
+  reconocer.interimResults = false;
+  reconocer.maxAlternatives = 1;
+
+  // Stop any current speech
+  window.speechSynthesis.cancel();
+
+  reconocer.onresult = async (event) => {
+    const texto = event.results[0][0].transcript.trim();
+    document.getElementById("q").innerText = texto;
+
+    // Send to PHP
+    try{
+      const fd = new FormData();
+      fd.append("question", texto);
+
+      const r = await fetch("002-proceso.php", {
+        method: "POST",
+        body: fd
+      });
+
+      const data = await r.json();
+
+      if(!data.ok){
+        document.getElementById("a").innerText = "Error: " + (data.error || "unknown");
+        return;
+      }
+
+      const respuesta = (data.answer || "").trim();
+      document.getElementById("a").innerText = respuesta;
+
+      // Speak AI response
+      const u = new SpeechSynthesisUtterance(respuesta);
+      u.lang = "es-ES";
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+
+    }catch(err){
+      document.getElementById("a").innerText = "Network/JS error: " + err;
+    }
+  };
+
+  reconocer.onerror = (e) => {
+    document.getElementById("a").innerText = "SpeechRecognition error: " + e.error;
+  };
+
+  reconocer.start();
+}
+</script>
+
+</body>
+</html>

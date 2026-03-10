@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Speech Recognition</title>
+  <style>
+    section{display:none;}
+  </style>
+</head>
+
+<body>
+
+<button onclick="startRecognition()">🎤 Start</button>
+
+<p id="salida"></p>
+  
+  <section id="inicio">
+    <h3>Yo soy la seccion de inicio</h3>
+    <p>Hola que tal soy la seccion de inicio</p>
+  </section>
+  
+   <section id="sobremi">
+    <h3>Yo soy la seccion de sobre mi</h3>
+    <p>Hola que tal soy la seccion de sobre mi</p>
+  </section>
+  
+  <section id="contacto">
+    <h3>Yo soy la seccion de contacto</h3>
+    <p>Hola que tal soy la seccion de contacto</p>
+  </section>
+
+<script>
+
+function startRecognition(){
+
+    // Detectar API según navegador ////////////////////////////////
+    const SpeechRecognition = window.SpeechRecognition ;
+			
+    // Crear reconocimiento
+    const reconocer = new SpeechRecognition();
+
+    // Configuración
+    reconocer.lang = "es-ES";
+    reconocer.interimResults = false;
+    reconocer.maxAlternatives = 1;
+
+    reconocer.start();
+    console.log("Escuchando...");
+
+    reconocer.onresult = function(event){
+        const salida = document.getElementById("salida");
+        const transcripcion =
+            event.results[0][0].transcript;
+        console.log("Texto:", transcripcion);
+        salida.innerText = transcripcion;
+      console.log(transcripcion.includes("inicio"))
+      	if(transcripcion.includes("inicio")){
+        	document.querySelector("#inicio").style.display = "block"
+        }else if(transcripcion.includes("sobre mi")){
+        	document.querySelector("#sobremi").style.display = "block"
+        }else if(transcripcion.includes("contacto")){
+        	document.querySelector("#contacto").style.display = "block"
+        }
+    };
+
+    
+}
+
+</script>
+
+</body>
+</html>

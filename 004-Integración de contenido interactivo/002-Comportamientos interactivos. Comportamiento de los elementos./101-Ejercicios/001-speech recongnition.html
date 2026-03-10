@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Speech Recognition</title>
+</head>
+
+<body>
+
+<button onclick="startRecognition()">🎤 Start</button>
+
+<p id="salida"></p>
+
+<script>
+
+function startRecognition(){
+
+    // Detectar API según navegador ////////////////////////////////
+    const SpeechRecognition = window.SpeechRecognition ;
+			
+    // Crear reconocimiento
+    const reconocer = new SpeechRecognition();
+
+    // Configuración
+    reconocer.lang = "es-ES";
+    reconocer.interimResults = false;
+    reconocer.maxAlternatives = 1;
+
+    reconocer.start();
+    console.log("Escuchando...");
+
+    reconocer.onresult = function(event){
+        const salida = document.getElementById("salida");
+        const transcripcion =
+            event.results[0][0].transcript;
+        console.log("Texto:", transcripcion);
+        salida.innerText = transcripcion;
+    };
+
+    
+}
+
+</script>
+
+</body>
+</html>

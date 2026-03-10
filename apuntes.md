@@ -63,6 +63,9 @@
   - [Facilidad de navegación en la web.](#facilidad-de-navegacion-en-la-web)
   - [Verificación de la usabilidad en diferentes navegadores y tecnologías.](#verificacion-de-la-usabilidad-en-diferentes-navegadores-y-tecnologias)
   - [Herramientas y test de verificación.](#herramientas-y-test-de-verificacion-1)
+- [Inteligencia artificial](#inteligencia-artificial)
+  - [Introduccion](#introduccion)
+  - [Continuamos con inteligencia artificial](#continuamos-con-inteligencia-artificial)
 - [.git](#git)
   - [branches](#branches)
   - [hooks](#hooks)
@@ -11152,14 +11155,18 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### angulo complementario
-<small>Creado: 2026-02-18 18:59</small>
+<small>Creado: 2026-02-18 19:00</small>
 
 `004-angulo complementario.html`
 
 ```html
 <!doctype html>
 <html>
-  <head></head>
+  <head>
+  	<style>
+      canvas{border:1px solid grey;}
+    </style>
+  </head>
   <body>
     <canvas></canvas>
     <script>
@@ -11210,6 +11217,109 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 </html>
 ```
 
+### js audio synth
+<small>Creado: 2026-02-18 19:02</small>
+
+`005-js audio synth.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+  	<style>
+      canvas{border:1px solid grey;}
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      // ===== Canvas =====
+      let lienzo = document.querySelector("canvas")
+      let contexto = lienzo.getContext("2d")
+      lienzo.width = 512
+      lienzo.height = 512
+
+      let x = 256
+      let y = 256
+      let r = 10
+      let angulo = Math.random() * Math.PI * 2
+      let v = 3
+
+      // ===== Audio synth (ricochet) =====
+      const AC = window.AudioContext || window.webkitAudioContext
+      const audioCtx = new AC()
+
+      function ricochet(intensidad = 1){
+        // Algunos navegadores exigen interacción del usuario; intentamos reanudar si está suspendido
+        if (audioCtx.state === "suspended") audioCtx.resume()
+
+        const t0 = audioCtx.currentTime
+        const dur = 0.10
+
+        const osc = audioCtx.createOscillator()
+        const gain = audioCtx.createGain()
+        const filter = audioCtx.createBiquadFilter()
+
+        // “Ping” corto: seno + barrido rápido de frecuencia
+        osc.type = "sine"
+        const f0 = 900 + Math.random() * 400
+        const f1 = 250 + Math.random() * 150
+        osc.frequency.setValueAtTime(f0, t0)
+        osc.frequency.exponentialRampToValueAtTime(f1, t0 + dur)
+
+        // Envolvente rápida
+        const amp = 0.12 * Math.min(1, Math.max(0.2, intensidad))
+        gain.gain.setValueAtTime(0.0001, t0)
+        gain.gain.exponentialRampToValueAtTime(amp, t0 + 0.004)
+        gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur)
+
+        // Un toque metálico con filtro (opcional)
+        filter.type = "highpass"
+        filter.frequency.setValueAtTime(200, t0)
+
+        osc.connect(filter)
+        filter.connect(gain)
+        gain.connect(audioCtx.destination)
+
+        osc.start(t0)
+        osc.stop(t0 + dur)
+      }
+
+      // Reanudar audio con primer click/tap (compatibilidad)
+      document.body.addEventListener("pointerdown", () => audioCtx.resume(), { once: true })
+
+      // ===== Loop =====
+      let temporizador = setTimeout("bucle()", 10)
+
+      function bucle(){
+        x += Math.cos(angulo) * v
+        y += Math.sin(angulo) * v
+
+        let rebote = false
+
+        // Rebote vertical (pared izquierda/derecha)
+        if (x > lienzo.width - r) { x = lienzo.width - r; angulo = Math.PI - angulo; rebote = true }
+        else if (x < r)          { x = r;              angulo = Math.PI - angulo; rebote = true }
+
+        // Rebote horizontal (pared arriba/abajo)
+        if (y > lienzo.height - r) { y = lienzo.height - r; angulo = -angulo; rebote = true }
+        else if (y < r)            { y = r;               angulo = -angulo; rebote = true }
+
+        if (rebote) ricochet(1)
+
+        contexto.clearRect(0,0,512,512)
+        contexto.beginPath()
+        contexto.arc(x,y,r,0,Math.PI*2)
+        contexto.fill()
+
+        clearTimeout(temporizador)
+        temporizador = setTimeout("bucle()", 10)
+      }
+    </script>
+  </body>
+</html>
+```
+
 
 
 <a id="integracion-de-contenido-interactivo"></a>
@@ -11220,17 +11330,928 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/004-Integraci%C3%B3n%20de%20contenido%20interactivo/001-Elementos%20interactivos.)
 
+### demostracion
+<small>Creado: 2026-02-24 17:10</small>
+
+`002-demostracion.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <p>Esto es un texto</p>
+    <script>
+      let parrafo = document.querySelector("p");
+      parrafo.onclick = function(){
+      	console.log("Has hecho click")
+      }
+    </script>
+  </body>
+</html>
+```
+
+### hiperenlace
+<small>Creado: 2026-02-24 17:22</small>
+
+`003-hiperenlace.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <style>
+      html{
+      	padding:30px;
+      }
+      a{
+        transform:scale(5);
+        zoom:5;
+      	color:white;
+        background:blue;
+        text-decoration:none;
+        padding:10px;
+        border-radius:8px;
+        box-shadow:0px 3px 6px rgba(0,0,0,.3);
+      }
+    </style>
+  </head>
+  <body>
+    <a href="destino.html">Pulsa</a>
+  </body>
+</html>
+```
+
+### multisombras
+<small>Creado: 2026-02-24 17:24</small>
+
+`004-multisombras.html`
+
+```html
+<!doctype html>
+<html>
+<head>
+<style>
+
+html{
+	padding:300px;
+	background:#e5e5e5;
+}
+
+a{
+	display:inline-block;
+
+	transform:scale(5);
+
+
+	color:white;
+	background:linear-gradient(#3b82f6,#1e40af);
+	text-decoration:none;
+
+	padding:10px 18px;
+	border-radius:8px;
+
+	/* ===== 3D RELIEF ===== */
+	box-shadow:
+		0 1px 0 rgba(255,255,255,.6) inset,   /* top light */
+		0 -2px 4px rgba(0,0,0,.4) inset,     /* inner depth */
+		0 3px 0 #102a7a,                     /* hard edge */
+		0 6px 8px rgba(0,0,0,.35);           /* floor shadow */
+
+	transition:.1s;
+}
+
+/* pressed effect */
+a:active{
+	transform:scale(5) translateY(3px);
+
+	box-shadow:
+		0 2px 4px rgba(0,0,0,.5) inset,
+		0 1px 2px rgba(0,0,0,.3);
+}
+
+</style>
+</head>
+
+<body>
+<a href="destino.html">Pulsa</a>
+</body>
+</html>
+```
+
+### boton fisico
+<small>Creado: 2026-02-24 17:26</small>
+
+`005-boton fisico.html`
+
+```html
+<!doctype html>
+<html>
+<head>
+
+</head>
+
+<body>
+<style>
+  .pushable {
+    position: relative;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    outline-offset: 4px;
+    transition: filter 250ms;
+  }
+  .shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: hsl(0deg 0% 0% / 0.25);
+    will-change: transform;
+    transform: translateY(2px);
+    transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+  }
+  .edge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: linear-gradient(
+      to left,
+      hsl(340deg 100% 16%) 0%,
+      hsl(340deg 100% 32%) 8%,
+      hsl(340deg 100% 32%) 92%,
+      hsl(340deg 100% 16%) 100%
+    );
+  }
+  .front {
+    display: block;
+    position: relative;
+    padding: 12px 42px;
+    border-radius: 12px;
+    font-size: 1.25rem;
+    color: white;
+    background: hsl(345deg 100% 47%);
+    will-change: transform;
+    transform: translateY(-4px);
+    transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+  }
+  .pushable:hover {
+    filter: brightness(110%);
+  }
+  .pushable:hover .front {
+    transform: translateY(-6px);
+    transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+  }
+  .pushable:active .front {
+    transform: translateY(-2px);
+    transition: transform 34ms;
+  }
+  .pushable:hover .shadow {
+    transform: translateY(4px);
+    transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+  }
+  .pushable:active .shadow {
+    transform: translateY(1px);
+    transition: transform 34ms;
+  }
+  .pushable:focus:not(:focus-visible) {
+    outline: none;
+  }
+</style>
+<button class="pushable">
+  <span class="shadow"></span>
+  <span class="edge"></span>
+  <span class="front"> Push me </span>
+</button>
+</body>
+</html>
+```
+
 
 <a id="comportamientos-interactivos-comportamiento-de-los-elementos"></a>
 ## Comportamientos interactivos. Comportamiento de los elementos.
 
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/004-Integraci%C3%B3n%20de%20contenido%20interactivo/002-Comportamientos%20interactivos.%20Comportamiento%20de%20los%20elementos.)
 
+### speech recongnition
+<small>Creado: 2026-02-24 18:31</small>
+
+`001-speech recongnition.html`
+
+```html
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Speech Recognition</title>
+</head>
+
+<body>
+
+<button onclick="startRecognition()">🎤 Start</button>
+
+<p id="salida"></p>
+
+<script>
+
+function startRecognition(){
+
+    // Detectar API según navegador ////////////////////////////////
+    const SpeechRecognition = window.SpeechRecognition ;
+			
+    // Crear reconocimiento
+    const reconocer = new SpeechRecognition();
+
+    // Configuración
+    reconocer.lang = "es-ES";
+    reconocer.interimResults = false;
+    reconocer.maxAlternatives = 1;
+
+    reconocer.start();
+    console.log("Escuchando...");
+
+    reconocer.onresult = function(event){
+        const salida = document.getElementById("salida");
+        const transcripcion =
+            event.results[0][0].transcript;
+        console.log("Texto:", transcripcion);
+        salida.innerText = transcripcion;
+    };
+
+    
+}
+
+</script>
+
+</body>
+</html>
+```
+
+### acciones
+<small>Creado: 2026-02-24 18:33</small>
+
+`002-acciones.html`
+
+```html
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Speech Recognition</title>
+  <style>
+    section{display:none;}
+  </style>
+</head>
+
+<body>
+
+<button onclick="startRecognition()">🎤 Start</button>
+
+<p id="salida"></p>
+  
+  <section id="inicio">
+    <h3>Yo soy la seccion de inicio</h3>
+    <p>Hola que tal soy la seccion de inicio</p>
+  </section>
+  
+   <section id="sobremi">
+    <h3>Yo soy la seccion de sobre mi</h3>
+    <p>Hola que tal soy la seccion de sobre mi</p>
+  </section>
+  
+  <section id="contacto">
+    <h3>Yo soy la seccion de contacto</h3>
+    <p>Hola que tal soy la seccion de contacto</p>
+  </section>
+
+<script>
+
+function startRecognition(){
+
+    // Detectar API según navegador ////////////////////////////////
+    const SpeechRecognition = window.SpeechRecognition ;
+			
+    // Crear reconocimiento
+    const reconocer = new SpeechRecognition();
+
+    // Configuración
+    reconocer.lang = "es-ES";
+    reconocer.interimResults = false;
+    reconocer.maxAlternatives = 1;
+
+    reconocer.start();
+    console.log("Escuchando...");
+
+    reconocer.onresult = function(event){
+        const salida = document.getElementById("salida");
+        const transcripcion =
+            event.results[0][0].transcript;
+        console.log("Texto:", transcripcion);
+        salida.innerText = transcripcion;
+    };
+
+    
+}
+
+</script>
+
+</body>
+</html>
+```
+
+### ejecuto acciones
+<small>Creado: 2026-02-24 18:37</small>
+
+`003-ejecuto acciones.html`
+
+```html
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Speech Recognition</title>
+  <style>
+    section{display:none;}
+  </style>
+</head>
+
+<body>
+
+<button onclick="startRecognition()">🎤 Start</button>
+
+<p id="salida"></p>
+  
+  <section id="inicio">
+    <h3>Yo soy la seccion de inicio</h3>
+    <p>Hola que tal soy la seccion de inicio</p>
+  </section>
+  
+   <section id="sobremi">
+    <h3>Yo soy la seccion de sobre mi</h3>
+    <p>Hola que tal soy la seccion de sobre mi</p>
+  </section>
+  
+  <section id="contacto">
+    <h3>Yo soy la seccion de contacto</h3>
+    <p>Hola que tal soy la seccion de contacto</p>
+  </section>
+
+<script>
+
+function startRecognition(){
+
+    // Detectar API según navegador ////////////////////////////////
+    const SpeechRecognition = window.SpeechRecognition ;
+			
+    // Crear reconocimiento
+    const reconocer = new SpeechRecognition();
+
+    // Configuración
+    reconocer.lang = "es-ES";
+    reconocer.interimResults = false;
+    reconocer.maxAlternatives = 1;
+
+    reconocer.start();
+    console.log("Escuchando...");
+
+    reconocer.onresult = function(event){
+        const salida = document.getElementById("salida");
+        const transcripcion =
+            event.results[0][0].transcript;
+        console.log("Texto:", transcripcion);
+        salida.innerText = transcripcion;
+      console.log(transcripcion.includes("inicio"))
+      	if(transcripcion.includes("inicio")){
+        	document.querySelector("#inicio").style.display = "block"
+        }else if(transcripcion.includes("sobre mi")){
+        	document.querySelector("#sobremi").style.display = "block"
+        }else if(transcripcion.includes("contacto")){
+        	document.querySelector("#contacto").style.display = "block"
+        }
+    };
+
+    
+}
+
+</script>
+
+</body>
+</html>
+```
+
+### sintesis de voz
+<small>Creado: 2026-02-24 18:46</small>
+
+`005-sintesis de voz.html`
+
+```html
+<!doctype html>
+<meta charset="utf-8">
+
+<button id="speak">Speak</button>
+
+<script>
+  const btn = document.getElementById("speak");
+
+  btn.onclick = () => {
+    const u = new SpeechSynthesisUtterance("Hola. Aqui puedo poner el texto que queráis que ponga.");
+    u.lang = "es-ES";
+    window.speechSynthesis.cancel(); // stop any previous speech
+    window.speechSynthesis.speak(u);
+  };
+</script>
+```
+
+### echo
+<small>Creado: 2026-02-24 18:48</small>
+
+`006-echo.html`
+
+```html
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Voice Echo</title>
+</head>
+
+<body>
+
+<button onclick="startEcho()">🎤 Speak</button>
+<p id="salida"></p>
+
+<script>
+
+function startEcho(){
+
+    // ---- Detect API (Chrome uses webkit) ----
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+    if(!SpeechRecognition){
+        alert("SpeechRecognition not supported");
+        return;
+    }
+
+    // ---- Create recognizer ----
+    const reconocer = new SpeechRecognition();
+
+    reconocer.lang = "es-ES";
+    reconocer.interimResults = false;
+    reconocer.maxAlternatives = 1;
+
+    reconocer.start();
+    console.log("Escuchando...");
+
+    // ---- When speech recognized ----
+    reconocer.onresult = function(event){
+
+        const texto = event.results[0][0].transcript;
+
+        // show text
+        document.getElementById("salida").innerText = texto;
+
+        console.log("Reconocido:", texto);
+
+        // ---- SPEAK BACK (echo) ----
+        const u = new SpeechSynthesisUtterance(texto);
+        u.lang = "es-ES";
+
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(u);
+    };
+
+    reconocer.onerror = e =>
+        console.log("Error:", e.error);
+}
+
+</script>
+
+</body>
+</html>
+```
+
 
 <a id="ejecucion-de-secuencias-de-comandos"></a>
 ## Ejecución de secuencias de comandos.
 
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/004-Integraci%C3%B3n%20de%20contenido%20interactivo/003-Ejecuci%C3%B3n%20de%20secuencias%20de%20comandos.)
+
+### atrapo
+<small>Creado: 2026-02-25 18:24</small>
+
+`001-atrapo.html`
+
+```html
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Voice → AI → Voice</title>
+</head>
+
+<body>
+
+<button onclick="startEcho()">🎤 Speak</button>
+
+<p><b>You said:</b> <span id="q"></span></p>
+<p><b>AI says:</b> <span id="a"></span></p>
+
+<script>
+async function startEcho(){
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SpeechRecognition){
+    alert("SpeechRecognition not supported in this browser.");
+    return;
+  }
+
+  const reconocer = new SpeechRecognition();
+  reconocer.lang = "es-ES";
+  reconocer.interimResults = false;
+  reconocer.maxAlternatives = 1;
+
+  // Stop any current speech
+  window.speechSynthesis.cancel();
+
+  reconocer.onresult = async (event) => {
+    const texto = event.results[0][0].transcript.trim();
+    document.getElementById("q").innerText = texto;
+
+    // Send to PHP
+    try{
+      const fd = new FormData();
+      fd.append("question", texto);
+
+      const r = await fetch("002-proceso.php", {
+        method: "POST",
+        body: fd
+      });
+
+      const data = await r.json();
+
+      if(!data.ok){
+        document.getElementById("a").innerText = "Error: " + (data.error || "unknown");
+        return;
+      }
+
+      const respuesta = (data.answer || "").trim();
+      document.getElementById("a").innerText = respuesta;
+
+      // Speak AI response
+      const u = new SpeechSynthesisUtterance(respuesta);
+      u.lang = "es-ES";
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+
+    }catch(err){
+      document.getElementById("a").innerText = "Network/JS error: " + err;
+    }
+  };
+
+  reconocer.onerror = (e) => {
+    document.getElementById("a").innerText = "SpeechRecognition error: " + e.error;
+  };
+
+  reconocer.start();
+}
+</script>
+
+</body>
+</html>
+```
+
+### proceso
+<small>Creado: 2026-02-25 18:24</small>
+
+`002-proceso.php`
+
+```
+<?php
+header("Content-Type: application/json; charset=utf-8");
+
+$question = trim($_POST["question"] ?? "");
+if ($question === "") {
+  echo json_encode(["ok" => false, "error" => "Empty question"]);
+  exit;
+}
+
+// Build prompt (keep it simple)
+$prompt = "Responde en español, en un solo párrafo y sin código.\n\nPregunta: ".$question;
+
+$data = [
+  "model"  => "ministral-3:3b",
+  "prompt" => $prompt,
+  "stream" => false
+];
+
+$ch = curl_init("http://localhost:11434/api/generate");
+curl_setopt_array($ch, [
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_POST           => true,
+  CURLOPT_HTTPHEADER     => ["Content-Type: application/json"],
+  CURLOPT_POSTFIELDS     => json_encode($data, JSON_UNESCAPED_UNICODE),
+  CURLOPT_TIMEOUT        => 120,
+]);
+
+$response = curl_exec($ch);
+
+if ($response === false) {
+  $err = curl_error($ch);
+  curl_close($ch);
+  echo json_encode(["ok" => false, "error" => "Curl error: ".$err]);
+  exit;
+}
+
+$http = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+if ($http < 200 || $http >= 300) {
+  echo json_encode(["ok" => false, "error" => "HTTP ".$http, "raw" => $response]);
+  exit;
+}
+
+$result = json_decode($response, true);
+if (!is_array($result) || !isset($result["response"])) {
+  echo json_encode(["ok" => false, "error" => "Bad JSON from Ollama", "raw" => $response]);
+  exit;
+}
+
+echo json_encode([
+  "ok" => true,
+  "answer" => $result["response"]
+], JSON_UNESCAPED_UNICODE);
+```
+
+### emebeber perro
+<small>Creado: 2026-02-25 18:42</small>
+
+`003-emebeber perro.php`
+
+```
+<?php
+// Embeddings con Ollama: nomic-embed-text:v1.5 para el texto "perro"
+
+$texto = "perro";
+
+$data = [
+    "model"  => "nomic-embed-text:v1.5",
+    "prompt" => $texto
+];
+
+$ch = curl_init("http://localhost:11434/api/embeddings");
+curl_setopt_array($ch, [
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST           => true,
+    CURLOPT_HTTPHEADER     => ["Content-Type: application/json"],
+    CURLOPT_POSTFIELDS     => json_encode($data, JSON_UNESCAPED_UNICODE),
+]);
+
+$response = curl_exec($ch);
+if ($response === false) {
+    die("Curl error: " . curl_error($ch));
+}
+curl_close($ch);
+
+$result = json_decode($response, true);
+if (!is_array($result)) {
+    die("JSON decode error");
+}
+
+// En Ollama, la clave suele ser "embedding" (vector numérico)
+$embedding = $result["embedding"] ?? null;
+if (!$embedding || !is_array($embedding)) {
+    // Por si tu versión devuelve otra estructura
+    die("No se encontró 'embedding' en la respuesta: " . htmlspecialchars($response));
+}
+
+// Imprime el vector (útil para depurar)
+header("Content-Type: application/json; charset=utf-8");
+echo json_encode([
+    "texto"     => $texto,
+    "dim"       => count($embedding),
+    "embedding" => $embedding
+], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+```
+
+### embeber gato
+<small>Creado: 2026-02-25 18:44</small>
+
+`004-embeber gato.php`
+
+```
+<?php
+// Embeddings con Ollama: nomic-embed-text:v1.5 para el texto "perro"
+
+$texto = "gato";
+
+$data = [
+    "model"  => "nomic-embed-text:v1.5",
+    "prompt" => $texto
+];
+
+$ch = curl_init("http://localhost:11434/api/embeddings");
+curl_setopt_array($ch, [
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST           => true,
+    CURLOPT_HTTPHEADER     => ["Content-Type: application/json"],
+    CURLOPT_POSTFIELDS     => json_encode($data, JSON_UNESCAPED_UNICODE),
+]);
+
+$response = curl_exec($ch);
+if ($response === false) {
+    die("Curl error: " . curl_error($ch));
+}
+curl_close($ch);
+
+$result = json_decode($response, true);
+if (!is_array($result)) {
+    die("JSON decode error");
+}
+
+// En Ollama, la clave suele ser "embedding" (vector numérico)
+$embedding = $result["embedding"] ?? null;
+if (!$embedding || !is_array($embedding)) {
+    // Por si tu versión devuelve otra estructura
+    die("No se encontró 'embedding' en la respuesta: " . htmlspecialchars($response));
+}
+
+// Imprime el vector (útil para depurar)
+header("Content-Type: application/json; charset=utf-8");
+echo json_encode([
+    "texto"     => $texto,
+    "dim"       => count($embedding),
+    "embedding" => $embedding
+], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+```
+
+### similitudes
+<small>Creado: 2026-02-25 18:56</small>
+
+`005-similitudes.php`
+
+```
+<?php
+/**
+ * Cosine similarity con embeddings de Ollama (nomic-embed-text:v1.5)
+ * Compara automáticamente TODOS los pares posibles (sin repetidos)
+ */
+
+header("Content-Type: application/json; charset=utf-8");
+
+$OLLAMA_URL = "http://localhost:11434/api/embeddings";
+$MODEL      = "nomic-embed-text:v1.5";
+
+$textos = ["alma","ameba","plutón","enfado","junio","célula"];
+
+/** Obtiene embedding desde Ollama */
+function ollama_embedding(string $url, string $model, string $texto): array {
+    $data = [
+        "model"  => $model,
+        "prompt" => $texto
+    ];
+
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST           => true,
+        CURLOPT_HTTPHEADER     => ["Content-Type: application/json"],
+        CURLOPT_POSTFIELDS     => json_encode($data, JSON_UNESCAPED_UNICODE),
+        CURLOPT_TIMEOUT        => 60
+    ]);
+
+    $response = curl_exec($ch);
+    if ($response === false) {
+        $err = curl_error($ch);
+        curl_close($ch);
+        throw new RuntimeException("Curl error: $err");
+    }
+
+    $http = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($http < 200 || $http >= 300) {
+        throw new RuntimeException("HTTP $http: $response");
+    }
+
+    $result = json_decode($response, true);
+    if (!is_array($result)) {
+        throw new RuntimeException("JSON decode error: $response");
+    }
+
+    $embedding = $result["embedding"] ?? null;
+    if (!is_array($embedding) || count($embedding) === 0) {
+        throw new RuntimeException("No se encontró 'embedding' en la respuesta: $response");
+    }
+
+    return array_map('floatval', $embedding);
+}
+
+/** Producto punto */
+function dot(array $a, array $b): float {
+    if (count($a) !== count($b)) {
+        throw new InvalidArgumentException("Dimensiones distintas: ".count($a)." vs ".count($b));
+    }
+    $sum = 0.0;
+    $n = count($a);
+    for ($i = 0; $i < $n; $i++) {
+        $sum += $a[$i] * $b[$i];
+    }
+    return $sum;
+}
+
+/** Norma L2 */
+function norm(array $v): float {
+    return sqrt(dot($v, $v));
+}
+
+/** Similitud coseno */
+function cosine_similarity(array $a, array $b): float {
+    $na = norm($a);
+    $nb = norm($b);
+    if ($na == 0.0 || $nb == 0.0) return 0.0;
+    return dot($a, $b) / ($na * $nb);
+}
+
+/** Genera todos los pares únicos (i<j) */
+function all_pairs(array $items): array {
+    $pairs = [];
+    $n = count($items);
+    for ($i = 0; $i < $n; $i++) {
+        for ($j = $i + 1; $j < $n; $j++) {
+            $pairs[] = [$items[$i], $items[$j]];
+        }
+    }
+    return $pairs;
+}
+
+try {
+    // 1) Embeddings
+    $emb = [];
+    foreach ($textos as $t) {
+        $emb[$t] = ollama_embedding($GLOBALS['OLLAMA_URL'], $GLOBALS['MODEL'], $t);
+    }
+
+    // 2) Todos los pares automáticamente
+    $pairs = all_pairs($textos);
+
+    $sims = [];
+    foreach ($pairs as [$a, $b]) {
+        $sims["$a-$b"] = cosine_similarity($emb[$a], $emb[$b]);
+    }
+
+    // (Opcional) Ordenar por similitud descendente
+    arsort($sims);
+
+    // 3) Respuesta
+    echo json_encode([
+        "model" => $MODEL,
+        "dim"   => count($emb[$textos[0]]),
+        "textos" => $textos,
+        "pairs_count" => count($pairs),
+        "cosine_similarity" => $sims
+        // ,"embeddings" => $emb
+    ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+
+} catch (Throwable $e) {
+    http_response_code(500);
+    echo json_encode([
+        "error" => $e->getMessage()
+    ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+}
+```
+
+### componentizacion
+<small>Creado: 2026-02-25 20:46</small>
+
+`006-componentizacion.php`
+
+```
+<?php
+	function JVformulario($campos){
+  	$salida = '<form>';
+    foreach($campos as $campo){
+    	$salida .= '<input type="text" placeholder="'.$campo.'">';
+    }
+    $salida .= '<input type="reset">';
+    $salida .= '<input type="submit">';
+    $salida .= '</form>';
+    return $salida;
+  }
+  
+  echo JVformulario(['nombre','apellidos','email']);
+  echo "<br>";
+  echo JVformulario(['producto','precio','descripcion']);
+?>
+```
 
 
 <a id="verificacion-del-funcionamiento-en-distintos-navegadores-y-dispositivos"></a>
@@ -11247,6 +12268,799 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ## El Consorcio World Wide Web (W3C).
 
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/005-Dise%C3%B1o%20de%20webs%20accesibles/001-El%20Consorcio%20World%20Wide%20Web%20%28W3C%29.)
+
+### tabla gantt
+<small>Creado: 2026-03-04 18:40</small>
+
+`001-tabla gantt.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th>Tarea</th>
+          <th>Semana 1</th>
+          <th>Semana 2</th>
+          <th>Semana 3</th>
+          <th>Semana 4</th>
+          <th>Semana 5</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Tarea 1</td>
+          <td><div class="ocupado"></div></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
+```
+
+### estilo y estructura
+<small>Creado: 2026-03-04 18:42</small>
+
+`002-estilo y estructura.html`
+
+```html
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gantt simple</title>
+<style>
+  body{font-family:system-ui,Arial,sans-serif;margin:24px}
+  table{width:100%;border-collapse:collapse}
+  th,td{border:1px solid #ddd;padding:10px}
+  th{background:#f6f6f6;text-align:center}
+  td:first-child,th:first-child{text-align:left;white-space:nowrap}
+  td{position:relative;text-align:center}
+
+  /* barra: usa el único "hook" */
+  .ocupado{
+    height:14px;border-radius:999px;
+    background:#3b82f6;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);
+  }
+
+  /* opcional: si quieres que la barra "llene" la celda */
+  td .ocupado{margin:2px 0}
+</style>
+</head>
+<body>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tarea</th>
+      <th>Semana 1</th>
+      <th>Semana 2</th>
+      <th>Semana 3</th>
+      <th>Semana 4</th>
+      <th>Semana 5</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>Tarea 1</td>
+      <td><div class="ocupado"></div></td>
+      <td><div class="ocupado"></div></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>Tarea 2</td>
+      <td></td>
+      <td><div class="ocupado"></div></td>
+      <td><div class="ocupado"></div></td>
+      <td><div class="ocupado"></div></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>Tarea 3</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><div class="ocupado"></div></td>
+      <td><div class="ocupado"></div></td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
+```
+
+### un poco de js
+<small>Creado: 2026-03-04 18:48</small>
+
+`003-un poco de js.html`
+
+```html
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+
+<style>
+body{font-family:Arial;margin:20px}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid #ccc;padding:10px;text-align:center}
+th:first-child,td:first-child{text-align:left}
+
+.ocupado{
+  height:14px;
+  background:#3b82f6;
+  border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<table>
+<thead>
+<tr>
+<th>Tarea</th>
+<th contenteditable=true>Semana 1</th>
+<th contenteditable=true>Semana 2</th>
+<th contenteditable=true>Semana 3</th>
+<th contenteditable=true>Semana 4</th>
+<th contenteditable=true>Semana 5</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td contenteditable=true>Tarea 1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td contenteditable=true>Tarea 2</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td contenteditable=true>Tarea 3</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<script>
+
+// coger todas las celdas
+var celdas = document.querySelectorAll("td");
+
+// recorrerlas
+for(var i=0;i<celdas.length;i++){
+
+  celdas[i].onclick = function(){
+
+    // ignorar columna "Tarea"
+    if(this.cellIndex == 0){return;}
+
+    // comprobar si hay evento
+    var evento = this.querySelector(".ocupado");
+
+    if(evento){
+      // si existe → borrar
+      evento.remove();
+    }else{
+      // si no existe → crear
+      var div = document.createElement("div");
+      div.className = "ocupado";
+      this.appendChild(div);
+    }
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
+```
+
+### interactivo
+<small>Creado: 2026-03-04 18:52</small>
+
+`004-interactivo.html`
+
+```html
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+
+<style>
+body{font-family:Arial;margin:20px}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid #ccc;padding:10px;text-align:center}
+th:first-child,td:first-child{text-align:left}
+th{position:relative}
+
+.ocupado{
+  height:14px;
+  background:#3b82f6;
+  border-radius:10px;
+}
+
+/* barra superior simple */
+.toolbar{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin-bottom:10px;
+}
+button{
+  padding:8px 10px;
+  border:1px solid #ccc;
+  background:#fff;
+  cursor:pointer;
+  border-radius:6px;
+}
+button:hover{background:#f5f5f5}
+</style>
+</head>
+
+<body>
+
+<div class="toolbar">
+  <button id="btnDownload">Descargar HTML</button>
+  <button id="btnAddCol">+ Semana</button>
+  <button id="btnDelCol">- Semana</button>
+  <button id="btnAddRow">+ Tarea</button>
+  <button id="btnDelRow">- Tarea</button>
+</div>
+
+<table id="gantt">
+<thead>
+<tr>
+<th>Tarea</th>
+<th contenteditable="true">Semana 1</th>
+<th contenteditable="true">Semana 2</th>
+<th contenteditable="true">Semana 3</th>
+<th contenteditable="true">Semana 4</th>
+<th contenteditable="true">Semana 5</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td contenteditable="true">Tarea 1</td>
+<td></td><td></td><td></td><td></td><td></td>
+</tr>
+
+<tr>
+<td contenteditable="true">Tarea 2</td>
+<td></td><td></td><td></td><td></td><td></td>
+</tr>
+
+<tr>
+<td contenteditable="true">Tarea 3</td>
+<td></td><td></td><td></td><td></td><td></td>
+</tr>
+</tbody>
+</table>
+
+<script>
+var tabla = document.getElementById("gantt");
+var theadRow = tabla.tHead.rows[0];
+var tbody = tabla.tBodies[0];
+
+// (1) Click en celdas: toggle ocupado
+function engancharClicks(){
+  var celdas = tabla.querySelectorAll("td");
+  for(var i=0;i<celdas.length;i++){
+    celdas[i].onclick = function(){
+      if(this.cellIndex == 0){ return; } // ignorar columna Tarea
+
+      var evento = this.querySelector(".ocupado");
+      if(evento){
+        evento.remove();
+      }else{
+        var div = document.createElement("div");
+        div.className = "ocupado";
+        this.appendChild(div);
+      }
+    }
+  }
+}
+engancharClicks();
+
+// (2) Descargar el documento completo (HTML actual)
+document.getElementById("btnDownload").onclick = function(){
+  var html = "<!doctype html>\n" + document.documentElement.outerHTML;
+  var blob = new Blob([html], {type:"text/html"});
+  var url = URL.createObjectURL(blob);
+
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = "gantt.html";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  URL.revokeObjectURL(url);
+};
+
+// Helpers
+function numSemanas(){
+  // th[0] = "Tarea", el resto son semanas
+  return theadRow.cells.length - 1;
+}
+function limpiarEventosEnCol(colIndex){
+  // colIndex es índice real (0..n). Aquí será >=1
+  for(var r=0;r<tbody.rows.length;r++){
+    var celda = tbody.rows[r].cells[colIndex];
+    if(celda){
+      var evento = celda.querySelector(".ocupado");
+      if(evento) evento.remove();
+    }
+  }
+}
+
+// (3) Añadir / borrar columnas (semanas)
+document.getElementById("btnAddCol").onclick = function(){
+  var n = numSemanas() + 1; // nueva semana
+  // header
+  var th = document.createElement("th");
+  th.contentEditable = "true";
+  th.textContent = "Semana " + n;
+  theadRow.appendChild(th);
+
+  // cada fila: un td vacío
+  for(var r=0;r<tbody.rows.length;r++){
+    tbody.rows[r].insertCell(-1); // al final
+  }
+
+  engancharClicks();
+};
+
+document.getElementById("btnDelCol").onclick = function(){
+  var totalCols = theadRow.cells.length;
+  if(totalCols <= 2){ return; } // deja mínimo: Tarea + 1 semana
+
+  var lastIndex = totalCols - 1;
+
+  // quitar eventos de esa columna (por limpieza)
+  limpiarEventosEnCol(lastIndex);
+
+  // borrar header y celdas
+  theadRow.deleteCell(lastIndex);
+  for(var r=0;r<tbody.rows.length;r++){
+    tbody.rows[r].deleteCell(lastIndex);
+  }
+};
+
+// (4) Añadir / borrar filas (tareas)
+document.getElementById("btnAddRow").onclick = function(){
+  var filas = tbody.rows.length;
+  var cols = theadRow.cells.length;
+
+  var tr = document.createElement("tr");
+
+  // primera celda: nombre tarea
+  var td0 = document.createElement("td");
+  td0.contentEditable = "true";
+  td0.textContent = "Tarea " + (filas + 1);
+  tr.appendChild(td0);
+
+  // resto: celdas vacías
+  for(var c=1;c<cols;c++){
+    tr.appendChild(document.createElement("td"));
+  }
+
+  tbody.appendChild(tr);
+  engancharClicks();
+};
+
+document.getElementById("btnDelRow").onclick = function(){
+  var filas = tbody.rows.length;
+  if(filas <= 1){ return; } // deja mínimo 1 tarea
+  tbody.deleteRow(filas - 1);
+};
+</script>
+
+</body>
+</html>
+```
+
+### final
+<small>Creado: 2026-03-04 18:56</small>
+
+`005-final.html`
+
+```html
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+
+<style>
+/* ====== Base ====== */
+:root{
+  --line:#d7dbe2;
+  --text:#0f172a;
+  --muted:#64748b;
+  --bg:#ffffff;
+  --soft:#f6f8fb;
+  --active:#eef6ff;
+  --active2:#e7f0ff;
+  --blue:#3b82f6;
+}
+*{box-sizing:border-box}
+body{font-family:Arial, Helvetica, sans-serif;margin:20px;color:var(--text);background:var(--bg)}
+.wrap{max-width:1100px;margin:0 auto}
+
+/* ====== Branding ====== */
+.brand{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+}
+.brand h1{
+  margin:0;
+  font-size:18px;
+  letter-spacing:.2px;
+}
+.brand .sub{
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* ====== Toolbar ====== */
+.toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+  margin:10px 0 14px;
+}
+button{
+  padding:8px 10px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  border-radius:8px;
+  font-size:13px;
+}
+button:hover{background:var(--soft)}
+button:active{transform:translateY(1px)}
+.sep{width:1px;height:28px;background:var(--line);margin:0 4px}
+
+/* ====== Table ====== */
+.tablebox{
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 1px 0 rgba(15,23,42,.04);
+}
+table{border-collapse:collapse;width:100%}
+th,td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:10px;text-align:center}
+tr:last-child td{border-bottom:none}
+th:last-child,td:last-child{border-right:none}
+th:first-child,td:first-child{text-align:left}
+thead th{
+  background:var(--soft);
+  font-weight:600;
+  position:relative;
+  user-select:none;
+  cursor:pointer;
+}
+tbody td{
+  background:#fff;
+}
+
+/* Active row/col */
+.active-row td{background:var(--active)}
+.active-col{background:var(--active2) !important}
+thead th.active-col{background:var(--active2)}
+/* keep first column readable */
+.active-row td:first-child{font-weight:600}
+
+/* Gantt block */
+.ocupado{
+  height:14px;
+  background:var(--blue);
+  border-radius:10px;
+}
+
+/* Small hint */
+.hint{margin-top:10px;color:var(--muted);font-size:12px;line-height:1.4}
+kbd{
+  border:1px solid var(--line);
+  border-bottom-width:2px;
+  padding:1px 6px;
+  border-radius:6px;
+  background:#fff;
+  font-size:11px;
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+  <div class="brand">
+    <h1>jocarsa | gantt</h1>
+    <div class="sub">Click en un encabezado para activar columna · Click en una tarea para activar fila</div>
+  </div>
+
+  <div class="toolbar">
+    <button id="btnDownload">Descargar HTML</button>
+    <span class="sep"></span>
+    <button id="btnAddCol">+ Semana</button>
+    <button id="btnDelCol">- Semana (activa)</button>
+    <span class="sep"></span>
+    <button id="btnAddRow">+ Tarea</button>
+    <button id="btnDelRow">- Tarea (activa)</button>
+  </div>
+
+  <div class="tablebox">
+    <table id="gantt">
+      <thead>
+        <tr>
+          <th>Tarea</th>
+          <th contenteditable="true">Semana 1</th>
+          <th contenteditable="true">Semana 2</th>
+          <th contenteditable="true">Semana 3</th>
+          <th contenteditable="true">Semana 4</th>
+          <th contenteditable="true">Semana 5</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td contenteditable="true">Tarea 1</td>
+          <td></td><td></td><td></td><td></td><td></td>
+        </tr>
+
+        <tr>
+          <td contenteditable="true">Tarea 2</td>
+          <td></td><td></td><td></td><td></td><td></td>
+        </tr>
+
+        <tr>
+          <td contenteditable="true">Tarea 3</td>
+          <td></td><td></td><td></td><td></td><td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="hint">
+    Consejo: puedes editar títulos (semanas) y nombres de tareas. La selección activa se usa para borrar fila/columna.
+  </div>
+
+</div>
+
+<script>
+var tabla = document.getElementById("gantt");
+var theadRow = tabla.tHead.rows[0];
+var tbody = tabla.tBodies[0];
+
+var activeRowIndex = -1;  // índice dentro de tbody
+var activeColIndex = -1;  // índice dentro de la tabla (0..n), 0=col "Tarea"
+
+// ===== Helpers de selección =====
+function clearActiveRow(){
+  for(var r=0;r<tbody.rows.length;r++){
+    tbody.rows[r].classList.remove("active-row");
+  }
+}
+function clearActiveCol(){
+  for(var c=0;c<theadRow.cells.length;c++){
+    theadRow.cells[c].classList.remove("active-col");
+  }
+  for(var r=0;r<tbody.rows.length;r++){
+    for(var c2=0;c2<tbody.rows[r].cells.length;c2++){
+      tbody.rows[r].cells[c2].classList.remove("active-col");
+    }
+  }
+}
+function setActiveRow(rIndex){
+  activeRowIndex = rIndex;
+  clearActiveRow();
+  if(rIndex >= 0 && rIndex < tbody.rows.length){
+    tbody.rows[rIndex].classList.add("active-row");
+  }
+}
+function setActiveCol(cIndex){
+  activeColIndex = cIndex;
+  clearActiveCol();
+  if(cIndex >= 0 && cIndex < theadRow.cells.length){
+    // header
+    theadRow.cells[cIndex].classList.add("active-col");
+    // body column
+    for(var r=0;r<tbody.rows.length;r++){
+      if(tbody.rows[r].cells[cIndex]){
+        tbody.rows[r].cells[cIndex].classList.add("active-col");
+      }
+    }
+  }
+}
+
+// ===== Click en celdas: toggle ocupado + activar fila/col =====
+function engancharClicks(){
+  // td: toggle + activar
+  var celdas = tabla.querySelectorAll("tbody td");
+  for(var i=0;i<celdas.length;i++){
+    celdas[i].onclick = function(){
+      // activar fila siempre
+      setActiveRow(this.parentNode.rowIndex - 1); // rowIndex incluye thead (0)
+      // activar columna si no es "Tarea"
+      if(this.cellIndex != 0){
+        setActiveCol(this.cellIndex);
+      }
+
+      // toggle ocupado (solo en semanas)
+      if(this.cellIndex == 0){ return; }
+      var evento = this.querySelector(".ocupado");
+      if(evento){
+        evento.remove();
+      }else{
+        var div = document.createElement("div");
+        div.className = "ocupado";
+        this.appendChild(div);
+      }
+    };
+  }
+
+  // th: activar columna (si no es "Tarea")
+  var heads = tabla.querySelectorAll("thead th");
+  for(var j=0;j<heads.length;j++){
+    heads[j].onclick = function(){
+      if(this.cellIndex == 0){ return; }
+      setActiveCol(this.cellIndex);
+    };
+  }
+
+  // click en primera celda (tarea) también activa fila
+  var tareas = tabla.querySelectorAll("tbody td:first-child");
+  for(var k=0;k<tareas.length;k++){
+    tareas[k].onclick = function(){
+      setActiveRow(this.parentNode.rowIndex - 1);
+      // no hacemos toggle aquí (porque es columna tarea)
+    };
+  }
+}
+engancharClicks();
+
+// ===== Descargar HTML actual =====
+document.getElementById("btnDownload").onclick = function(){
+  var html = "<!doctype html>\n" + document.documentElement.outerHTML;
+  var blob = new Blob([html], {type:"text/html"});
+  var url = URL.createObjectURL(blob);
+
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = "jocarsa-gantt.html";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  URL.revokeObjectURL(url);
+};
+
+// ===== Helpers =====
+function numSemanas(){
+  return theadRow.cells.length - 1;
+}
+function limpiarEventosEnCol(colIndex){
+  for(var r=0;r<tbody.rows.length;r++){
+    var celda = tbody.rows[r].cells[colIndex];
+    if(celda){
+      var evento = celda.querySelector(".ocupado");
+      if(evento) evento.remove();
+    }
+  }
+}
+
+// ===== Columnas =====
+document.getElementById("btnAddCol").onclick = function(){
+  var n = numSemanas() + 1;
+
+  var th = document.createElement("th");
+  th.contentEditable = "true";
+  th.textContent = "Semana " + n;
+  theadRow.appendChild(th);
+
+  for(var r=0;r<tbody.rows.length;r++){
+    tbody.rows[r].insertCell(-1);
+  }
+
+  engancharClicks();
+};
+
+document.getElementById("btnDelCol").onclick = function(){
+  // necesitamos una columna activa válida (>=1)
+  if(activeColIndex < 1){ return; }
+
+  // dejar mínimo: Tarea + 1 semana
+  if(theadRow.cells.length <= 2){ return; }
+
+  // limpiar y borrar
+  limpiarEventosEnCol(activeColIndex);
+
+  theadRow.deleteCell(activeColIndex);
+  for(var r=0;r<tbody.rows.length;r++){
+    tbody.rows[r].deleteCell(activeColIndex);
+  }
+
+  // reset selección col (porque ya no existe)
+  activeColIndex = -1;
+  clearActiveCol();
+  engancharClicks();
+};
+
+// ===== Filas =====
+document.getElementById("btnAddRow").onclick = function(){
+  var filas = tbody.rows.length;
+  var cols = theadRow.cells.length;
+
+  var tr = document.createElement("tr");
+
+  var td0 = document.createElement("td");
+  td0.contentEditable = "true";
+  td0.textContent = "Tarea " + (filas + 1);
+  tr.appendChild(td0);
+
+  for(var c=1;c<cols;c++){
+    tr.appendChild(document.createElement("td"));
+  }
+
+  tbody.appendChild(tr);
+  engancharClicks();
+};
+
+document.getElementById("btnDelRow").onclick = function(){
+  if(activeRowIndex < 0){ return; }
+  if(tbody.rows.length <= 1){ return; }
+
+  tbody.deleteRow(activeRowIndex);
+
+  // reset selección fila
+  activeRowIndex = -1;
+  clearActiveRow();
+  engancharClicks();
+};
+</script>
+
+</body>
+</html>
+```
 
 
 <a id="principios-y-pautas-de-accesibilidad-al-contenido-en-la-web-wcag"></a>
@@ -11365,6 +13179,280 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ## Herramientas y test de verificación.
 
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/006-Implementaci%C3%B3n%20de%20la%20usabilidad%20en%20la%20web.%20Dise%C3%B1o%20amigable/011-Herramientas%20y%20test%20de%20verificaci%C3%B3n.)
+
+
+
+<a id="inteligencia-artificial"></a>
+# Inteligencia artificial
+
+<a id="introduccion"></a>
+## Introduccion
+
+[📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/007-Inteligencia%20artificial/001-Introduccion)
+
+
+<a id="continuamos-con-inteligencia-artificial"></a>
+## Continuamos con inteligencia artificial
+
+[📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/007-Inteligencia%20artificial/002-Continuamos%20con%20inteligencia%20artificial)
+
+### ia en php
+<small>Creado: 2026-02-25 17:11</small>
+
+`003-ia en php.php`
+
+```
+<?php
+
+$prompt = "¿Que es HTML? Responde con un solo párrafo y sin codigo.";
+
+$data = [
+    "model"  => "ministral-3:3b",
+    "prompt" => $prompt,
+    "stream" => false
+];
+
+$ch = curl_init("http://localhost:11434/api/generate"); // Hago una petición a local
+curl_setopt_array($ch, [
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST           => true,
+    CURLOPT_HTTPHEADER     => ["Content-Type: application/json"],
+    CURLOPT_POSTFIELDS     => json_encode($data),
+]);
+
+$response = curl_exec($ch);                           // Ejecuto curl
+
+if ($response === false) {
+    die("Curl error: " . curl_error($ch));
+}                                                     // Si hay respuesta
+
+curl_close($ch);                                      // cierro curl
+
+$result = json_decode($response, true);               // Paso la respuesta a json
+
+echo $result["response"];                             // Y la pinto en pantalla
+```
+
+### un poquito interactivo
+<small>Creado: 2026-02-25 17:14</small>
+
+`004-un poquito interactivo.php`
+
+```
+<form action="?" method="GET">
+	<input type="text" name="pregunta" placeholder="Pregunta lo que quieras">
+</form>
+<?php
+
+$prompt = $_GET['pregunta'];
+
+$data = [
+    "model"  => "ministral-3:3b",
+    "prompt" => $prompt,
+    "stream" => false
+];
+
+$ch = curl_init("http://localhost:11434/api/generate"); // Hago una petición a local
+curl_setopt_array($ch, [
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST           => true,
+    CURLOPT_HTTPHEADER     => ["Content-Type: application/json"],
+    CURLOPT_POSTFIELDS     => json_encode($data),
+]);
+
+$response = curl_exec($ch);                           // Ejecuto curl
+
+if ($response === false) {
+    die("Curl error: " . curl_error($ch));
+}                                                     // Si hay respuesta
+
+curl_close($ch);                                      // cierro curl
+
+$result = json_decode($response, true);               // Paso la respuesta a json
+
+echo $result["response"];                             // Y la pinto en pantalla
+```
+
+### estoy jodido
+<small>Creado: 2026-02-25 17:29</small>
+
+`005-estoy jodido.php`
+
+```
+<?php
+
+$prompt = "Crea una web personal de portafolio de Jose Vicente Carratala. 
+Dame solo el codigo HTML y CSS.
+Haz un CSS basado en el color verde (green).";
+
+$data = [
+    "model"  => "qwen2.5-coder:7b",
+    "prompt" => $prompt,
+    "stream" => false
+];
+
+$ch = curl_init("http://localhost:11434/api/generate"); // Hago una petición a local
+curl_setopt_array($ch, [
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST           => true,
+    CURLOPT_HTTPHEADER     => ["Content-Type: application/json"],
+    CURLOPT_POSTFIELDS     => json_encode($data),
+]);
+
+$response = curl_exec($ch);                           // Ejecuto curl
+
+if ($response === false) {
+    die("Curl error: " . curl_error($ch));
+}                                                     // Si hay respuesta
+
+curl_close($ch);                                      // cierro curl
+
+$result = json_decode($response, true);               // Paso la respuesta a json
+
+echo $result["response"];                             // Y la pinto en pantalla
+```
+
+### microchatgpt
+<small>Creado: 2026-02-25 17:39</small>
+
+`006-microchatgpt.php`
+
+```
+<?php
+// index.php - MicroChatGPT con Ollama (session chat)
+session_start();
+
+function h($s){ return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
+
+if(!isset($_SESSION["chat"])) $_SESSION["chat"] = [];
+
+if(isset($_GET["reset"])){
+	$_SESSION["chat"] = [];
+	header("Location: ".$_SERVER["PHP_SELF"]);
+	exit;
+}
+
+$pregunta = trim((string)($_GET["pregunta"] ?? ""));
+$respuesta = null;
+$error = null;
+
+if($pregunta !== ""){
+	// Guardar mensaje del usuario
+	$_SESSION["chat"][] = ["role" => "user", "content" => $pregunta];
+
+	// Opcional: contexto mínimo usando historial (simple)
+	// Ollama /api/generate acepta "prompt". Le pasamos el chat como texto:
+	$contexto = "";
+	foreach($_SESSION["chat"] as $m){
+		if($m["role"] === "user") $contexto .= "Usuario: ".$m["content"]."\n";
+		else                     $contexto .= "Asistente: ".$m["content"]."\n";
+	}
+	$contexto .= "Asistente: ";
+
+	$data = [
+		"model"  => "ministral-3:3b",
+		"prompt" => $contexto,
+		"stream" => false
+	];
+
+	$ch = curl_init("http://localhost:11434/api/generate");
+	curl_setopt_array($ch, [
+		CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_POST           => true,
+		CURLOPT_HTTPHEADER     => ["Content-Type: application/json"],
+		CURLOPT_POSTFIELDS     => json_encode($data),
+		CURLOPT_TIMEOUT        => 120
+	]);
+
+	$response = curl_exec($ch);
+
+	if($response === false){
+		$error = "Curl error: ".curl_error($ch);
+	}else{
+		$result = json_decode($response, true);
+		if(!is_array($result) || !isset($result["response"])){
+			$error = "Respuesta inválida de Ollama.";
+		}else{
+			$respuesta = (string)$result["response"];
+			$_SESSION["chat"][] = ["role" => "assistant", "content" => $respuesta];
+		}
+	}
+
+	curl_close($ch);
+
+	// Evitar reenvío al refrescar (PRG)
+	header("Location: ".$_SERVER["PHP_SELF"]);
+	exit;
+}
+?>
+<!doctype html>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>MicroChatGPT (Ollama)</title>
+	<style>
+		body{ margin:0; font-family: ui-serif, Georgia, "Times New Roman", serif; background:#f6f7f8; color:#111; }
+		header{ background:#05483f; color:#fff; padding:14px 18px; display:flex; gap:12px; align-items:center; }
+		header b{ font-size:16px; }
+		header a{ color:#fff; text-decoration:none; padding:6px 10px; border:1px solid rgba(255,255,255,.4); border-radius:10px; }
+		.wrap{ max-width:900px; margin:0 auto; padding:18px; }
+		.chat{ display:flex; flex-direction:column; gap:10px; padding-bottom:84px; }
+		.msg{ max-width:80%; padding:12px 14px; border-radius:14px; line-height:1.35; white-space:pre-wrap; box-shadow:0 2px 8px rgba(0,0,0,.06); }
+		.user{ align-self:flex-end; background:#05483f; color:#fff; border-bottom-right-radius:6px; }
+		.bot{ align-self:flex-start; background:#fff; color:#111; border:1px solid #e6e6e6; border-bottom-left-radius:6px; }
+		.footer{
+			position:fixed; left:0; right:0; bottom:0;
+			background:#ffffff; border-top:1px solid #e6e6e6;
+			padding:12px;
+		}
+		form{ max-width:900px; margin:0 auto; display:flex; gap:10px; }
+		input[type=text]{
+			flex:1; padding:12px 14px; border:1px solid #d7d7d7;
+			border-radius:12px; font-size:15px;
+		}
+		button{
+			padding:12px 14px; border:0; border-radius:12px;
+			background:#05483f; color:#fff; font-size:15px; cursor:pointer;
+		}
+		.hint{ max-width:900px; margin:10px auto 0; color:#666; font-size:13px; padding:0 2px; }
+	</style>
+</head>
+<body>
+	<header>
+		<b>MicroChatGPT</b>
+		<span style="opacity:.85">Ollama · ministral-3:3b</span>
+		<span style="flex:1"></span>
+		<a href="?reset=1">Nuevo chat</a>
+	</header>
+
+	<div class="wrap">
+		<div class="chat">
+			<?php if(empty($_SESSION["chat"])): ?>
+				<div class="msg bot">Escribe una pregunta abajo.</div>
+			<?php else: ?>
+				<?php foreach($_SESSION["chat"] as $m): ?>
+					<div class="msg <?= $m["role"] === "user" ? "user" : "bot" ?>"><?= h($m["content"]) ?></div>
+				<?php endforeach; ?>
+			<?php endif; ?>
+		</div>
+	</div>
+
+	<div class="footer">
+		<form action="<?= h($_SERVER["PHP_SELF"]) ?>" method="GET" autocomplete="off">
+			<input type="text" name="pregunta" placeholder="Pregunta lo que quieras" autofocus>
+			<button type="submit">Enviar</button>
+		</form>
+		<div class="hint">Enter para enviar · “Nuevo chat” borra el historial</div>
+	</div>
+
+	<script>
+		// Auto-scroll al final
+		window.scrollTo(0, document.body.scrollHeight);
+	</script>
+</body>
+</html>
+```
 
 
 

@@ -1,0 +1,15 @@
+<!doctype html>
+<meta charset="utf-8">
+
+<button id="speak">Speak</button>
+
+<script>
+  const btn = document.getElementById("speak");
+
+  btn.onclick = () => {
+    const u = new SpeechSynthesisUtterance("Hola. Aqui puedo poner el texto que queráis que ponga.");
+    u.lang = "es-ES";
+    window.speechSynthesis.cancel(); // stop any previous speech
+    window.speechSynthesis.speak(u);
+  };
+</script>

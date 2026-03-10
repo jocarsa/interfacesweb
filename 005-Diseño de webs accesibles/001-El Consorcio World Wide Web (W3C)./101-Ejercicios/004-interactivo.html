@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+
+<style>
+body{font-family:Arial;margin:20px}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid #ccc;padding:10px;text-align:center}
+th:first-child,td:first-child{text-align:left}
+th{position:relative}
+
+.ocupado{
+  height:14px;
+  background:#3b82f6;
+  border-radius:10px;
+}
+
+/* barra superior simple */
+.toolbar{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin-bottom:10px;
+}
+button{
+  padding:8px 10px;
+  border:1px solid #ccc;
+  background:#fff;
+  cursor:pointer;
+  border-radius:6px;
+}
+button:hover{background:#f5f5f5}
+</style>
+</head>
+
+<body>
+
+<div class="toolbar">
+  <button id="btnDownload">Descargar HTML</button>
+  <button id="btnAddCol">+ Semana</button>
+  <button id="btnDelCol">- Semana</button>
+  <button id="btnAddRow">+ Tarea</button>
+  <button id="btnDelRow">- Tarea</button>
+</div>
+
+<table id="gantt">
+<thead>
+<tr>
+<th>Tarea</th>
+<th contenteditable="true">Semana 1</th>
+<th contenteditable="true">Semana 2</th>
+<th contenteditable="true">Semana 3</th>
+<th contenteditable="true">Semana 4</th>
+<th contenteditable="true">Semana 5</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td contenteditable="true">Tarea 1</td>
+<td></td><td></td><td></td><td></td><td></td>
+</tr>
+
+<tr>
+<td contenteditable="true">Tarea 2</td>
+<td></td><td></td><td></td><td></td><td></td>
+</tr>
+
+<tr>
+<td contenteditable="true">Tarea 3</td>
+<td></td><td></td><td></td><td></td><td></td>
+</tr>
+</tbody>
+</table>
+
+<script>
+var tabla = document.getElementById("gantt");
+var theadRow = tabla.tHead.rows[0];
+var tbody = tabla.tBodies[0];
+
+// (1) Click en celdas: toggle ocupado
+function engancharClicks(){
+  var celdas = tabla.querySelectorAll("td");
+  for(var i=0;i<celdas.length;i++){
+    celdas[i].onclick = function(){
+      if(this.cellIndex == 0){ return; } // ignorar columna Tarea
+
+      var evento = this.querySelector(".ocupado");
+      if(evento){
+        evento.remove();
+      }else{
+        var div = document.createElement("div");
+        div.className = "ocupado";
+        this.appendChild(div);
+      }
+    }
+  }
+}
+engancharClicks();
+
+// (2) Descargar el documento completo (HTML actual)
+document.getElementById("btnDownload").onclick = function(){
+  var html = "<!doctype html>\n" + document.documentElement.outerHTML;
+  var blob = new Blob([html], {type:"text/html"});
+  var url = URL.createObjectURL(blob);
+
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = "gantt.html";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  URL.revokeObjectURL(url);
+};
+
+// Helpers
+function numSemanas(){
+  // th[0] = "Tarea", el resto son semanas
+  return theadRow.cells.length - 1;
+}
+function limpiarEventosEnCol(colIndex){
+  // colIndex es índice real (0..n). Aquí será >=1
+  for(var r=0;r<tbody.rows.length;r++){
+    var celda = tbody.rows[r].cells[colIndex];
+    if(celda){
+      var evento = celda.querySelector(".ocupado");
+      if(evento) evento.remove();
+    }
+  }
+}
+
+// (3) Añadir / borrar columnas (semanas)
+document.getElementById("btnAddCol").onclick = function(){
+  var n = numSemanas() + 1; // nueva semana
+  // header
+  var th = document.createElement("th");
+  th.contentEditable = "true";
+  th.textContent = "Semana " + n;
+  theadRow.appendChild(th);
+
+  // cada fila: un td vacío
+  for(var r=0;r<tbody.rows.length;r++){
+    tbody.rows[r].insertCell(-1); // al final
+  }
+
+  engancharClicks();
+};
+
+document.getElementById("btnDelCol").onclick = function(){
+  var totalCols = theadRow.cells.length;
+  if(totalCols <= 2){ return; } // deja mínimo: Tarea + 1 semana
+
+  var lastIndex = totalCols - 1;
+
+  // quitar eventos de esa columna (por limpieza)
+  limpiarEventosEnCol(lastIndex);
+
+  // borrar header y celdas
+  theadRow.deleteCell(lastIndex);
+  for(var r=0;r<tbody.rows.length;r++){
+    tbody.rows[r].deleteCell(lastIndex);
+  }
+};
+
+// (4) Añadir / borrar filas (tareas)
+document.getElementById("btnAddRow").onclick = function(){
+  var filas = tbody.rows.length;
+  var cols = theadRow.cells.length;
+
+  var tr = document.createElement("tr");
+
+  // primera celda: nombre tarea
+  var td0 = document.createElement("td");
+  td0.contentEditable = "true";
+  td0.textContent = "Tarea " + (filas + 1);
+  tr.appendChild(td0);
+
+  // resto: celdas vacías
+  for(var c=1;c<cols;c++){
+    tr.appendChild(document.createElement("td"));
+  }
+
+  tbody.appendChild(tr);
+  engancharClicks();
+};
+
+document.getElementById("btnDelRow").onclick = function(){
+  var filas = tbody.rows.length;
+  if(filas <= 1){ return; } // deja mínimo 1 tarea
+  tbody.deleteRow(filas - 1);
+};
+</script>
+
+</body>
+</html>

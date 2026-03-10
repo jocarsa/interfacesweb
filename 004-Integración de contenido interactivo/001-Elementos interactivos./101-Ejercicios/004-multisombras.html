@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+<style>
+
+html{
+	padding:300px;
+	background:#e5e5e5;
+}
+
+a{
+	display:inline-block;
+
+	transform:scale(5);
+
+
+	color:white;
+	background:linear-gradient(#3b82f6,#1e40af);
+	text-decoration:none;
+
+	padding:10px 18px;
+	border-radius:8px;
+
+	/* ===== 3D RELIEF ===== */
+	box-shadow:
+		0 1px 0 rgba(255,255,255,.6) inset,   /* top light */
+		0 -2px 4px rgba(0,0,0,.4) inset,     /* inner depth */
+		0 3px 0 #102a7a,                     /* hard edge */
+		0 6px 8px rgba(0,0,0,.35);           /* floor shadow */
+
+	transition:.1s;
+}
+
+/* pressed effect */
+a:active{
+	transform:scale(5) translateY(3px);
+
+	box-shadow:
+		0 2px 4px rgba(0,0,0,.5) inset,
+		0 1px 2px rgba(0,0,0,.3);
+}
+
+</style>
+</head>
+
+<body>
+<a href="destino.html">Pulsa</a>
+</body>
+</html>

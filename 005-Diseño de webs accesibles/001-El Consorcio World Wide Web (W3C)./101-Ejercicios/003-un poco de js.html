@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+
+<style>
+body{font-family:Arial;margin:20px}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid #ccc;padding:10px;text-align:center}
+th:first-child,td:first-child{text-align:left}
+
+.ocupado{
+  height:14px;
+  background:#3b82f6;
+  border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<table>
+<thead>
+<tr>
+<th>Tarea</th>
+<th contenteditable=true>Semana 1</th>
+<th contenteditable=true>Semana 2</th>
+<th contenteditable=true>Semana 3</th>
+<th contenteditable=true>Semana 4</th>
+<th contenteditable=true>Semana 5</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td contenteditable=true>Tarea 1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td contenteditable=true>Tarea 2</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td contenteditable=true>Tarea 3</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<script>
+
+// coger todas las celdas
+var celdas = document.querySelectorAll("td");
+
+// recorrerlas
+for(var i=0;i<celdas.length;i++){
+
+  celdas[i].onclick = function(){
+
+    // ignorar columna "Tarea"
+    if(this.cellIndex == 0){return;}
+
+    // comprobar si hay evento
+    var evento = this.querySelector(".ocupado");
+
+    if(evento){
+      // si existe → borrar
+      evento.remove();
+    }else{
+      // si no existe → crear
+      var div = document.createElement("div");
+      div.className = "ocupado";
+      this.appendChild(div);
+    }
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gantt simple</title>
+<style>
+  body{font-family:system-ui,Arial,sans-serif;margin:24px}
+  table{width:100%;border-collapse:collapse}
+  th,td{border:1px solid #ddd;padding:10px}
+  th{background:#f6f6f6;text-align:center}
+  td:first-child,th:first-child{text-align:left;white-space:nowrap}
+  td{position:relative;text-align:center}
+
+  /* barra: usa el único "hook" */
+  .ocupado{
+    height:14px;border-radius:999px;
+    background:#3b82f6;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);
+  }
+
+  /* opcional: si quieres que la barra "llene" la celda */
+  td .ocupado{margin:2px 0}
+</style>
+</head>
+<body>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tarea</th>
+      <th>Semana 1</th>
+      <th>Semana 2</th>
+      <th>Semana 3</th>
+      <th>Semana 4</th>
+      <th>Semana 5</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>Tarea 1</td>
+      <td><div class="ocupado"></div></td>
+      <td><div class="ocupado"></div></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>Tarea 2</td>
+      <td></td>
+      <td><div class="ocupado"></div></td>
+      <td><div class="ocupado"></div></td>
+      <td><div class="ocupado"></div></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>Tarea 3</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><div class="ocupado"></div></td>
+      <td><div class="ocupado"></div></td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

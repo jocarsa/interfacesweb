@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Voice Echo</title>
+</head>
+
+<body>
+
+<button onclick="startEcho()">🎤 Speak</button>
+<p id="salida"></p>
+
+<script>
+
+function startEcho(){
+
+    // ---- Detect API (Chrome uses webkit) ----
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+    if(!SpeechRecognition){
+        alert("SpeechRecognition not supported");
+        return;
+    }
+
+    // ---- Create recognizer ----
+    const reconocer = new SpeechRecognition();
+
+    reconocer.lang = "es-ES";
+    reconocer.interimResults = false;
+    reconocer.maxAlternatives = 1;
+
+    reconocer.start();
+    console.log("Escuchando...");
+
+    // ---- When speech recognized ----
+    reconocer.onresult = function(event){
+
+        const texto = event.results[0][0].transcript;
+
+        // show text
+        document.getElementById("salida").innerText = texto;
+
+        console.log("Reconocido:", texto);
+
+        // ---- SPEAK BACK (echo) ----
+        const u = new SpeechSynthesisUtterance(texto);
+        u.lang = "es-ES";
+
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(u);
+    };
+
+    reconocer.onerror = e =>
+        console.log("Error:", e.error);
+}
+
+</script>
+
+</body>
+</html>

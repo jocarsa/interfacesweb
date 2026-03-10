@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+
+<style>
+/* ====== Base ====== */
+:root{
+  --line:#d7dbe2;
+  --text:#0f172a;
+  --muted:#64748b;
+  --bg:#ffffff;
+  --soft:#f6f8fb;
+  --active:#eef6ff;
+  --active2:#e7f0ff;
+  --blue:#3b82f6;
+}
+*{box-sizing:border-box}
+body{font-family:Arial, Helvetica, sans-serif;margin:20px;color:var(--text);background:var(--bg)}
+.wrap{max-width:1100px;margin:0 auto}
+
+/* ====== Branding ====== */
+.brand{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+}
+.brand h1{
+  margin:0;
+  font-size:18px;
+  letter-spacing:.2px;
+}
+.brand .sub{
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* ====== Toolbar ====== */
+.toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+  margin:10px 0 14px;
+}
+button{
+  padding:8px 10px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  border-radius:8px;
+  font-size:13px;
+}
+button:hover{background:var(--soft)}
+button:active{transform:translateY(1px)}
+.sep{width:1px;height:28px;background:var(--line);margin:0 4px}
+
+/* ====== Table ====== */
+.tablebox{
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 1px 0 rgba(15,23,42,.04);
+}
+table{border-collapse:collapse;width:100%}
+th,td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:10px;text-align:center}
+tr:last-child td{border-bottom:none}
+th:last-child,td:last-child{border-right:none}
+th:first-child,td:first-child{text-align:left}
+thead th{
+  background:var(--soft);
+  font-weight:600;
+  position:relative;
+  user-select:none;
+  cursor:pointer;
+}
+tbody td{
+  background:#fff;
+}
+
+/* Active row/col */
+.active-row td{background:var(--active)}
+.active-col{background:var(--active2) !important}
+thead th.active-col{background:var(--active2)}
+/* keep first column readable */
+.active-row td:first-child{font-weight:600}
+
+/* Gantt block */
+.ocupado{
+  height:14px;
+  background:var(--blue);
+  border-radius:10px;
+}
+
+/* Small hint */
+.hint{margin-top:10px;color:var(--muted);font-size:12px;line-height:1.4}
+kbd{
+  border:1px solid var(--line);
+  border-bottom-width:2px;
+  padding:1px 6px;
+  border-radius:6px;
+  background:#fff;
+  font-size:11px;
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+  <div class="brand">
+    <h1>jocarsa | gantt</h1>
+    <div class="sub">Click en un encabezado para activar columna · Click en una tarea para activar fila</div>
+  </div>
+
+  <div class="toolbar">
+    <button id="btnDownload">Descargar HTML</button>
+    <span class="sep"></span>
+    <button id="btnAddCol">+ Semana</button>
+    <button id="btnDelCol">- Semana (activa)</button>
+    <span class="sep"></span>
+    <button id="btnAddRow">+ Tarea</button>
+    <button id="btnDelRow">- Tarea (activa)</button>
+  </div>
+
+  <div class="tablebox">
+    <table id="gantt">
+      <thead>
+        <tr>
+          <th>Tarea</th>
+          <th contenteditable="true">Semana 1</th>
+          <th contenteditable="true">Semana 2</th>
+          <th contenteditable="true">Semana 3</th>
+          <th contenteditable="true">Semana 4</th>
+          <th contenteditable="true">Semana 5</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td contenteditable="true">Tarea 1</td>
+          <td></td><td></td><td></td><td></td><td></td>
+        </tr>
+
+        <tr>
+          <td contenteditable="true">Tarea 2</td>
+          <td></td><td></td><td></td><td></td><td></td>
+        </tr>
+
+        <tr>
+          <td contenteditable="true">Tarea 3</td>
+          <td></td><td></td><td></td><td></td><td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="hint">
+    Consejo: puedes editar títulos (semanas) y nombres de tareas. La selección activa se usa para borrar fila/columna.
+  </div>
+
+</div>
+
+<script>
+var tabla = document.getElementById("gantt");
+var theadRow = tabla.tHead.rows[0];
+var tbody = tabla.tBodies[0];
+
+var activeRowIndex = -1;  // índice dentro de tbody
+var activeColIndex = -1;  // índice dentro de la tabla (0..n), 0=col "Tarea"
+
+// ===== Helpers de selección =====
+function clearActiveRow(){
+  for(var r=0;r<tbody.rows.length;r++){
+    tbody.rows[r].classList.remove("active-row");
+  }
+}
+function clearActiveCol(){
+  for(var c=0;c<theadRow.cells.length;c++){
+    theadRow.cells[c].classList.remove("active-col");
+  }
+  for(var r=0;r<tbody.rows.length;r++){
+    for(var c2=0;c2<tbody.rows[r].cells.length;c2++){
+      tbody.rows[r].cells[c2].classList.remove("active-col");
+    }
+  }
+}
+function setActiveRow(rIndex){
+  activeRowIndex = rIndex;
+  clearActiveRow();
+  if(rIndex >= 0 && rIndex < tbody.rows.length){
+    tbody.rows[rIndex].classList.add("active-row");
+  }
+}
+function setActiveCol(cIndex){
+  activeColIndex = cIndex;
+  clearActiveCol();
+  if(cIndex >= 0 && cIndex < theadRow.cells.length){
+    // header
+    theadRow.cells[cIndex].classList.add("active-col");
+    // body column
+    for(var r=0;r<tbody.rows.length;r++){
+      if(tbody.rows[r].cells[cIndex]){
+        tbody.rows[r].cells[cIndex].classList.add("active-col");
+      }
+    }
+  }
+}
+
+// ===== Click en celdas: toggle ocupado + activar fila/col =====
+function engancharClicks(){
+  // td: toggle + activar
+  var celdas = tabla.querySelectorAll("tbody td");
+  for(var i=0;i<celdas.length;i++){
+    celdas[i].onclick = function(){
+      // activar fila siempre
+      setActiveRow(this.parentNode.rowIndex - 1); // rowIndex incluye thead (0)
+      // activar columna si no es "Tarea"
+      if(this.cellIndex != 0){
+        setActiveCol(this.cellIndex);
+      }
+
+      // toggle ocupado (solo en semanas)
+      if(this.cellIndex == 0){ return; }
+      var evento = this.querySelector(".ocupado");
+      if(evento){
+        evento.remove();
+      }else{
+        var div = document.createElement("div");
+        div.className = "ocupado";
+        this.appendChild(div);
+      }
+    };
+  }
+
+  // th: activar columna (si no es "Tarea")
+  var heads = tabla.querySelectorAll("thead th");
+  for(var j=0;j<heads.length;j++){
+    heads[j].onclick = function(){
+      if(this.cellIndex == 0){ return; }
+      setActiveCol(this.cellIndex);
+    };
+  }
+
+  // click en primera celda (tarea) también activa fila
+  var tareas = tabla.querySelectorAll("tbody td:first-child");
+  for(var k=0;k<tareas.length;k++){
+    tareas[k].onclick = function(){
+      setActiveRow(this.parentNode.rowIndex - 1);
+      // no hacemos toggle aquí (porque es columna tarea)
+    };
+  }
+}
+engancharClicks();
+
+// ===== Descargar HTML actual =====
+document.getElementById("btnDownload").onclick = function(){
+  var html = "<!doctype html>\n" + document.documentElement.outerHTML;
+  var blob = new Blob([html], {type:"text/html"});
+  var url = URL.createObjectURL(blob);
+
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = "jocarsa-gantt.html";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  URL.revokeObjectURL(url);
+};
+
+// ===== Helpers =====
+function numSemanas(){
+  return theadRow.cells.length - 1;
+}
+function limpiarEventosEnCol(colIndex){
+  for(var r=0;r<tbody.rows.length;r++){
+    var celda = tbody.rows[r].cells[colIndex];
+    if(celda){
+      var evento = celda.querySelector(".ocupado");
+      if(evento) evento.remove();
+    }
+  }
+}
+
+// ===== Columnas =====
+document.getElementById("btnAddCol").onclick = function(){
+  var n = numSemanas() + 1;
+
+  var th = document.createElement("th");
+  th.contentEditable = "true";
+  th.textContent = "Semana " + n;
+  theadRow.appendChild(th);
+
+  for(var r=0;r<tbody.rows.length;r++){
+    tbody.rows[r].insertCell(-1);
+  }
+
+  engancharClicks();
+};
+
+document.getElementById("btnDelCol").onclick = function(){
+  // necesitamos una columna activa válida (>=1)
+  if(activeColIndex < 1){ return; }
+
+  // dejar mínimo: Tarea + 1 semana
+  if(theadRow.cells.length <= 2){ return; }
+
+  // limpiar y borrar
+  limpiarEventosEnCol(activeColIndex);
+
+  theadRow.deleteCell(activeColIndex);
+  for(var r=0;r<tbody.rows.length;r++){
+    tbody.rows[r].deleteCell(activeColIndex);
+  }
+
+  // reset selección col (porque ya no existe)
+  activeColIndex = -1;
+  clearActiveCol();
+  engancharClicks();
+};
+
+// ===== Filas =====
+document.getElementById("btnAddRow").onclick = function(){
+  var filas = tbody.rows.length;
+  var cols = theadRow.cells.length;
+
+  var tr = document.createElement("tr");
+
+  var td0 = document.createElement("td");
+  td0.contentEditable = "true";
+  td0.textContent = "Tarea " + (filas + 1);
+  tr.appendChild(td0);
+
+  for(var c=1;c<cols;c++){
+    tr.appendChild(document.createElement("td"));
+  }
+
+  tbody.appendChild(tr);
+  engancharClicks();
+};
+
+document.getElementById("btnDelRow").onclick = function(){
+  if(activeRowIndex < 0){ return; }
+  if(tbody.rows.length <= 1){ return; }
+
+  tbody.deleteRow(activeRowIndex);
+
+  // reset selección fila
+  activeRowIndex = -1;
+  clearActiveRow();
+  engancharClicks();
+};
+</script>
+
+</body>
+</html>

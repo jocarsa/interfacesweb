@@ -1,6 +1,6 @@
 # interfacesweb — Estado de ejercicios
 
-Generado: 2026-02-18 19:00
+Generado: 2026-03-10 17:00
 
 ---
 
@@ -56,7 +56,7 @@ Generado: 2026-02-18 19:00
 ## Diseño de webs accesibles
 
 - 🟢 El Consorcio World Wide Web (W3C). — 2025-09-09
-- 🟢 Principios y Pautas de Accesibilidad al Contenido en la Web (WCAG). — 2025-09-09
+- 🟢 Principios y Pautas de Accesibilidad al Contenido en la Web (WCAG). — 2026-03-10
 - 🟢 Criterios de conformidad. Niveles de conformidad. — 2025-09-09
 - 🟢 Técnicas para satisfacer los requisitos definidos en las WCAG. — 2025-09-09
 - 🟢 Prioridades. Puntos de verificación. — 2025-09-09
@@ -79,3 +79,9 @@ Generado: 2026-02-18 19:00
 - 🟢 Facilidad de navegación en la web. — 2025-09-09
 - 🟢 Verificación de la usabilidad en diferentes navegadores y tecnologías. — 2025-09-09
 - 🟢 Herramientas y test de verificación. — 2025-09-09
+
+
+## Inteligencia artificial
+
+- 🟢 Introduccion — 2026-02-24
+- 🟢 Continuamos con inteligencia artificial — 2026-02-25
