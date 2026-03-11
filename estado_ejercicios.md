@@ -1,6 +1,6 @@
 # interfacesweb — Estado de ejercicios
 
-Generado: 2026-03-10 17:00
+Generado: 2026-03-11 20:00
 
 ---
 
@@ -58,9 +58,9 @@ Generado: 2026-03-10 17:00
 - 🟢 El Consorcio World Wide Web (W3C). — 2025-09-09
 - 🟢 Principios y Pautas de Accesibilidad al Contenido en la Web (WCAG). — 2026-03-10
 - 🟢 Criterios de conformidad. Niveles de conformidad. — 2025-09-09
-- 🟢 Técnicas para satisfacer los requisitos definidos en las WCAG. — 2025-09-09
+- 🟢 Técnicas para satisfacer los requisitos definidos en las WCAG. — 2020-09-24
 - 🟢 Prioridades. Puntos de verificación. — 2025-09-09
-- 🟢 Métodos para realizar revisiones preliminares y evaluaciones de adecuación o conformidad de documentos web. — 2025-09-09
+- 🟢 Métodos para realizar revisiones preliminares y evaluaciones de adecuación o conformidad de documentos web. — 2025-05-10
 - 🟢 Herramientas de análisis de accesibilidad web. — 2025-09-09
 - 🟢 Chequeo de la accesibilidad web desde diferentes navegadores y dispositivos. — 2025-09-09
 - 🟢 Posicionamiento en buscadores. Mejora de la visibilidad de un sitio web en diferentes buscadores. — 2025-09-09

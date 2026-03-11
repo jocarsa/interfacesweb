@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <video src="entrevista.mp4"></video>
+    <script>
+      let estructura = [];
+      let texto = "";
+
+      function parseTiempo(cadena){
+        let partes = cadena.split(":");
+        let segundosMilis = partes[2].split(",");
+
+        return {
+          H: parseInt(partes[0]),
+          M: parseInt(partes[1]),
+          S: parseInt(segundosMilis[0]),
+          MS: parseInt(segundosMilis[1])
+        };
+      }
+
+      fetch("[Spanish (auto-generated)] Entrevista Jose Vicente Carratala [DownSub.com].srt")
+      .then(function(response){return response.text()})
+      .then(function(datos){
+        let lineas = datos.split("\n");
+
+        for(let i = 0; i < lineas.length; i += 4){
+
+          let tiempo = lineas[i+1];
+
+          if(tiempo){
+
+            let partes = tiempo.split(" --> ");
+
+            let inicio = parseTiempo(partes[0]);
+            let fin = parseTiempo(partes[1]);
+
+            estructura.push({
+              "tiempo": tiempo,
+              "inicio": inicio,
+              "fin": fin,
+              "texto": lineas[i+2]
+            });
+
+          }
+        }
+
+        console.log(estructura);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style>
+      body{
+        margin:0;
+        padding:20px;
+        font-family:Arial,sans-serif;
+        background:#f0f0f0;
+      }
+      video{
+        display:block;
+        width:800px;
+        max-width:100%;
+        margin:0 auto;
+      }
+      #subtitulos{
+        width:800px;
+        max-width:100%;
+        min-height:60px;
+        margin:10px auto 0 auto;
+        padding:15px;
+        box-sizing:border-box;
+        background:white;
+        border:1px solid #cccccc;
+        font-size:24px;
+        line-height:1.4;
+        text-align:center;
+      }
+    </style>
+  </head>
+  <body>
+    <video src="entrevista.mp4" controls></video>
+    <div id="subtitulos"></div>
+
+    <script>
+      let estructura = [];
+      let texto = "";
+
+      // OFFSET EN SEGUNDOS
+      // positivo = subtítulos más tarde
+      // negativo = subtítulos más pronto
+      let offset = -5;
+
+      function parseTiempo(cadena){
+        let partes = cadena.split(":");
+        let segundosMilis = partes[2].split(",");
+
+        return {
+          H: parseInt(partes[0]),
+          M: parseInt(partes[1]),
+          S: parseInt(segundosMilis[0]),
+          MS: parseInt(segundosMilis[1])
+        };
+      }
+
+      function tiempoASegundos(tiempo){
+        return tiempo.H * 3600 + tiempo.M * 60 + tiempo.S + tiempo.MS / 1000;
+      }
+
+      fetch("[Spanish (auto-generated)] Entrevista Jose Vicente Carratala [DownSub.com].srt")
+      .then(function(response){ return response.text() })
+      .then(function(datos){
+
+        let lineas = datos.split("\n");
+
+        for(let i = 0; i < lineas.length; i += 4){
+
+          let tiempo = lineas[i+1];
+
+          if(tiempo){
+
+            let partes = tiempo.split(" --> ");
+
+            let inicio = parseTiempo(partes[0].trim());
+            let fin = parseTiempo(partes[1].trim());
+
+            estructura.push({
+              "inicioSegundos": tiempoASegundos(inicio),
+              "finSegundos": tiempoASegundos(fin),
+              "texto": lineas[i+2]
+            });
+          }
+        }
+
+        console.log(estructura);
+      });
+
+      let video = document.querySelector("video");
+      let subtitulos = document.querySelector("#subtitulos");
+
+      video.addEventListener("timeupdate",function(){
+
+        let actual = video.currentTime + offset;
+        let encontrado = "";
+
+        for(let i = 0; i < estructura.length; i++){
+
+          if(actual >= estructura[i].inicioSegundos && actual <= estructura[i].finSegundos){
+            encontrado = estructura[i].texto;
+            break;
+          }
+        }
+
+        subtitulos.textContent = encontrado;
+      });
+    </script>
+  </body>
+</html>

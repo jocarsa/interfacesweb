@@ -13080,17 +13080,2225 @@ document.getElementById("btnDelRow").onclick = function(){
 
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/005-Dise%C3%B1o%20de%20webs%20accesibles/004-T%C3%A9cnicas%20para%20satisfacer%20los%20requisitos%20definidos%20en%20las%20WCAG.)
 
+### video
+<small>Creado: 2026-03-10 17:34</small>
+
+`001-video.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <video src="entrevista.mp4"></video>
+  </body>
+</html>
+```
+
+### parseo
+<small>Creado: 2026-03-10 17:39</small>
+
+`002-parseo.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <video src="entrevista.mp4"></video>
+    <script>
+      let texto = "";
+      fetch("[Spanish (auto-generated)] Entrevista Jose Vicente Carratala [DownSub.com].srt")
+      .then(function(response){return response.text()})
+      .then(function(datos){
+        let lineas = datos.split("\n")
+      	for(let i = 0;i<lineas.length;i+=4){
+        	console.log("Pagina:",lineas[i])
+          console.log("tiempo",lineas[i+1])
+          console.log("texto",lineas[i+2])
+        }
+      })
+    </script>
+  </body>
+</html>
+```
+
+### manipulamos json
+<small>Creado: 2026-03-10 17:40</small>
+
+`003-manipulamos json.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <video src="entrevista.mp4"></video>
+    <script>
+      let estructura = [];
+      let texto = "";
+      fetch("[Spanish (auto-generated)] Entrevista Jose Vicente Carratala [DownSub.com].srt")
+      .then(function(response){return response.text()})
+      .then(function(datos){
+        let lineas = datos.split("\n")
+      	for(let i = 0;i<lineas.length;i+=4){
+          estructura.push({"tiempo":lineas[i+1],"texto":lineas[i+2]})
+        }
+        console.log(estructura)
+      })
+    </script>
+  </body>
+</html>
+```
+
+### dividir mas
+<small>Creado: 2026-03-10 18:18</small>
+
+`004-dividir mas.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <video src="entrevista.mp4"></video>
+    <script>
+      let estructura = [];
+      let texto = "";
+
+      function parseTiempo(cadena){
+        let partes = cadena.split(":");
+        let segundosMilis = partes[2].split(",");
+
+        return {
+          H: parseInt(partes[0]),
+          M: parseInt(partes[1]),
+          S: parseInt(segundosMilis[0]),
+          MS: parseInt(segundosMilis[1])
+        };
+      }
+
+      fetch("[Spanish (auto-generated)] Entrevista Jose Vicente Carratala [DownSub.com].srt")
+      .then(function(response){return response.text()})
+      .then(function(datos){
+        let lineas = datos.split("\n");
+
+        for(let i = 0; i < lineas.length; i += 4){
+
+          let tiempo = lineas[i+1];
+
+          if(tiempo){
+
+            let partes = tiempo.split(" --> ");
+
+            let inicio = parseTiempo(partes[0]);
+            let fin = parseTiempo(partes[1]);
+
+            estructura.push({
+              "tiempo": tiempo,
+              "inicio": inicio,
+              "fin": fin,
+              "texto": lineas[i+2]
+            });
+
+          }
+        }
+
+        console.log(estructura);
+      });
+    </script>
+  </body>
+</html>
+```
+
+### play al video
+<small>Creado: 2026-03-10 18:21</small>
+
+`005-play al video.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <video src="entrevista.mp4" controls></video>
+    <script>
+      let estructura = [];
+      let texto = "";
+
+      function parseTiempo(cadena){
+        let partes = cadena.split(":");
+        let segundosMilis = partes[2].split(",");
+
+        return {
+          H: parseInt(partes[0]),
+          M: parseInt(partes[1]),
+          S: parseInt(segundosMilis[0]),
+          MS: parseInt(segundosMilis[1])
+        };
+      }
+
+      function segundosATiempo(segundos){
+        let H = Math.floor(segundos / 3600);
+        let M = Math.floor((segundos % 3600) / 60);
+        let S = Math.floor(segundos % 60);
+        let MS = Math.floor((segundos - Math.floor(segundos)) * 1000);
+
+        return {
+          H:H,
+          M:M,
+          S:S,
+          MS:MS
+        };
+      }
+
+      fetch("[Spanish (auto-generated)] Entrevista Jose Vicente Carratala [DownSub.com].srt")
+      .then(function(response){return response.text()})
+      .then(function(datos){
+        let lineas = datos.split("\n");
+        for(let i = 0;i<lineas.length;i+=4){
+          let tiempo = lineas[i+1];
+          if(tiempo){
+            let partes = tiempo.split(" --> ");
+            let inicio = parseTiempo(partes[0]);
+            let fin = parseTiempo(partes[1]);
+            estructura.push({
+              "tiempo":tiempo,
+              "inicio":inicio,
+              "fin":fin,
+              "texto":lineas[i+2]
+            });
+          }
+        }
+        console.log(estructura);
+      });
+
+      let video = document.querySelector("video");
+
+      video.addEventListener("timeupdate",function(){
+        let actual = segundosATiempo(video.currentTime);
+        console.log(actual);
+      });
+    </script>
+  </body>
+</html>
+```
+
+### contenedor de subtitulos
+<small>Creado: 2026-03-10 18:25</small>
+
+`006-contenedor de subtitulos.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style>
+      body{
+        margin:0;
+        padding:20px;
+        font-family:Arial, sans-serif;
+        background:#f0f0f0;
+      }
+      video{
+        display:block;
+        width:800px;
+        max-width:100%;
+        margin:0 auto;
+      }
+      #subtitulos{
+        width:800px;
+        max-width:100%;
+        min-height:60px;
+        margin:10px auto 0 auto;
+        padding:15px;
+        box-sizing:border-box;
+        background:white;
+        border:1px solid #cccccc;
+        font-size:24px;
+        line-height:1.4;
+        text-align:center;
+      }
+    </style>
+  </head>
+  <body>
+    <video src="entrevista.mp4" controls></video>
+    <div id="subtitulos"></div>
+    <script>
+      let estructura = [];
+      let texto = "";
+
+      function parseTiempo(cadena){
+        let partes = cadena.split(":");
+        let segundosMilis = partes[2].split(",");
+
+        return {
+          H: parseInt(partes[0]),
+          M: parseInt(partes[1]),
+          S: parseInt(segundosMilis[0]),
+          MS: parseInt(segundosMilis[1])
+        };
+      }
+
+      function tiempoASegundos(tiempo){
+        return tiempo.H * 3600 + tiempo.M * 60 + tiempo.S + tiempo.MS / 1000;
+      }
+
+      function segundosATiempo(segundos){
+        let H = Math.floor(segundos / 3600);
+        let M = Math.floor((segundos % 3600) / 60);
+        let S = Math.floor(segundos % 60);
+        let MS = Math.floor((segundos - Math.floor(segundos)) * 1000);
+
+        return {
+          H:H,
+          M:M,
+          S:S,
+          MS:MS
+        };
+      }
+
+      fetch("[Spanish (auto-generated)] Entrevista Jose Vicente Carratala [DownSub.com].srt")
+      .then(function(response){return response.text()})
+      .then(function(datos){
+        let lineas = datos.split("\n");
+
+        for(let i = 0;i < lineas.length;i += 4){
+          let tiempo = lineas[i+1];
+          if(tiempo){
+            let partes = tiempo.split(" --> ");
+            let inicio = parseTiempo(partes[0].trim());
+            let fin = parseTiempo(partes[1].trim());
+
+            estructura.push({
+              "tiempo":tiempo,
+              "inicio":inicio,
+              "fin":fin,
+              "inicioSegundos":tiempoASegundos(inicio),
+              "finSegundos":tiempoASegundos(fin),
+              "texto":lineas[i+2]
+            });
+          }
+        }
+
+        console.log(estructura);
+      });
+
+      let video = document.querySelector("video");
+      let subtitulos = document.querySelector("#subtitulos");
+
+      video.addEventListener("timeupdate",function(){
+        let actual = video.currentTime;
+        let encontrado = "";
+
+        for(let i = 0; i < estructura.length; i++){
+          if(actual >= estructura[i].inicioSegundos && actual <= estructura[i].finSegundos){
+            encontrado = estructura[i].texto;
+            break;
+          }
+        }
+
+        subtitulos.textContent = encontrado;
+      });
+    </script>
+  </body>
+</html>
+```
+
+### desfase
+<small>Creado: 2026-03-10 18:26</small>
+
+`007-desfase.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style>
+      body{
+        margin:0;
+        padding:20px;
+        font-family:Arial,sans-serif;
+        background:#f0f0f0;
+      }
+      video{
+        display:block;
+        width:800px;
+        max-width:100%;
+        margin:0 auto;
+      }
+      #subtitulos{
+        width:800px;
+        max-width:100%;
+        min-height:60px;
+        margin:10px auto 0 auto;
+        padding:15px;
+        box-sizing:border-box;
+        background:white;
+        border:1px solid #cccccc;
+        font-size:24px;
+        line-height:1.4;
+        text-align:center;
+      }
+    </style>
+  </head>
+  <body>
+    <video src="entrevista.mp4" controls></video>
+    <div id="subtitulos"></div>
+
+    <script>
+      let estructura = [];
+      let texto = "";
+
+      // OFFSET EN SEGUNDOS
+      // positivo = subtítulos más tarde
+      // negativo = subtítulos más pronto
+      let offset = -5;
+
+      function parseTiempo(cadena){
+        let partes = cadena.split(":");
+        let segundosMilis = partes[2].split(",");
+
+        return {
+          H: parseInt(partes[0]),
+          M: parseInt(partes[1]),
+          S: parseInt(segundosMilis[0]),
+          MS: parseInt(segundosMilis[1])
+        };
+      }
+
+      function tiempoASegundos(tiempo){
+        return tiempo.H * 3600 + tiempo.M * 60 + tiempo.S + tiempo.MS / 1000;
+      }
+
+      fetch("[Spanish (auto-generated)] Entrevista Jose Vicente Carratala [DownSub.com].srt")
+      .then(function(response){ return response.text() })
+      .then(function(datos){
+
+        let lineas = datos.split("\n");
+
+        for(let i = 0; i < lineas.length; i += 4){
+
+          let tiempo = lineas[i+1];
+
+          if(tiempo){
+
+            let partes = tiempo.split(" --> ");
+
+            let inicio = parseTiempo(partes[0].trim());
+            let fin = parseTiempo(partes[1].trim());
+
+            estructura.push({
+              "inicioSegundos": tiempoASegundos(inicio),
+              "finSegundos": tiempoASegundos(fin),
+              "texto": lineas[i+2]
+            });
+          }
+        }
+
+        console.log(estructura);
+      });
+
+      let video = document.querySelector("video");
+      let subtitulos = document.querySelector("#subtitulos");
+
+      video.addEventListener("timeupdate",function(){
+
+        let actual = video.currentTime + offset;
+        let encontrado = "";
+
+        for(let i = 0; i < estructura.length; i++){
+
+          if(actual >= estructura[i].inicioSegundos && actual <= estructura[i].finSegundos){
+            encontrado = estructura[i].texto;
+            break;
+          }
+        }
+
+        subtitulos.textContent = encontrado;
+      });
+    </script>
+  </body>
+</html>
+```
+
+### estilo de los subtitulos
+<small>Creado: 2026-03-10 18:29</small>
+
+`008-estilo de los subtitulos.html`
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style>
+      body{
+        margin:0;
+        padding:20px;
+        font-family:Arial,sans-serif;
+        background:#f0f0f0;
+      }
+      video{
+        display:block;
+        width:800px;
+        max-width:100%;
+        margin:0 auto;
+      }
+      #subtitulos{
+        width:800px;
+        max-width:100%;
+        min-height:60px;
+        margin:10px auto 0 auto;
+        padding:15px;
+        box-sizing:border-box;
+
+        font-size:24px;
+        line-height:1.4;
+        text-align:center;
+        color:white;
+      }
+      #contienevideo{position:relative;width:800px;height:400px;}
+      video{position:absolute;width:100%;}
+      #subtitulos{position:absolute;bottom:0px;}
+    </style>
+  </head>
+  <body>
+    <div id="contienevideo">
+    <video src="entrevista.mp4" controls></video>
+    <div id="subtitulos"></div>
+    </div>
+
+    <script>
+      let estructura = [];
+      let texto = "";
+
+      // OFFSET EN SEGUNDOS
+      // positivo = subtítulos más tarde
+      // negativo = subtítulos más pronto
+      let offset = -5;
+
+      function parseTiempo(cadena){
+        let partes = cadena.split(":");
+        let segundosMilis = partes[2].split(",");
+
+        return {
+          H: parseInt(partes[0]),
+          M: parseInt(partes[1]),
+          S: parseInt(segundosMilis[0]),
+          MS: parseInt(segundosMilis[1])
+        };
+      }
+
+      function tiempoASegundos(tiempo){
+        return tiempo.H * 3600 + tiempo.M * 60 + tiempo.S + tiempo.MS / 1000;
+      }
+
+      fetch("[Spanish (auto-generated)] Entrevista Jose Vicente Carratala [DownSub.com].srt")
+      .then(function(response){ return response.text() })
+      .then(function(datos){
+
+        let lineas = datos.split("\n");
+
+        for(let i = 0; i < lineas.length; i += 4){
+
+          let tiempo = lineas[i+1];
+
+          if(tiempo){
+
+            let partes = tiempo.split(" --> ");
+
+            let inicio = parseTiempo(partes[0].trim());
+            let fin = parseTiempo(partes[1].trim());
+
+            estructura.push({
+              "inicioSegundos": tiempoASegundos(inicio),
+              "finSegundos": tiempoASegundos(fin),
+              "texto": lineas[i+2]
+            });
+          }
+        }
+
+        console.log(estructura);
+      });
+
+      let video = document.querySelector("video");
+      let subtitulos = document.querySelector("#subtitulos");
+
+      video.addEventListener("timeupdate",function(){
+
+        let actual = video.currentTime + offset;
+        let encontrado = "";
+
+        for(let i = 0; i < estructura.length; i++){
+
+          if(actual >= estructura[i].inicioSegundos && actual <= estructura[i].finSegundos){
+            encontrado = estructura[i].texto;
+            break;
+          }
+        }
+
+        subtitulos.textContent = encontrado;
+      });
+    </script>
+  </body>
+</html>
+```
+
+### [Spanish (auto-generated)] Entrevista Jose Vicente Carratala [DownSub.com]
+<small>Creado: 2026-03-10 17:31</small>
+
+`[Spanish (auto-generated)] Entrevista Jose Vicente Carratala [DownSub.com].srt`
+
+```
+1
+00:00:00,000 --> 00:00:01,979
+eso jose vicente catalá y soy un
+
+2
+00:00:01,979 --> 00:00:05,130
+formador desarrollador y diseñador en
+
+3
+00:00:05,130 --> 00:00:07,109
+los campos del diseño y desarrollo me
+
+4
+00:00:07,109 --> 00:00:09,389
+dedico a crear soluciones personalizadas
+
+5
+00:00:09,389 --> 00:00:12,540
+a clientes sobre todo en aquellas
+
+6
+00:00:12,540 --> 00:00:14,940
+soluciones que consiguen aunar los
+
+7
+00:00:14,940 --> 00:00:16,980
+campos tecnológicos de la programación y
+
+8
+00:00:16,980 --> 00:00:20,039
+el diseño 3d empecé a formar en el año
+
+9
+00:00:20,039 --> 00:00:22,439
+2000 impartiendo cursos de formación de
+
+10
+00:00:22,439 --> 00:00:24,449
+posgrado en la universidad politécnica
+
+11
+00:00:24,449 --> 00:00:25,830
+de valència
+
+12
+00:00:25,830 --> 00:00:27,779
+actualmente coordino esos cursos de
+
+13
+00:00:27,779 --> 00:00:29,910
+posgrado con otras actividades en
+
+14
+00:00:29,910 --> 00:00:31,740
+centros de alto rendimiento de la zona
+
+15
+00:00:31,740 --> 00:00:33,630
+de valència lo que más me gusta de mi
+
+16
+00:00:33,630 --> 00:00:36,149
+trabajo es que involucra trabajar
+
+17
+00:00:36,149 --> 00:00:38,550
+siempre con prácticamente lo último de
+
+18
+00:00:38,550 --> 00:00:41,670
+la tecnología pienso que estamos en el
+
+19
+00:00:41,670 --> 00:00:44,700
+medio de una revolución tecnológica
+
+20
+00:00:44,700 --> 00:00:47,399
+pienso que inventos tales como por
+
+21
+00:00:47,399 --> 00:00:50,850
+ejemplo la web o internet están
+
+22
+00:00:50,850 --> 00:00:52,770
+mejorando la vida de las personas y
+
+23
+00:00:52,770 --> 00:00:55,079
+todavía quedan mucho por ver todavía
+
+24
+00:00:55,079 --> 00:00:57,360
+queda mucho por hacer todavía queda
+
+25
+00:00:57,360 --> 00:00:59,969
+mucho por inventar así que por tanto por
+
+26
+00:00:59,969 --> 00:01:01,829
+una parte como diseñador y como
+
+27
+00:01:01,829 --> 00:01:03,180
+desarrollador
+
+28
+00:01:03,180 --> 00:01:04,980
+lo que me gusta de mi trabajo es que
+
+29
+00:01:04,980 --> 00:01:08,280
+siento que formo parte de esa revolución
+
+30
+00:01:08,280 --> 00:01:10,230
+tecnológica que no soy un mero
+
+31
+00:01:10,230 --> 00:01:13,110
+espectador sino que soy parte en el
+
+32
+00:01:13,110 --> 00:01:16,770
+proceso de evolución y en la creación de
+
+33
+00:01:16,770 --> 00:01:18,720
+soluciones que acaban mejorando la vida
+
+34
+00:01:18,720 --> 00:01:21,780
+de las personas y como formador por una
+
+35
+00:01:21,780 --> 00:01:24,960
+parte como mínimo a corto plazo me gusta
+
+36
+00:01:24,960 --> 00:01:27,540
+pensar que al formar a gente en estas
+
+37
+00:01:27,540 --> 00:01:29,520
+nuevas tecnologías desde luego
+
+38
+00:01:29,520 --> 00:01:31,710
+inmediatamente mejora sus oportunidades
+
+39
+00:01:31,710 --> 00:01:34,560
+laborales y a largo plazo también me
+
+40
+00:01:34,560 --> 00:01:36,630
+gusta pensar que a todas aquellas
+
+41
+00:01:36,630 --> 00:01:39,270
+personas que formó son personas que
+
+42
+00:01:39,270 --> 00:01:42,360
+dejan de ser usuarios y se convierten en
+
+43
+00:01:42,360 --> 00:01:45,330
+creadores y por tanto participan conmigo
+
+44
+00:01:45,330 --> 00:01:47,369
+y con todos aquellos que trabajamos en
+
+45
+00:01:47,369 --> 00:01:51,090
+este sector de esa revolución y digamos
+
+46
+00:01:51,090 --> 00:01:53,880
+desde este punto de vista pues a través
+
+47
+00:01:53,880 --> 00:01:55,050
+de la formación
+
+48
+00:01:55,050 --> 00:01:57,840
+pienso que consigo que haya unos pocos
+
+49
+00:01:57,840 --> 00:02:00,300
+creadores y muchos usuarios y pienso que
+
+50
+00:02:00,300 --> 00:02:02,460
+consigo que cada vez haya más creadores
+
+51
+00:02:02,460 --> 00:02:04,860
+más cabezas pensantes más gente
+
+52
+00:02:04,860 --> 00:02:07,619
+colaborando y desarrollando aquellos
+
+53
+00:02:07,619 --> 00:02:09,960
+inventos aquellas nuevas tecnologías
+
+54
+00:02:09,960 --> 00:02:11,790
+que cambiarán nuestras vidas y espero
+
+55
+00:02:11,790 --> 00:02:14,040
+que para mejor recomiendo la formación
+
+56
+00:02:14,040 --> 00:02:16,110
+online porque en mi opinión es la
+
+57
+00:02:16,110 --> 00:02:17,640
+evolución lógica de la formación
+
+58
+00:02:17,640 --> 00:02:19,590
+presencial
+
+59
+00:02:19,590 --> 00:02:22,050
+todos son ventajas en el sentido de que
+
+60
+00:02:22,050 --> 00:02:24,239
+por ejemplo solo necesitas una conexión
+
+61
+00:02:24,239 --> 00:02:26,810
+a internet para recibir la formación
+
+62
+00:02:26,810 --> 00:02:29,819
+otro ejemplo a nivel geográfico antes
+
+63
+00:02:29,819 --> 00:02:31,860
+tenías que desplazarte hasta el centro
+
+64
+00:02:31,860 --> 00:02:33,780
+de formación donde se hacía el curso
+
+65
+00:02:33,780 --> 00:02:37,560
+ahora no ahora desde cualquier lugar da
+
+66
+00:02:37,560 --> 00:02:39,510
+igual como de lejos vivas del centro de
+
+67
+00:02:39,510 --> 00:02:42,599
+formación puedes obtener el acceso a la
+
+68
+00:02:42,599 --> 00:02:45,200
+información puedes recibir el curso
+
+69
+00:02:45,200 --> 00:02:47,970
+desde el punto de vista del horario pasa
+
+70
+00:02:47,970 --> 00:02:50,489
+tres cuartos de lo mismo y es que antes
+
+71
+00:02:50,489 --> 00:02:52,349
+tenías que cumplir un horario tenías que
+
+72
+00:02:52,349 --> 00:02:54,299
+ir a el curso en el horario en el que se
+
+73
+00:02:54,299 --> 00:02:56,670
+hace el curso ahora ya no
+
+74
+00:02:56,670 --> 00:02:58,530
+si tienes otras actividades como por
+
+75
+00:02:58,530 --> 00:03:00,840
+ejemplo trabajo como por ejemplo otros
+
+76
+00:03:00,840 --> 00:03:03,510
+estudios puedes hacer el curso online
+
+77
+00:03:03,510 --> 00:03:06,750
+por la noche a mediodía por la tarde el
+
+78
+00:03:06,750 --> 00:03:08,910
+fin de semana puedes dedicar una hora al
+
+79
+00:03:08,910 --> 00:03:11,849
+día puedes dedicar cinco horas al día en
+
+80
+00:03:11,849 --> 00:03:14,549
+definitiva adaptas el curso adaptas al
+
+81
+00:03:14,549 --> 00:03:16,170
+ritmo del curso a tus propias
+
+82
+00:03:16,170 --> 00:03:17,810
+necesidades
+
+83
+00:03:17,810 --> 00:03:20,480
+un ejemplo clásico también de estas
+
+84
+00:03:20,480 --> 00:03:22,190
+ventajas que tiene la formación online
+
+85
+00:03:22,190 --> 00:03:25,400
+es el propio ritmo del curso la
+
+86
+00:03:25,400 --> 00:03:26,840
+formación se convierte en una
+
+87
+00:03:26,840 --> 00:03:29,200
+experiencia completamente personalizada
+
+88
+00:03:29,200 --> 00:03:31,599
+si yo quiero recibir un curso completo
+
+89
+00:03:31,599 --> 00:03:35,540
+visualizó el curso completo pero si solo
+
+90
+00:03:35,540 --> 00:03:37,040
+estoy interesado en una parte del curso
+
+91
+00:03:37,040 --> 00:03:40,130
+no hace falta que absorba la información
+
+92
+00:03:40,130 --> 00:03:41,989
+de todo el resto anterior que igual no
+
+93
+00:03:41,989 --> 00:03:44,630
+me interesa voy directamente a esa pieza
+
+94
+00:03:44,630 --> 00:03:47,209
+de la información que estoy buscando y
+
+95
+00:03:47,209 --> 00:03:49,459
+por ejemplo en el caso del ritmo de la
+
+96
+00:03:49,459 --> 00:03:51,140
+heterogeneidad entre el ritmo de
+
+97
+00:03:51,140 --> 00:03:53,299
+diferentes alumnos ya no tengo que estar
+
+98
+00:03:53,299 --> 00:03:55,280
+en una clase y pensar si mi ritmo de
+
+99
+00:03:55,280 --> 00:03:57,500
+aprendizaje es más rápido o más lento
+
+100
+00:03:57,500 --> 00:03:59,840
+que el de mis compañeros sino que
+
+101
+00:03:59,840 --> 00:04:02,150
+simplemente si voy rápido si voy a
+
+102
+00:04:02,150 --> 00:04:04,310
+entender no fácilmente y rápidamente los
+
+103
+00:04:04,310 --> 00:04:07,040
+conceptos puedo incluso acelerar la
+
+104
+00:04:07,040 --> 00:04:10,010
+velocidad del vídeo y si quizás algún
+
+105
+00:04:10,010 --> 00:04:11,660
+vídeo concreto me ha costado más de
+
+106
+00:04:11,660 --> 00:04:13,730
+entender no hay ningún problema puedo
+
+107
+00:04:13,730 --> 00:04:16,400
+revivir el vídeo puedo ver otra vez el
+
+108
+00:04:16,400 --> 00:04:18,950
+vídeo tantas veces como haga falta hasta
+
+109
+00:04:18,950 --> 00:04:20,660
+que yo comprenda correctamente la
+
+110
+00:04:20,660 --> 00:04:22,820
+información sin tener que parar una
+
+111
+00:04:22,820 --> 00:04:24,620
+clase y sin tener que molestar
+
+112
+00:04:24,620 --> 00:04:27,050
+compañeros por tanto de esta manera la
+
+113
+00:04:27,050 --> 00:04:30,410
+formación online que tiene más ventajas
+
+114
+00:04:30,410 --> 00:04:32,300
+que desventajas tienen muchas más
+
+115
+00:04:32,300 --> 00:04:34,910
+ventajas para mí es el futuro inevitable
+
+116
+00:04:34,910 --> 00:04:38,090
+y en definitiva permite que la formación
+
+117
+00:04:38,090 --> 00:04:40,150
+se convierta en esa experiencia
+
+118
+00:04:40,150 --> 00:04:42,260
+personalizada y adaptada a las
+
+119
+00:04:42,260 --> 00:04:44,840
+necesidades de cada alumno contactar
+
+120
+00:04:44,840 --> 00:04:46,790
+conmigo es muy sencillo simplemente
+
+121
+00:04:46,790 --> 00:04:48,800
+tienes que abrir un buscador en es josé
+
+122
+00:04:48,800 --> 00:04:50,840
+vicente carratalá y vas a encontrar
+
+123
+00:04:50,840 --> 00:04:53,120
+directamente los accesos a mi web
+
+124
+00:04:53,120 --> 00:04:55,550
+personal a mi web de empresa a mis redes
+
+125
+00:04:55,550 --> 00:04:57,410
+sociales ya toda la información que
+
+126
+00:04:57,410 --> 00:05:00,460
+quieras encontrar sobre él
+```
+
+### [Spanish (auto-generated)] Entrevista Jose Vicente Carratala [DownSub.com]
+<small>Creado: 2026-03-10 17:31</small>
+
+`[Spanish (auto-generated)] Entrevista Jose Vicente Carratala [DownSub.com].txt`
+
+```
+eso jose vicente catalá y soy un
+formador desarrollador y diseñador en
+los campos del diseño y desarrollo me
+dedico a crear soluciones personalizadas
+a clientes sobre todo en aquellas
+soluciones que consiguen aunar los
+campos tecnológicos de la programación y
+el diseño 3d empecé a formar en el año
+2000 impartiendo cursos de formación de
+posgrado en la universidad politécnica
+de valència
+actualmente coordino esos cursos de
+posgrado con otras actividades en
+centros de alto rendimiento de la zona
+de valència lo que más me gusta de mi
+trabajo es que involucra trabajar
+siempre con prácticamente lo último de
+la tecnología pienso que estamos en el
+medio de una revolución tecnológica
+pienso que inventos tales como por
+ejemplo la web o internet están
+mejorando la vida de las personas y
+todavía quedan mucho por ver todavía
+queda mucho por hacer todavía queda
+mucho por inventar así que por tanto por
+una parte como diseñador y como
+desarrollador
+lo que me gusta de mi trabajo es que
+siento que formo parte de esa revolución
+tecnológica que no soy un mero
+espectador sino que soy parte en el
+proceso de evolución y en la creación de
+soluciones que acaban mejorando la vida
+de las personas y como formador por una
+parte como mínimo a corto plazo me gusta
+pensar que al formar a gente en estas
+nuevas tecnologías desde luego
+inmediatamente mejora sus oportunidades
+laborales y a largo plazo también me
+gusta pensar que a todas aquellas
+personas que formó son personas que
+dejan de ser usuarios y se convierten en
+creadores y por tanto participan conmigo
+y con todos aquellos que trabajamos en
+este sector de esa revolución y digamos
+desde este punto de vista pues a través
+de la formación
+pienso que consigo que haya unos pocos
+creadores y muchos usuarios y pienso que
+consigo que cada vez haya más creadores
+más cabezas pensantes más gente
+colaborando y desarrollando aquellos
+inventos aquellas nuevas tecnologías
+que cambiarán nuestras vidas y espero
+que para mejor recomiendo la formación
+online porque en mi opinión es la
+evolución lógica de la formación
+presencial
+todos son ventajas en el sentido de que
+por ejemplo solo necesitas una conexión
+a internet para recibir la formación
+otro ejemplo a nivel geográfico antes
+tenías que desplazarte hasta el centro
+de formación donde se hacía el curso
+ahora no ahora desde cualquier lugar da
+igual como de lejos vivas del centro de
+formación puedes obtener el acceso a la
+información puedes recibir el curso
+desde el punto de vista del horario pasa
+tres cuartos de lo mismo y es que antes
+tenías que cumplir un horario tenías que
+ir a el curso en el horario en el que se
+hace el curso ahora ya no
+si tienes otras actividades como por
+ejemplo trabajo como por ejemplo otros
+estudios puedes hacer el curso online
+por la noche a mediodía por la tarde el
+fin de semana puedes dedicar una hora al
+día puedes dedicar cinco horas al día en
+definitiva adaptas el curso adaptas al
+ritmo del curso a tus propias
+necesidades
+un ejemplo clásico también de estas
+ventajas que tiene la formación online
+es el propio ritmo del curso la
+formación se convierte en una
+experiencia completamente personalizada
+si yo quiero recibir un curso completo
+visualizó el curso completo pero si solo
+estoy interesado en una parte del curso
+no hace falta que absorba la información
+de todo el resto anterior que igual no
+me interesa voy directamente a esa pieza
+de la información que estoy buscando y
+por ejemplo en el caso del ritmo de la
+heterogeneidad entre el ritmo de
+diferentes alumnos ya no tengo que estar
+en una clase y pensar si mi ritmo de
+aprendizaje es más rápido o más lento
+que el de mis compañeros sino que
+simplemente si voy rápido si voy a
+entender no fácilmente y rápidamente los
+conceptos puedo incluso acelerar la
+velocidad del vídeo y si quizás algún
+vídeo concreto me ha costado más de
+entender no hay ningún problema puedo
+revivir el vídeo puedo ver otra vez el
+vídeo tantas veces como haga falta hasta
+que yo comprenda correctamente la
+información sin tener que parar una
+clase y sin tener que molestar
+compañeros por tanto de esta manera la
+formación online que tiene más ventajas
+que desventajas tienen muchas más
+ventajas para mí es el futuro inevitable
+y en definitiva permite que la formación
+se convierta en esa experiencia
+personalizada y adaptada a las
+necesidades de cada alumno contactar
+conmigo es muy sencillo simplemente
+tienes que abrir un buscador en es josé
+vicente carratalá y vas a encontrar
+directamente los accesos a mi web
+personal a mi web de empresa a mis redes
+sociales ya toda la información que
+quieras encontrar sobre él
+```
+
+### subtitulos
+<small>Creado: 2026-03-10 17:31</small>
+
+`subtitulos.txt`
+
+```
+eso jose vicente catalá y soy un
+formador desarrollador y diseñador en
+los campos del diseño y desarrollo me
+dedico a crear soluciones personalizadas
+a clientes sobre todo en aquellas
+soluciones que consiguen aunar los
+campos tecnológicos de la programación y
+el diseño 3d empecé a formar en el año
+2000 impartiendo cursos de formación de
+posgrado en la universidad politécnica
+de valència
+actualmente coordino esos cursos de
+posgrado con otras actividades en
+centros de alto rendimiento de la zona
+de valència lo que más me gusta de mi
+trabajo es que involucra trabajar
+siempre con prácticamente lo último de
+la tecnología pienso que estamos en el
+medio de una revolución tecnológica
+pienso que inventos tales como por
+ejemplo la web o internet están
+mejorando la vida de las personas y
+todavía quedan mucho por ver todavía
+queda mucho por hacer todavía queda
+mucho por inventar así que por tanto por
+una parte como diseñador y como
+desarrollador
+lo que me gusta de mi trabajo es que
+siento que formo parte de esa revolución
+tecnológica que no soy un mero
+espectador sino que soy parte en el
+proceso de evolución y en la creación de
+soluciones que acaban mejorando la vida
+de las personas y como formador por una
+parte como mínimo a corto plazo me gusta
+pensar que al formar a gente en estas
+nuevas tecnologías desde luego
+inmediatamente mejora sus oportunidades
+laborales y a largo plazo también me
+gusta pensar que a todas aquellas
+personas que formó son personas que
+dejan de ser usuarios y se convierten en
+creadores y por tanto participan conmigo
+y con todos aquellos que trabajamos en
+este sector de esa revolución y digamos
+desde este punto de vista pues a través
+de la formación
+pienso que consigo que haya unos pocos
+creadores y muchos usuarios y pienso que
+consigo que cada vez haya más creadores
+más cabezas pensantes más gente
+colaborando y desarrollando aquellos
+inventos aquellas nuevas tecnologías
+que cambiarán nuestras vidas y espero
+que para mejor recomiendo la formación
+online porque en mi opinión es la
+evolución lógica de la formación
+presencial
+todos son ventajas en el sentido de que
+por ejemplo solo necesitas una conexión
+a internet para recibir la formación
+otro ejemplo a nivel geográfico antes
+tenías que desplazarte hasta el centro
+de formación donde se hacía el curso
+ahora no ahora desde cualquier lugar da
+igual como de lejos vivas del centro de
+formación puedes obtener el acceso a la
+información puedes recibir el curso
+desde el punto de vista del horario pasa
+tres cuartos de lo mismo y es que antes
+tenías que cumplir un horario tenías que
+ir a el curso en el horario en el que se
+hace el curso ahora ya no
+si tienes otras actividades como por
+ejemplo trabajo como por ejemplo otros
+estudios puedes hacer el curso online
+por la noche a mediodía por la tarde el
+fin de semana puedes dedicar una hora al
+día puedes dedicar cinco horas al día en
+definitiva adaptas el curso adaptas al
+ritmo del curso a tus propias
+necesidades
+un ejemplo clásico también de estas
+ventajas que tiene la formación online
+es el propio ritmo del curso la
+formación se convierte en una
+experiencia completamente personalizada
+si yo quiero recibir un curso completo
+visualizó el curso completo pero si solo
+estoy interesado en una parte del curso
+no hace falta que absorba la información
+de todo el resto anterior que igual no
+me interesa voy directamente a esa pieza
+de la información que estoy buscando y
+por ejemplo en el caso del ritmo de la
+heterogeneidad entre el ritmo de
+diferentes alumnos ya no tengo que estar
+en una clase y pensar si mi ritmo de
+aprendizaje es más rápido o más lento
+que el de mis compañeros sino que
+simplemente si voy rápido si voy a
+entender no fácilmente y rápidamente los
+conceptos puedo incluso acelerar la
+velocidad del vídeo y si quizás algún
+vídeo concreto me ha costado más de
+entender no hay ningún problema puedo
+revivir el vídeo puedo ver otra vez el
+vídeo tantas veces como haga falta hasta
+que yo comprenda correctamente la
+información sin tener que parar una
+clase y sin tener que molestar
+compañeros por tanto de esta manera la
+formación online que tiene más ventajas
+que desventajas tienen muchas más
+ventajas para mí es el futuro inevitable
+y en definitiva permite que la formación
+se convierta en esa experiencia
+personalizada y adaptada a las
+necesidades de cada alumno contactar
+conmigo es muy sencillo simplemente
+tienes que abrir un buscador en es josé
+vicente carratalá y vas a encontrar
+directamente los accesos a mi web
+personal a mi web de empresa a mis redes
+sociales ya toda la información que
+quieras encontrar sobre él
+```
+
 
 <a id="prioridades-puntos-de-verificacion"></a>
 ## Prioridades. Puntos de verificación.
 
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/005-Dise%C3%B1o%20de%20webs%20accesibles/005-Prioridades.%20Puntos%20de%20verificaci%C3%B3n.)
 
+### web html basica
+<small>Creado: 2026-03-11 17:07</small>
+
+`001-web html basica.html`
+
+```html
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mi web personal</title>
+    <link rel="stylesheet" href="estilo.css">
+  	<script src="jocarsa-accesibilidad.js"></script>
+  	<link rel="stylesheet" href="jocarsa-accesibilidad.css">
+</head>
+<body>
+
+    <header>
+        <h1>Tu Nombre</h1>
+        <p>Desarrollador | Formador | Creador</p>
+    </header>
+
+    <main>
+
+        <section>
+            <h2>Sobre mí</h2>
+            <p>
+                Bienvenido a mi web personal. Aquí comparto mis proyectos,
+                experiencia y formas de contacto.
+            </p>
+        </section>
+
+        <section>
+            <h2>Proyectos</h2>
+
+            <article>
+                <h3>Proyecto 1</h3>
+                <p>Descripción breve del proyecto.</p>
+            </article>
+
+            <article>
+                <h3>Proyecto 2</h3>
+                <p>Descripción breve del proyecto.</p>
+            </article>
+
+            <article>
+                <h3>Proyecto 3</h3>
+                <p>Descripción breve del proyecto.</p>
+            </article>
+        </section>
+
+        <section>
+            <h2>Contacto</h2>
+            <p>Email: correo@ejemplo.com</p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Tu Nombre</p>
+    </footer>
+
+</body>
+</html>
+```
+
+### estilo
+<small>Creado: 2026-03-11 17:03</small>
+
+`estilo.css`
+
+```css
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f5f5f5;
+    color:#333;
+}
+
+header{
+    background:#222;
+    color:white;
+    text-align:center;
+    padding:40px 20px;
+}
+
+main{
+    max-width:800px;
+    margin:auto;
+    padding:20px;
+}
+
+section{
+    background:white;
+    margin-bottom:20px;
+    padding:20px;
+    border-radius:8px;
+}
+
+h1,h2,h3{
+    margin-top:0;
+}
+
+footer{
+    text-align:center;
+    padding:20px;
+    background:#ddd;
+}
+```
+
+### jocarsa-accesibilidad
+<small>Creado: 2026-03-11 17:26</small>
+
+`jocarsa-accesibilidad.css`
+
+```css
+.jocarsa-accesibilidad{
+	position:fixed;
+	top:10px;
+	right:10px;
+	background:white;
+	border-radius:400px;
+	box-shadow:0px 4px 12px rgba(0,0,0,0.25);
+	padding:10px 15px;
+	font-size:18px;
+	display:flex;
+	gap:12px;
+	align-items:center;
+	z-index:99999;
+	border:1px solid rgba(0,0,0,0.1);
+}
+
+.jocarsa-accesibilidad div{
+	cursor:pointer;
+	width:32px;
+	height:32px;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	border-radius:50%;
+	transition:all 0.2s ease;
+	user-select:none;
+}
+
+.jocarsa-accesibilidad div:hover{
+	background:#f0f0f0;
+	transform:scale(1.1);
+}
+```
+
+### jocarsa-accesibilidad
+<small>Creado: 2026-03-11 17:26</small>
+
+`jocarsa-accesibilidad.js`
+
+```javascript
+console.log("Vamos con la accesibilidad")
+
+window.onload = function(){
+
+  let zoom = 1;
+  let invertido = false;
+  let contraste = false;
+  let fuenteGrande = false;
+
+  console.log("Esto solo carga cuando la ventana haya cargado")
+
+  let barra = document.createElement("div")
+  barra.classList.add("jocarsa-accesibilidad")
+
+  let cuerpo = document.querySelector("body")
+  cuerpo.appendChild(barra)
+
+  // ------------------------
+  // ZOOM IN
+  // ------------------------
+  let zoomin = document.createElement("div")
+  zoomin.textContent = "🔍"
+  barra.appendChild(zoomin)
+
+  zoomin.onclick = function(){
+    if(zoom < 2){
+      zoom += 0.1
+      cuerpo.style.zoom = zoom
+      console.log("Zoom:", zoom)
+    }
+  }
+
+  // ------------------------
+  // ZOOM OUT
+  // ------------------------
+  let zoomout = document.createElement("div")
+  zoomout.textContent = "🔎"
+  barra.appendChild(zoomout)
+
+  zoomout.onclick = function(){
+    if(zoom > 0.5){
+      zoom -= 0.1
+      cuerpo.style.zoom = zoom
+      console.log("Zoom:", zoom)
+    }
+  }
+
+  // ------------------------
+  // INVERTIR COLORES
+  // ------------------------
+  let invertir = document.createElement("div")
+  invertir.textContent = "🧙‍♂️"
+  barra.appendChild(invertir)
+
+  invertir.onclick = function(){
+    invertido = !invertido
+    aplicarFiltros()
+  }
+
+  // ------------------------
+  // CONTRASTE ALTO
+  // ------------------------
+  let contrasteBtn = document.createElement("div")
+  contrasteBtn.textContent = "⚫"
+  barra.appendChild(contrasteBtn)
+
+  contrasteBtn.onclick = function(){
+    contraste = !contraste
+    aplicarFiltros()
+  }
+
+  // ------------------------
+  // FUENTE GRANDE
+  // ------------------------
+  let fuenteBtn = document.createElement("div")
+  fuenteBtn.textContent = "A"
+  barra.appendChild(fuenteBtn)
+
+  fuenteBtn.onclick = function(){
+    if(fuenteGrande == false){
+      fuenteGrande = true
+      cuerpo.style.fontSize = "1.3em"
+      cuerpo.style.lineHeight = "1.6em"
+    }else{
+      fuenteGrande = false
+      cuerpo.style.fontSize = ""
+      cuerpo.style.lineHeight = ""
+    }
+  }
+
+  // ------------------------
+  // RESET
+  // ------------------------
+  let reset = document.createElement("div")
+  reset.textContent = "↺"
+  barra.appendChild(reset)
+
+  reset.onclick = function(){
+    zoom = 1
+    invertido = false
+    contraste = false
+    fuenteGrande = false
+
+    cuerpo.style.zoom = 1
+    cuerpo.style.filter = ""
+    cuerpo.style.fontSize = ""
+    cuerpo.style.lineHeight = ""
+  }
+
+  // ------------------------
+  // FUNCIÓN FILTROS
+  // ------------------------
+  function aplicarFiltros(){
+
+    let filtros = ""
+
+    if(invertido){
+      filtros += " invert(1)"
+    }
+
+    if(contraste){
+      filtros += " contrast(1.5)"
+    }
+
+    cuerpo.style.filter = filtros
+  }
+
+}
+```
+
 
 <a id="metodos-para-realizar-revisiones-preliminares-y-evaluaciones-de-adecuacion-o-conformidad-de-documentos-web"></a>
 ## Métodos para realizar revisiones preliminares y evaluaciones de adecuación o conformidad de documentos web.
 
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/005-Dise%C3%B1o%20de%20webs%20accesibles/006-M%C3%A9todos%20para%20realizar%20revisiones%20preliminares%20y%20evaluaciones%20de%20adecuaci%C3%B3n%20o%20conformidad%20de%20documentos%20web.)
+
+### buscarenpdf
+<small>Creado: 2026-03-11 18:18</small>
+
+`buscarenpdf.py`
+
+```python
+#!/usr/bin/env python3
+"""
+buscar_en_pdf.py
+Busca un término (o expresión regex con --regex) en todo el PDF e imprime
+el nº de página y un pequeño contexto.
+
+Ejemplo:
+    python buscar_en_pdf.py contrato.pdf "confidencial" --regex
+"""
+import argparse, re, textwrap
+from pathlib import Path
+from pypdf import PdfReader   # type: ignore
+
+def main() -> None:
+    p = argparse.ArgumentParser(description="Buscar texto dentro de un PDF")
+    p.add_argument("archivo", help="PDF de origen")
+    p.add_argument("patron", help="Palabra o expresión regular")
+    p.add_argument("--regex", action="store_true", help="Interpretar patrón como regex")
+    p.add_argument("--contexto", type=int, default=40,
+                   help="Nº de caracteres alrededor de la coincidencia")
+    args = p.parse_args()
+
+    lector = PdfReader(args.archivo)
+    buscar = (lambda txt: re.finditer(args.patron, txt, re.I|re.S)) if args.regex \
+             else (lambda txt: (m for m in re.finditer(re.escape(args.patron), txt, re.I)))
+
+    halladas = 0
+    for i, pag in enumerate(lector.pages, start=1):
+        texto = pag.extract_text() or ""
+        for m in buscar(texto):
+            inicio = max(m.start() - args.contexto, 0)
+            fin = m.end() + args.contexto
+            snippet = textwrap.shorten(texto[inicio:fin].replace("\n", " "),
+                                       width=args.contexto*2, placeholder="…")
+            print(f"Pág {i}: …{snippet}…")
+            halladas += 1
+
+    if halladas:
+        print(f"\n🔎 Encontradas {halladas} coincidencia(s).")
+    else:
+        print("💤  No se encontró el término.")
+
+if __name__ == "__main__":
+    main()
+```
+
+### ocr
+<small>Creado: 2026-03-11 18:18</small>
+
+`ocr.py`
+
+```python
+#!/usr/bin/env python3
+"""
+pdf_ocr_texto.py
+Convierte cada página de un PDF a imagen, pasa OCR con Tesseract
+y genera un .txt. Útil cuando extract_text() devuelve cadenas vacías.
+
+Ejemplo:
+    python pdf_ocr_texto.py escaneado.pdf
+"""
+import argparse, tempfile, sys
+from pathlib import Path
+from pdf2image import convert_from_path     # type: ignore
+import pytesseract                          # type: ignore
+
+def main() -> None:
+    p = argparse.ArgumentParser(description="OCR para PDF escaneado")
+    p.add_argument("--archivo", required=True, help="PDF escaneado")
+    args = p.parse_args()
+
+    pdf_path = Path(args.archivo).expanduser().resolve()
+    salida_txt = pdf_path.with_suffix(".txt")
+
+    with tempfile.TemporaryDirectory() as tmp:
+        try:
+            imgs = convert_from_path(str(pdf_path), output_folder=tmp)
+        except Exception as e:
+            sys.exit(f"❌ No se pudo convertir PDF a imágenes: {e}")
+
+        print(f"Procesando {len(imgs)} página(s)...")
+        texto_total = []
+        for idx, img in enumerate(imgs, start=1):
+            texto = pytesseract.image_to_string(img, lang="spa+eng")
+            texto_total.append(texto)
+            print(f" · Página {idx} OK")
+
+    salida_txt.write_text("\n\n".join(texto_total), encoding="utf-8")
+    print(f"✅ Texto OCR guardado en {salida_txt}")
+
+if __name__ == "__main__":
+    main()
+```
+
+### ocr2
+<small>Creado: 2026-03-11 18:28</small>
+
+`ocr2.py`
+
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+pdf_ocr_json.py
+
+Convierte cada página de un PDF escaneado a imagen, ejecuta OCR con Tesseract
+y genera un JSON estructurado en lugar de un TXT plano.
+
+Intenta detectar:
+- páginas
+- líneas
+- bloques de texto
+- tablas heurísticas basadas en posiciones OCR
+- metadatos básicos
+
+Ejemplo:
+    python3 pdf_ocr_json.py --archivo entrada.pdf
+
+Requisitos:
+    sudo apt install tesseract-ocr tesseract-ocr-spa poppler-utils
+    pip install pdf2image pytesseract pillow
+"""
+
+import argparse
+import json
+import re
+import sys
+import tempfile
+from pathlib import Path
+from typing import Any, Dict, List, Tuple
+
+from pdf2image import convert_from_path  # type: ignore
+import pytesseract  # type: ignore
+from pytesseract import Output  # type: ignore
+
+
+# --------------------------------------------------
+# UTILIDADES
+# --------------------------------------------------
+
+def limpiar_texto(texto: str) -> str:
+    texto = texto.replace("\x0c", " ")
+    texto = re.sub(r"[ \t]+", " ", texto)
+    texto = re.sub(r"\n[ \t]+", "\n", texto)
+    return texto.strip()
+
+
+def normalizar_conf(valor: Any) -> float:
+    try:
+        return float(valor)
+    except Exception:
+        return -1.0
+
+
+def agrupar_por_linea(datos: Dict[str, List[Any]]) -> List[Dict[str, Any]]:
+    """
+    Agrupa palabras OCR por línea usando:
+    page_num, block_num, par_num, line_num
+    """
+    lineas: Dict[Tuple[int, int, int, int], Dict[str, Any]] = {}
+
+    n = len(datos["text"])
+    for i in range(n):
+        texto = str(datos["text"][i]).strip()
+        conf = normalizar_conf(datos["conf"][i])
+
+        if not texto:
+            continue
+        if conf < 0:
+            continue
+
+        clave = (
+            int(datos["page_num"][i]),
+            int(datos["block_num"][i]),
+            int(datos["par_num"][i]),
+            int(datos["line_num"][i]),
+        )
+
+        x = int(datos["left"][i])
+        y = int(datos["top"][i])
+        w = int(datos["width"][i])
+        h = int(datos["height"][i])
+
+        if clave not in lineas:
+            lineas[clave] = {
+                "page_num": int(datos["page_num"][i]),
+                "block_num": int(datos["block_num"][i]),
+                "par_num": int(datos["par_num"][i]),
+                "line_num": int(datos["line_num"][i]),
+                "words": [],
+                "bbox": {
+                    "x": x,
+                    "y": y,
+                    "w": w,
+                    "h": h,
+                },
+            }
+
+        lineas[clave]["words"].append({
+            "text": texto,
+            "conf": conf,
+            "x": x,
+            "y": y,
+            "w": w,
+            "h": h,
+        })
+
+        bbox = lineas[clave]["bbox"]
+        min_x = min(bbox["x"], x)
+        min_y = min(bbox["y"], y)
+        max_x = max(bbox["x"] + bbox["w"], x + w)
+        max_y = max(bbox["y"] + bbox["h"], y + h)
+        bbox["x"] = min_x
+        bbox["y"] = min_y
+        bbox["w"] = max_x - min_x
+        bbox["h"] = max_y - min_y
+
+    resultado = []
+    for _, linea in sorted(lineas.items(), key=lambda item: (
+        item[1]["page_num"],
+        item[1]["block_num"],
+        item[1]["par_num"],
+        item[1]["line_num"],
+        item[1]["bbox"]["y"],
+        item[1]["bbox"]["x"],
+    )):
+        linea["words"].sort(key=lambda w: w["x"])
+        linea["text"] = " ".join(w["text"] for w in linea["words"]).strip()
+        if linea["words"]:
+            linea["avg_conf"] = round(
+                sum(w["conf"] for w in linea["words"]) / len(linea["words"]),
+                2
+            )
+        else:
+            linea["avg_conf"] = -1
+        resultado.append(linea)
+
+    return resultado
+
+
+def agrupar_lineas_en_bloques(lineas: List[Dict[str, Any]], tolerancia_y: int = 20) -> List[Dict[str, Any]]:
+    """
+    Agrupa líneas cercanas verticalmente en bloques de texto.
+    """
+    if not lineas:
+        return []
+
+    lineas_ordenadas = sorted(lineas, key=lambda l: (l["bbox"]["y"], l["bbox"]["x"]))
+    bloques: List[Dict[str, Any]] = []
+    bloque_actual: Dict[str, Any] | None = None
+    ultima_y = None
+
+    for linea in lineas_ordenadas:
+        y = linea["bbox"]["y"]
+
+        if bloque_actual is None:
+            bloque_actual = {
+                "bbox": dict(linea["bbox"]),
+                "lines": [linea],
+            }
+            ultima_y = y
+            continue
+
+        if ultima_y is not None and abs(y - ultima_y) <= tolerancia_y:
+            bloque_actual["lines"].append(linea)
+
+            bbox = bloque_actual["bbox"]
+            min_x = min(bbox["x"], linea["bbox"]["x"])
+            min_y = min(bbox["y"], linea["bbox"]["y"])
+            max_x = max(bbox["x"] + bbox["w"], linea["bbox"]["x"] + linea["bbox"]["w"])
+            max_y = max(bbox["y"] + bbox["h"], linea["bbox"]["y"] + linea["bbox"]["h"])
+            bbox["x"] = min_x
+            bbox["y"] = min_y
+            bbox["w"] = max_x - min_x
+            bbox["h"] = max_y - min_y
+        else:
+            bloque_actual["text"] = "\n".join(l["text"] for l in bloque_actual["lines"]).strip()
+            bloques.append(bloque_actual)
+            bloque_actual = {
+                "bbox": dict(linea["bbox"]),
+                "lines": [linea],
+            }
+
+        ultima_y = y
+
+    if bloque_actual is not None:
+        bloque_actual["text"] = "\n".join(l["text"] for l in bloque_actual["lines"]).strip()
+        bloques.append(bloque_actual)
+
+    return bloques
+
+
+def detectar_tabla_en_lineas(lineas: List[Dict[str, Any]], umbral_columnas: int = 2) -> Dict[str, Any] | None:
+    """
+    Heurística simple:
+    - si muchas líneas tienen varias "celdas" separadas por posiciones X y palabras
+    - se considera tabla
+    """
+    if len(lineas) < 2:
+        return None
+
+    filas = []
+    posibles_x = []
+
+    for linea in lineas:
+        palabras = linea["words"]
+        if len(palabras) < 2:
+            continue
+
+        celdas = []
+        celda_actual = [palabras[0]]
+
+        for i in range(1, len(palabras)):
+            prev = palabras[i - 1]
+            actual = palabras[i]
+            gap = actual["x"] - (prev["x"] + prev["w"])
+
+            # Si hay mucho hueco horizontal, asumimos nueva columna
+            if gap > 35:
+                celdas.append(celda_actual)
+                celda_actual = [actual]
+            else:
+                celda_actual.append(actual)
+
+        if celda_actual:
+            celdas.append(celda_actual)
+
+        if len(celdas) >= umbral_columnas:
+            fila = []
+            for celda in celdas:
+                texto = " ".join(w["text"] for w in celda).strip()
+                x = min(w["x"] for w in celda)
+                fila.append({
+                    "text": texto,
+                    "x": x,
+                })
+                posibles_x.append(x)
+
+            fila.sort(key=lambda c: c["x"])
+            filas.append(fila)
+
+    if len(filas) < 2:
+        return None
+
+    posibles_x = sorted(posibles_x)
+    columnas_base = fusionar_posiciones_x(posibles_x, tolerancia=25)
+
+    tabla = []
+    for fila in filas:
+        celdas_finales = [""] * len(columnas_base)
+
+        for celda in fila:
+            idx = columna_mas_cercana(celda["x"], columnas_base)
+            celdas_finales[idx] = celda["text"]
+
+        tabla.append(celdas_finales)
+
+    return {
+        "columns_x": columnas_base,
+        "rows": tabla,
+    }
+
+
+def fusionar_posiciones_x(posiciones: List[int], tolerancia: int = 25) -> List[int]:
+    if not posiciones:
+        return []
+
+    grupos = [[posiciones[0]]]
+    for p in posiciones[1:]:
+        if abs(p - grupos[-1][-1]) <= tolerancia:
+            grupos[-1].append(p)
+        else:
+            grupos.append([p])
+
+    return [round(sum(g) / len(g)) for g in grupos]
+
+
+def columna_mas_cercana(x: int, columnas: List[int]) -> int:
+    mejor_idx = 0
+    mejor_dist = abs(x - columnas[0])
+    for i, col_x in enumerate(columnas):
+        dist = abs(x - col_x)
+        if dist < mejor_dist:
+            mejor_dist = dist
+            mejor_idx = i
+    return mejor_idx
+
+
+def detectar_tablas_por_bloques(bloques: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    tablas = []
+
+    for bloque in bloques:
+        tabla = detectar_tabla_en_lineas(bloque["lines"])
+        if tabla:
+            tablas.append({
+                "bbox": bloque["bbox"],
+                "table": tabla,
+            })
+
+    return tablas
+
+
+def extraer_pagina_ocr(img, lang: str) -> Dict[str, Any]:
+    datos = pytesseract.image_to_data(img, lang=lang, output_type=Output.DICT)
+
+    lineas = agrupar_por_linea(datos)
+    bloques = agrupar_lineas_en_bloques(lineas)
+    tablas = detectar_tablas_por_bloques(bloques)
+
+    texto_plano = "\n".join(linea["text"] for linea in lineas if linea["text"].strip())
+    texto_plano = limpiar_texto(texto_plano)
+
+    confidencias = [
+        linea["avg_conf"] for linea in lineas
+        if isinstance(linea.get("avg_conf"), (int, float)) and linea["avg_conf"] >= 0
+    ]
+    avg_conf = round(sum(confidencias) / len(confidencias), 2) if confidencias else -1
+
+    return {
+        "text": texto_plano,
+        "avg_conf": avg_conf,
+        "lines": lineas,
+        "blocks": bloques,
+        "tables": tablas,
+    }
+
+
+# --------------------------------------------------
+# MAIN
+# --------------------------------------------------
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="OCR de PDF escaneado a JSON estructurado")
+    parser.add_argument("--archivo", required=True, help="Ruta al PDF escaneado")
+    parser.add_argument("--lang", default="spa+eng", help="Idiomas de Tesseract, por ejemplo spa+eng")
+    parser.add_argument("--dpi", type=int, default=250, help="DPI para rasterizar el PDF")
+    args = parser.parse_args()
+
+    pdf_path = Path(args.archivo).expanduser().resolve()
+
+    if not pdf_path.exists():
+        sys.exit(f"❌ El archivo no existe: {pdf_path}")
+
+    if pdf_path.suffix.lower() != ".pdf":
+        sys.exit("❌ El archivo indicado no parece ser un PDF")
+
+    salida_json = pdf_path.with_suffix(".json")
+
+    with tempfile.TemporaryDirectory() as tmp:
+        try:
+            imgs = convert_from_path(
+                str(pdf_path),
+                dpi=args.dpi,
+                output_folder=tmp,
+                fmt="png"
+            )
+        except Exception as e:
+            sys.exit(f"❌ No se pudo convertir PDF a imágenes: {e}")
+
+        print(f"Procesando {len(imgs)} página(s)...")
+
+        documento: Dict[str, Any] = {
+            "source_pdf": str(pdf_path),
+            "output_json": str(salida_json),
+            "ocr_engine": "tesseract",
+            "ocr_lang": args.lang,
+            "dpi": args.dpi,
+            "pages_count": len(imgs),
+            "pages": [],
+        }
+
+        for idx, img in enumerate(imgs, start=1):
+            try:
+                pagina = extraer_pagina_ocr(img, args.lang)
+                pagina["page_number"] = idx
+                pagina["image_size"] = {
+                    "width": img.width,
+                    "height": img.height,
+                }
+                documento["pages"].append(pagina)
+                print(f" · Página {idx} OK")
+            except Exception as e:
+                documento["pages"].append({
+                    "page_number": idx,
+                    "error": str(e),
+                    "text": "",
+                    "lines": [],
+                    "blocks": [],
+                    "tables": [],
+                })
+                print(f" · Página {idx} ERROR: {e}")
+
+    salida_json.write_text(
+        json.dumps(documento, ensure_ascii=False, indent=2),
+        encoding="utf-8"
+    )
+
+    print(f"✅ JSON OCR guardado en {salida_json}")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### pdfatexto
+<small>Creado: 2026-03-11 18:18</small>
+
+`pdfatexto.py`
+
+```python
+#!/usr/bin/env python3
+"""
+pdf_a_txt.py
+Extrae el texto de un PDF y lo guarda en .txt, conservando saltos entre páginas.
+
+Ejemplos de uso
+---------------
+# PDF completo
+python pdf_a_txt.py --archivo informe.pdf
+
+# Solo páginas 2-5
+python pdf_a_txt.py --archivo informe.pdf --paginas 2-5
+"""
+import argparse
+from pathlib import Path
+from pypdf import PdfReader   # type: ignore
+
+def parsear_rango(cadena: str) -> range:
+    """'2-5' → range(2, 6)  (1-basado como en Acrobat)"""
+    if "-" not in cadena:
+        n = int(cadena)
+        return range(n, n + 1)
+    ini, fin = map(int, cadena.split("-", 1))
+    return range(ini, fin + 1)
+
+def main() -> None:
+    p = argparse.ArgumentParser(description="Extraer texto de un PDF")
+    p.add_argument("--archivo", required=True, help="Ruta del PDF")
+    p.add_argument("--paginas", help="Ej. 3 o 2-5 (1-basado)")
+    args = p.parse_args()
+
+    lector = PdfReader(args.archivo)
+    total = len(lector.pages)
+
+    rango = (parsear_rango(args.paginas) if args.paginas
+             else range(1, total + 1))
+
+    texto = []
+    for num in rango:
+        if not (1 <= num <= total):
+            p.error(f"Página {num} fuera de rango (1–{total})")
+        pagina = lector.pages[num - 1]
+        texto.append(pagina.extract_text() or "")
+        texto.append("\n" + "-" * 40 + f" [Fin página {num}]\n")
+
+    salida = Path(args.archivo).with_suffix(".txt")
+    salida.write_text("".join(texto), encoding="utf-8")
+    print(f"✅ Texto extraído a {salida} ({len(rango)} pág.).")
+
+if __name__ == "__main__":
+    main()
+```
 
 
 <a id="herramientas-de-analisis-de-accesibilidad-web"></a>

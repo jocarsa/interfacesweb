@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <video src="entrevista.mp4"></video>
+    <script>
+      let estructura = [];
+      let texto = "";
+      fetch("[Spanish (auto-generated)] Entrevista Jose Vicente Carratala [DownSub.com].srt")
+      .then(function(response){return response.text()})
+      .then(function(datos){
+        let lineas = datos.split("\n")
+      	for(let i = 0;i<lineas.length;i+=4){
+          estructura.push({"tiempo":lineas[i+1],"texto":lineas[i+2]})
+        }
+        console.log(estructura)
+      })
+    </script>
+  </body>
+</html>
