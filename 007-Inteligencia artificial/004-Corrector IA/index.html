@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jocarsa | dictado</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 100%;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #f4f6f8, #e9eef3);
+        color: #1f2937;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+
+      header {
+        width: 100%;
+        padding: 20px 30px;
+        border-bottom: 1px solid #d7dde5;
+        background: rgba(255,255,255,0.85);
+        backdrop-filter: blur(8px);
+      }
+
+      .marca {
+        font-size: 24px;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+      }
+
+      .marca span {
+        color: #2563eb;
+      }
+
+      .submarca {
+        margin-top: 6px;
+        font-size: 14px;
+        color: #6b7280;
+      }
+
+      main {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px;
+      }
+
+      .contenedor {
+        display: flex;
+        gap: 24px;
+        width: 100%;
+        max-width: 1100px;
+      }
+
+      .columna {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background: rgba(255,255,255,0.88);
+        border: 1px solid #dbe2ea;
+        border-radius: 18px;
+        padding: 18px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      }
+
+      .cabecera-columna {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .titulo-columna {
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: #4b5563;
+      }
+
+      textarea,
+      .salida {
+        width: 100%;
+        min-height: 420px;
+        border: 1px solid #cfd8e3;
+        border-radius: 12px;
+        padding: 16px;
+        outline: none;
+        background: #ffffff;
+        font-size: 16px;
+        line-height: 1.5;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.04);
+      }
+
+      textarea {
+        resize: none;
+      }
+
+      textarea:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+      }
+
+      .salida {
+        overflow-y: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .fila-botones {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      button {
+        border: 0;
+        border-radius: 10px;
+        padding: 12px 16px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      #botonvoz {
+        background: #2563eb;
+        color: white;
+      }
+
+      #botonvoz:hover {
+        background: #1d4ed8;
+      }
+
+      #botonvoz.activo {
+        background: #dc2626;
+      }
+
+      #botonvoz.activo:hover {
+        background: #b91c1c;
+      }
+
+      #botoncopiar {
+        background: #111827;
+        color: white;
+      }
+
+      #botoncopiar:hover {
+        background: #000000;
+      }
+
+      .estado {
+        font-size: 13px;
+        color: #6b7280;
+        min-height: 18px;
+      }
+
+      @media (max-width: 900px) {
+        .contenedor {
+          flex-direction: column;
+        }
+
+        textarea,
+        .salida {
+          min-height: 260px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="marca">jocarsa <span>| dictado</span></div>
+      <div class="submarca">Dictado por voz con envío automático y copia rápida del resultado</div>
+    </header>
+
+    <main>
+      <div class="contenedor">
+        <div class="columna">
+          <div class="cabecera-columna">
+            <div class="titulo-columna">Entrada</div>
+          </div>
+
+          <div class="fila-botones">
+            <button id="botonvoz">🎤 Iniciar dictado</button>
+          </div>
+
+          <textarea placeholder="Escribe aquí o utiliza el dictado por voz..."></textarea>
+          <div class="estado" id="estadoizquierda"></div>
+        </div>
+
+        <div class="columna">
+          <div class="cabecera-columna">
+            <div class="titulo-columna">Resultado</div>
+          </div>
+
+          <div class="fila-botones">
+            <button id="botoncopiar">📋 Copiar mensaje</button>
+          </div>
+
+          <div id="resultado" class="salida"></div>
+          <div class="estado" id="estadoderecha"></div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      let areadetexto = document.querySelector("textarea");
+      let divisor = document.querySelector("#resultado");
+      let botonvoz = document.querySelector("#botonvoz");
+      let botoncopiar = document.querySelector("#botoncopiar");
+      let estadoizquierda = document.querySelector("#estadoizquierda");
+      let estadoderecha = document.querySelector("#estadoderecha");
+
+      function enviarTexto() {
+        estadoizquierda.textContent = "Enviando...";
+        estadoderecha.textContent = "";
+
+        fetch("back.php?mensaje=" + encodeURIComponent(areadetexto.value))
+          .then(function(respuesta) {
+            return respuesta.text();
+          })
+          .then(function(datos) {
+            divisor.textContent = datos;
+            estadoizquierda.textContent = "Texto enviado correctamente";
+            estadoderecha.textContent = "Respuesta recibida";
+          })
+          .catch(function(error) {
+            divisor.textContent = "Error: " + error;
+            estadoizquierda.textContent = "No se pudo enviar el texto";
+            estadoderecha.textContent = "Ha ocurrido un error";
+          });
+      }
+
+      let temporizador = null;
+      areadetexto.addEventListener("input", function () {
+        clearTimeout(temporizador);
+        temporizador = setTimeout(function () {
+          enviarTexto();
+        }, 400);
+      });
+
+      botoncopiar.onclick = function () {
+        let texto = divisor.textContent.trim();
+
+        if (!texto) {
+          estadoderecha.textContent = "No hay contenido para copiar";
+          return;
+        }
+
+        navigator.clipboard.writeText(texto)
+          .then(function () {
+            estadoderecha.textContent = "Contenido copiado al portapapeles";
+          })
+          .catch(function () {
+            estadoderecha.textContent = "No se pudo copiar el contenido";
+          });
+      };
+
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      if (SpeechRecognition) {
+        let reconocimiento = new SpeechRecognition();
+        let grabando = false;
+        let textoFinal = "";
+
+        reconocimiento.lang = "es-ES";
+        reconocimiento.continuous = true;
+        reconocimiento.interimResults = true;
+
+        reconocimiento.onresult = function(evento) {
+          let temporal = "";
+
+          for (let i = evento.resultIndex; i < evento.results.length; i++) {
+            let texto = evento.results[i][0].transcript;
+
+            if (evento.results[i].isFinal) {
+              textoFinal += texto + " ";
+            } else {
+              temporal += texto;
+            }
+          }
+
+          areadetexto.value = textoFinal + temporal;
+          estadoizquierda.textContent = "Escuchando dictado...";
+        };
+
+        reconocimiento.onend = function() {
+          grabando = false;
+          botonvoz.classList.remove("activo");
+          botonvoz.textContent = "🎤 Iniciar dictado";
+          estadoizquierda.textContent = "Dictado detenido";
+        };
+
+        botonvoz.onclick = function() {
+          if (!grabando) {
+            textoFinal = areadetexto.value ? areadetexto.value + " " : "";
+            grabando = true;
+            botonvoz.classList.add("activo");
+            botonvoz.textContent = "⏹ Detener dictado";
+            estadoizquierda.textContent = "Iniciando dictado...";
+            reconocimiento.start();
+          } else {
+            grabando = false;
+            reconocimiento.stop();
+
+            botonvoz.classList.remove("activo");
+            botonvoz.textContent = "🎤 Iniciar dictado";
+            estadoizquierda.textContent = "Enviando dictado...";
+
+            setTimeout(function () {
+              enviarTexto();
+            }, 200);
+          }
+        };
+      } else {
+        botonvoz.disabled = true;
+        botonvoz.textContent = "Tu navegador no soporta voz a texto";
+        estadoizquierda.textContent = "Reconocimiento de voz no disponible";
+      }
+    </script>
+  </body>
+</html>

@@ -66,6 +66,8 @@
 - [Inteligencia artificial](#inteligencia-artificial)
   - [Introduccion](#introduccion)
   - [Continuamos con inteligencia artificial](#continuamos-con-inteligencia-artificial)
+  - [repaso](#repaso)
+  - [Corrector IA](#corrector-ia)
 - [.git](#git)
   - [branches](#branches)
   - [hooks](#hooks)
@@ -15661,6 +15663,18 @@ if($pregunta !== ""){
 </body>
 </html>
 ```
+
+
+<a id="repaso"></a>
+## repaso
+
+[📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/007-Inteligencia%20artificial/003-repaso)
+
+
+<a id="corrector-ia"></a>
+## Corrector IA
+
+[📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/007-Inteligencia%20artificial/004-Corrector%20IA)
 
 
 
