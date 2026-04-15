@@ -1,6 +1,6 @@
 # interfacesweb — Estado de ejercicios
 
-Generado: 2026-04-14 19:00
+Generado: 2026-04-15 20:00
 
 ---
 
@@ -87,3 +87,4 @@ Generado: 2026-04-14 19:00
 - 🟢 Continuamos con inteligencia artificial — 2026-02-25
 - 🔴 repaso
 - 🔴 Corrector IA
+- 🔴 entrenamiento

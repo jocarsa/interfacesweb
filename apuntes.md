@@ -68,6 +68,7 @@
   - [Continuamos con inteligencia artificial](#continuamos-con-inteligencia-artificial)
   - [repaso](#repaso)
   - [Corrector IA](#corrector-ia)
+  - [entrenamiento](#entrenamiento)
 - [.git](#git)
   - [branches](#branches)
   - [hooks](#hooks)
@@ -15675,6 +15676,12 @@ if($pregunta !== ""){
 ## Corrector IA
 
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/007-Inteligencia%20artificial/004-Corrector%20IA)
+
+
+<a id="entrenamiento"></a>
+## entrenamiento
+
+[📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/007-Inteligencia%20artificial/005-entrenamiento)
 
 
 
