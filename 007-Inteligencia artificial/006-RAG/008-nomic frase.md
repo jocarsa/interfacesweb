@@ -1,0 +1,1 @@
+ollama run nomic-embed-text:v1.5 "yo vivo en Valencia"

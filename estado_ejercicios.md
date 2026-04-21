@@ -1,6 +1,6 @@
 # interfacesweb — Estado de ejercicios
 
-Generado: 2026-04-15 20:00
+Generado: 2026-04-21 17:00
 
 ---
 
@@ -88,3 +88,4 @@ Generado: 2026-04-15 20:00
 - 🔴 repaso
 - 🔴 Corrector IA
 - 🔴 entrenamiento
+- 🔴 RAG

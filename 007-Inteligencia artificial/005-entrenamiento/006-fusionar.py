@@ -3,16 +3,23 @@ import torch
 from peft import PeftModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-# -----------------------------
+# =========================================================
 # CONFIGURATION
-# -----------------------------
-BASE_MODEL = "Qwen/Qwen3.5-0.8B"
-ADAPTER_PATH = "./boe-qwen35-08b-lora"
-OUTPUT_PATH = "./boe-qwen35-08b-lora-fusionado"
+# =========================================================
+BASE_MODEL = "Qwen/Qwen3.5-4B"
+ADAPTER_PATH = "./boe-qwen35-4b-lora"
+OUTPUT_PATH = "./boe-qwen35-4b-lora-fusionado"
+
 
 def main():
+    if not os.path.isdir(ADAPTER_PATH):
+        raise FileNotFoundError(f"No existe la carpeta del adaptador: {ADAPTER_PATH}")
+
     print("Loading tokenizer...")
-    tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL, trust_remote_code=True)
+    tokenizer = AutoTokenizer.from_pretrained(
+        BASE_MODEL,
+        trust_remote_code=True
+    )
 
     print("Loading base model...")
     base_model = AutoModelForCausalLM.from_pretrained(
@@ -36,6 +43,7 @@ def main():
 
     print("Done.")
     print(f"Merged model saved in: {OUTPUT_PATH}")
+
 
 if __name__ == "__main__":
     main()

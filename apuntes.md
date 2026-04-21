@@ -69,6 +69,7 @@
   - [repaso](#repaso)
   - [Corrector IA](#corrector-ia)
   - [entrenamiento](#entrenamiento)
+  - [RAG](#rag)
 - [.git](#git)
   - [branches](#branches)
   - [hooks](#hooks)
@@ -15682,6 +15683,12 @@ if($pregunta !== ""){
 ## entrenamiento
 
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/007-Inteligencia%20artificial/005-entrenamiento)
+
+
+<a id="rag"></a>
+## RAG
+
+[📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/007-Inteligencia%20artificial/006-RAG)
 
 
 
