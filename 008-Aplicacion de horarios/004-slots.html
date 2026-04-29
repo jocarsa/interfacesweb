@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Turnos de exposición proyecto intermodular</title>
+    <meta charset="UTF-8">
+    <style>
+      .semana{display:flex;width:800px;height:300px;justify-content:space-between;}
+      .dia{border:1px solid grey;}
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Turnos de exposición</h1>
+      <button>Iniciar sesion</button>
+    </header>
+    <main>
+      <h3>Semana del 11 al 17 de mayo</h3>
+      <section class="semana" id="semana1">
+        <!-- Javascript rellena -->
+      </section>
+      <h3>Semana del 1 al 7 de junio</h3>
+      <section class="semana" id="semana2">
+        <!-- Javascript rellena -->
+      </section>
+    </main>
+    <footer>
+    </footer>
+    <script>
+      // Primero cojo VARIOS elementos
+      let tiempo_turno = 25;
+      let dias_de_la_semana = ['lunes','martes','miércoles','jueves','viernes','sábado','domingo']
+      let semanas = document.querySelectorAll(".semana");
+      semanas.forEach(function(semana){
+      	for(let dia = 1;dia<=7;dia++){
+        	let dia_articulo = document.createElement("article")
+          dia_articulo.classList.add("dia")
+          if(dia != 2 && dia != 3){dia_articulo.classList.add("desactivado")}
+          semana.appendChild(dia_articulo)
+          dia_articulo.textContent = dias_de_la_semana[dia-1]
+          for(minutos = 0;minutos<60*6;minutos+=tiempo_turno){
+          	let elemento = document.createElement("div")
+            elemento.textContent = minutos;
+            dia_articulo.appendChild(elemento)
+          }
+        }
+      })
+    </script>
+    
+  </body>
+</html>

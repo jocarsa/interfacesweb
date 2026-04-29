@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CSS 3D Rotated Div</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f3f4f6;
+    font-family:Arial,sans-serif;
+    perspective:900px;
+}
+
+.card{
+    width:300px;
+    height:180px;
+    background:white;
+    border-radius:24px;
+    box-shadow:0 30px 80px rgba(0,0,0,0.18);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:28px;
+    font-weight:bold;
+    color:#111827;
+    transform:rotateY(45deg) rotateX(15deg);
+    transform-style:preserve-3d;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    CSS 3D
+</div>
+
+</body>
+</html>

@@ -70,6 +70,11 @@
   - [Corrector IA](#corrector-ia)
   - [entrenamiento](#entrenamiento)
   - [RAG](#rag)
+  - [stack con PHP y Python](#stack-con-php-y-python)
+  - [RAG mas IA](#rag-mas-ia)
+  - [multimodelo](#multimodelo)
+  - [css3D](#css3d)
+- [Aplicacion de horarios](#aplicacion-de-horarios)
 - [.git](#git)
   - [branches](#branches)
   - [hooks](#hooks)
@@ -89,7 +94,7 @@
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/001-Planificaci%C3%B3n%20de%20interfaces%20gr%C3%A1ficas/001-Elementos%20del%20dise%C3%B1o%3A%20percepci%C3%B3n%20visual.)
 
 ### estructural
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `001-estructural.html`
 
@@ -104,7 +109,7 @@
 ```
 
 ### bloques
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-bloques.html`
 
@@ -124,7 +129,7 @@
 ```
 
 ### lista en el menu
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-lista en el menu.html`
 
@@ -159,7 +164,7 @@
 ```
 
 ### estilo
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-estilo.html`
 
@@ -199,7 +204,7 @@
 ```
 
 ### estilo.htrml
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-estilo.htrml.txt`
 
@@ -234,7 +239,7 @@
 ```
 
 ### menu
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-menu.html`
 
@@ -274,7 +279,7 @@
 ```
 
 ### centrar
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `006-centrar.html`
 
@@ -314,7 +319,7 @@
 ```
 
 ### Afinar estilo
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `007-Afinar estilo.html`
 
@@ -354,7 +359,7 @@
 ```
 
 ### destacado
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `008-destacado.html`
 
@@ -395,7 +400,7 @@
 ```
 
 ### estilo del destacado
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `009-estilo del destacado.html`
 
@@ -437,7 +442,7 @@
 ```
 
 ### imagen de fondo
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `010-imagen de fondo.html`
 
@@ -479,7 +484,7 @@
 ```
 
 ### elementos del heroe
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `011-elementos del heroe.html`
 
@@ -526,7 +531,7 @@
 ```
 
 ### estilo del heroe
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `012-estilo del heroe.html`
 
@@ -581,7 +586,7 @@
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/001-Planificaci%C3%B3n%20de%20interfaces%20gr%C3%A1ficas/002-Color%2C%20tipograf%C3%ADa%2C%20iconos.)
 
 ### color
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `001-color.html`
 
@@ -605,7 +610,7 @@
 ```
 
 ### hexadecimal
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-hexadecimal.html`
 
@@ -629,7 +634,7 @@
 ```
 
 ### rgb
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-rgb.html`
 
@@ -653,7 +658,7 @@
 ```
 
 ### rgba
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-rgba.html`
 
@@ -677,7 +682,7 @@
 ```
 
 ### significado de los colores.md
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-significado de los colores.md.txt`
 
@@ -701,7 +706,7 @@
 ```
 
 ### tipografias
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `006-tipografias.html`
 
@@ -724,7 +729,7 @@
 ```
 
 ### serifas
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `007-serifas.html`
 
@@ -747,7 +752,7 @@
 ```
 
 ### cursiva
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `008-cursiva.html`
 
@@ -770,7 +775,7 @@
 ```
 
 ### monoespaciada
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `009-monoespaciada.html`
 
@@ -793,7 +798,7 @@
 ```
 
 ### fantasia
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `010-fantasia.html`
 
@@ -816,7 +821,7 @@
 ```
 
 ### fuente ttf
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `011-fuente ttf.html`
 
@@ -844,7 +849,7 @@
 ```
 
 ### significado de las fuentes.md
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `012-significado de las fuentes.md.txt`
 
@@ -856,7 +861,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### menu
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `013-menu.html`
 
@@ -880,7 +885,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### menu con emojis
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `014-menu con emojis.html`
 
@@ -904,7 +909,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### filtros css
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `015-filtros css.html`
 
@@ -939,7 +944,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/001-Planificaci%C3%B3n%20de%20interfaces%20gr%C3%A1ficas/003-Interacci%C3%B3n%20persona-ordenador.)
 
 ### sintesis de voz
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `001-sintesis de voz.html`
 
@@ -960,7 +965,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### microfono
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-microfono.html`
 
@@ -1010,7 +1015,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### manos
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-manos.html`
 
@@ -1117,7 +1122,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### manos mas simplficadas
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004.manos mas simplficadas.html`
 
@@ -1171,7 +1176,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### caras
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-caras.html`
 
@@ -1226,7 +1231,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### lienzo
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `006-lienzo.html`
 
@@ -1240,7 +1245,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### contexto
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `007-contexto.html`
 
@@ -1262,7 +1267,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### ahora empiezo a dibujar
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `008-ahora empiezo a dibujar.html`
 
@@ -1284,7 +1289,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### ahora un circulo
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `009-ahora un circulo.html`
 
@@ -1316,7 +1321,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### estructura for
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `010-estructura for.html`
 
@@ -1351,7 +1356,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### animacion
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `011-animacion.html`
 
@@ -1380,7 +1385,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### contorno del relok
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `012-contorno del relok.html`
 
@@ -1424,7 +1429,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### muevo el segundero
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `013-muevo el segundero.html`
 
@@ -1478,7 +1483,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/001-Planificaci%C3%B3n%20de%20interfaces%20gr%C3%A1ficas/004-Interpretaci%C3%B3n%20de%20gu%C3%ADas%20de%20estilo.%20Elementos.)
 
 ### inicio del manual
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `001-inicio del manual.html`
 
@@ -1512,7 +1517,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/001-Planificaci%C3%B3n%20de%20interfaces%20gr%C3%A1ficas/005-Generaci%C3%B3n%20de%20documentos%20y%20sitios%20web.)
 
 ### cliente
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-cliente.html`
 
@@ -1543,7 +1548,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### estilo
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-estilo.html`
 
@@ -1578,7 +1583,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### comportamiento
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-comportamiento.html`
 
@@ -1622,7 +1627,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### datos
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-datos.html`
 
@@ -1673,7 +1678,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### web clasica
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `006-web clasica.html`
 
@@ -1690,7 +1695,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### web plantilla
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `007-web plantilla.html`
 
@@ -1722,7 +1727,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### cliente
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `cliente.json`
 
@@ -1741,7 +1746,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/001-Planificaci%C3%B3n%20de%20interfaces%20gr%C3%A1ficas/006-Componentes%20de%20una%20interfaz%20web.)
 
 ### tipos de campos
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-tipos de campos.html`
 
@@ -1759,7 +1764,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### validacion
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-validacion.html`
 
@@ -1879,7 +1884,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### validacion por expresion regular
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-validacion por expresion regular.html`
 
@@ -1904,7 +1909,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### micomponente
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `006-micomponente.html`
 
@@ -1921,7 +1926,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### validar dos decimales
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `007-validar dos decimales.html`
 
@@ -1946,7 +1951,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### inserto
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `008-inserto.html`
 
@@ -1963,7 +1968,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### y tambien inserto estilo
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `009-y tambien inserto estilo.html`
 
@@ -1989,7 +1994,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/001-Planificaci%C3%B3n%20de%20interfaces%20gr%C3%A1ficas/007-Tecnolog%C3%ADas%20para%20el%20dise%C3%B1o%20de%20documentos%20web.)
 
 ### inicio
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `001-inicio.php`
 
@@ -2007,7 +2012,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### for para html
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-for para html.php`
 
@@ -2031,7 +2036,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### contenido para el cuerpo de la tabla
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-contenido para el cuerpo de la tabla.php`
 
@@ -2066,7 +2071,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### ahora con objeto
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-ahora con objeto.php`
 
@@ -2105,7 +2110,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### recorrer objeto
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-recorrer objeto.php`
 
@@ -2159,7 +2164,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### ahora dibujo el cuerpo
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `006-ahora dibujo el cuerpo.php`
 
@@ -2211,7 +2216,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### formulario
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `007-formulario.php`
 
@@ -2279,7 +2284,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### vista
-<small>Creado: 2025-10-14 18:40</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `008-vista.html`
 
@@ -2309,7 +2314,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### procesa
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `009-procesa.php`
 
@@ -2326,7 +2331,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### procesadinamico
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `010-procesadinamico.php`
 
@@ -2343,7 +2348,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### libreriafechas
-<small>Creado: 2025-10-14 18:39</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `011-libreriafechas.php`
 
@@ -2360,7 +2365,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### continuamos el anterior
-<small>Creado: 2025-10-14 18:43</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `012-continuamos el anterior.php`
 
@@ -2429,7 +2434,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### reutilizamos el procesa
-<small>Creado: 2025-10-14 18:46</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `013-reutilizamos el procesa.php`
 
@@ -2502,7 +2507,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### guardamos
-<small>Creado: 2025-10-14 18:46</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `014-guardamos.php`
 
@@ -2519,7 +2524,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### json multiple
-<small>Creado: 2025-10-14 18:52</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `015-json multiple.php`
 
@@ -2592,7 +2597,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### guardamos
-<small>Creado: 2025-10-14 18:57</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `016-guardamos.php`
 
@@ -2606,7 +2611,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### data
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `data.json`
 
@@ -2633,7 +2638,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/001-Planificaci%C3%B3n%20de%20interfaces%20gr%C3%A1ficas/009-Maquetaci%C3%B3n%20web.%20Elementos%20de%20ordenaci%C3%B3n.)
 
 ### front
-<small>Creado: 2025-10-15 17:08</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `001-front.html`
 
@@ -2656,7 +2661,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### back
-<small>Creado: 2025-10-15 17:27</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-back.html`
 
@@ -2693,7 +2698,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### back con contenido
-<small>Creado: 2025-10-15 17:34</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-back con contenido.html`
 
@@ -2801,7 +2806,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### front con contenido
-<small>Creado: 2025-10-15 18:15</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-front con contenido.html`
 
@@ -2867,7 +2872,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/001-Planificaci%C3%B3n%20de%20interfaces%20gr%C3%A1ficas/010-Plantilla%20de%20dise%C3%B1o.)
 
 ### introduccion
-<small>Creado: 2025-10-21 16:58</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `001-introduccion.html`
 
@@ -2886,7 +2891,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### template
-<small>Creado: 2025-10-21 16:59</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-template.html`
 
@@ -2910,7 +2915,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### contenedor
-<small>Creado: 2025-10-21 17:01</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-contenedor.html`
 
@@ -2938,7 +2943,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### empiezo
-<small>Creado: 2025-10-21 17:05</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-empiezo.html`
 
@@ -2969,7 +2974,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### un poco de estilo
-<small>Creado: 2025-10-21 17:08</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-un poco de estilo.html`
 
@@ -3010,7 +3015,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### muchos clones
-<small>Creado: 2025-10-21 17:17</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `006-muchos clones.html`
 
@@ -3055,7 +3060,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### modifico plantilla
-<small>Creado: 2025-10-21 17:18</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `007-modifico plantilla.html`
 
@@ -3100,7 +3105,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### elementos del menu
-<small>Creado: 2025-10-21 17:25</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `008-elementos del menu.html`
 
@@ -3148,7 +3153,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### inicial
-<small>Creado: 2025-10-21 17:28</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `009-inicial.html`
 
@@ -3198,7 +3203,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### estilo interfaz
-<small>Creado: 2025-10-21 17:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `010-estilo interfaz.html`
 
@@ -3254,7 +3259,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### segundo template
-<small>Creado: 2025-10-21 18:17</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `011-segundo template.html`
 
@@ -3319,7 +3324,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### bloque javascript
-<small>Creado: 2025-10-21 18:24</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `012-bloque javascript.html`
 
@@ -3396,7 +3401,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### estilo grid
-<small>Creado: 2025-10-21 18:37</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `013-estilo grid.html`
 
@@ -3479,7 +3484,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### muchas tarjetas
-<small>Creado: 2025-10-21 18:38</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `014-muchas tarjetas.html`
 
@@ -3562,7 +3567,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### tarjetas json
-<small>Creado: 2025-10-21 18:43</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `015-tarjetas json.html`
 
@@ -3652,7 +3657,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### contenido json
-<small>Creado: 2025-10-21 18:46</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `016-contenido json.html`
 
@@ -3752,7 +3757,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### magia negra
-<small>Creado: 2025-10-21 18:50</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `017-magia negra.html`
 
@@ -3854,7 +3859,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### estilo final
-<small>Creado: 2025-10-21 18:58</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `018-estilo final.html`
 
@@ -3957,7 +3962,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### creo un boton
-<small>Creado: 2025-10-22 16:58</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `019-creo un boton.html`
 
@@ -4068,7 +4073,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### crear un modal
-<small>Creado: 2025-10-22 17:04</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `020-crear un modal.html`
 
@@ -4193,7 +4198,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### contenido del modal
-<small>Creado: 2025-10-22 17:16</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `021-contenido del modal.html`
 
@@ -4334,7 +4339,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### escondo el modal
-<small>Creado: 2025-10-22 17:21</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `022-escondo el modal.html`
 
@@ -4475,7 +4480,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### saco con boton
-<small>Creado: 2025-10-22 17:30</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `023-saco con boton.html`
 
@@ -4613,7 +4618,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### crear un nuevo objeto
-<small>Creado: 2025-10-22 17:31</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `024-crear un nuevo objeto.html`
 
@@ -4758,7 +4763,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### funcion
-<small>Creado: 2025-10-22 17:39</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `025-funcion.html`
 
@@ -4906,7 +4911,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### objeto de verdad
-<small>Creado: 2025-10-22 18:30</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `026-objeto de verdad.html`
 
@@ -5054,7 +5059,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### guardo en localstorage
-<small>Creado: 2025-10-22 18:37</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `027-guardo en localstorage.html`
 
@@ -5203,7 +5208,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### get item
-<small>Creado: 2025-10-22 18:40</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `028-get item.html`
 
@@ -5353,7 +5358,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### boton eliminar
-<small>Creado: 2025-10-22 18:45</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `029-boton eliminar.html`
 
@@ -5504,7 +5509,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### estilo del boton
-<small>Creado: 2025-10-22 18:50</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `030-estilo del boton.html`
 
@@ -5661,7 +5666,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### comportamiento del boton
-<small>Creado: 2025-10-22 18:53</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `031-comportamiento del boton.html`
 
@@ -5821,7 +5826,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### eliminar con identificador
-<small>Creado: 2025-10-22 19:08</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `032-eliminar con identificador.html`
 
@@ -5994,7 +5999,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### ahora sin comentarios
-<small>Creado: 2025-10-22 19:08</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `033-ahora sin comentarios.html`
 
@@ -6175,7 +6180,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/001-Planificaci%C3%B3n%20de%20interfaces%20gr%C3%A1ficas/013-Repaso%20modal)
 
 ### inicio
-<small>Creado: 2025-11-04 17:04</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `001-inicio.html`
 
@@ -6193,7 +6198,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### contenido principal
-<small>Creado: 2025-11-04 17:04</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-contenido principal.html`
 
@@ -6213,7 +6218,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### contenedormodal
-<small>Creado: 2025-11-04 17:07</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-contenedormodal.html`
 
@@ -6246,7 +6251,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### semitransparente
-<small>Creado: 2025-11-04 17:08</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-semitransparente.html`
 
@@ -6279,7 +6284,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### ahora hago el modal
-<small>Creado: 2025-11-04 17:10</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-ahora hago el modal.html`
 
@@ -6320,7 +6325,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### centrar con flexbox
-<small>Creado: 2025-11-04 17:13</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `006-centrar con flexbox.html`
 
@@ -6366,7 +6371,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### lo escondo
-<small>Creado: 2025-11-04 17:13</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `007-lo escondo.html`
 
@@ -6412,7 +6417,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### preparo un boton
-<small>Creado: 2025-11-04 17:14</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `008-preparo un boton.html`
 
@@ -6459,7 +6464,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### javascript
-<small>Creado: 2025-11-04 17:17</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `009-javascript.html`
 
@@ -6511,7 +6516,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### estilo del tobon
-<small>Creado: 2025-11-04 17:18</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `010-estilo del tobon.html`
 
@@ -6570,7 +6575,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### muro de imagenes
-<small>Creado: 2025-11-04 17:25</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `011-muro de imagenes.html`
 
@@ -6624,7 +6629,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### grid
-<small>Creado: 2025-11-04 17:27</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `012-grid.html`
 
@@ -6704,7 +6709,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### comportamiento modal parte 1
-<small>Creado: 2025-11-04 17:34</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `013-comportamiento modal parte 1.html`
 
@@ -6794,7 +6799,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### modal y me llevo la imagen
-<small>Creado: 2025-11-04 17:39</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `014-modal y me llevo la imagen.html`
 
@@ -6889,7 +6894,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### ajusto a la altura
-<small>Creado: 2025-11-04 18:17</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `015-ajusto a la altura.html`
 
@@ -6985,7 +6990,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### cuando haga click el modal se esconde
-<small>Creado: 2025-11-04 18:20</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `016-cuando haga click el modal se esconde.html`
 
@@ -7086,7 +7091,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### botones siguiente y anterior
-<small>Creado: 2025-11-04 18:23</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `017-botones siguiente y anterior.html`
 
@@ -7189,7 +7194,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### flex al modal
-<small>Creado: 2025-11-04 18:26</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `018-flex al modal.html`
 
@@ -7304,7 +7309,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### comportamiento de los botones
-<small>Creado: 2025-11-04 18:31</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `019-comportamiento de los botones.html`
 
@@ -7425,7 +7430,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### imagen activa
-<small>Creado: 2025-11-04 18:36</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `020-imagen activa.html`
 
@@ -7559,7 +7564,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### boton anterior
-<small>Creado: 2025-11-04 18:37</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `021-boton anterior.html`
 
@@ -7708,7 +7713,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### excusa del texto alternativa
-<small>Creado: 2025-11-04 18:42</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `022-excusa del texto alternativa.html`
 
@@ -7857,7 +7862,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### trampichuela del blur
-<small>Creado: 2025-11-04 18:46</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `023-trampichuela del blur.html`
 
@@ -8008,7 +8013,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### texto
-<small>Creado: 2025-11-04 18:48</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `024-texto.html`
 
@@ -8166,7 +8171,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### refino el estilo
-<small>Creado: 2025-11-04 18:48</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `025-refino el estilo.html`
 
@@ -8325,7 +8330,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### las imagenes se hacen grandes
-<small>Creado: 2025-11-04 18:49</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `026-las imagenes se hacen grandes.html`
 
@@ -8486,7 +8491,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### propago a los botones
-<small>Creado: 2025-11-04 18:58</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `027-propago a los botones.html`
 
@@ -8649,7 +8654,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 ```
 
 ### editamos un poco el estilo
-<small>Creado: 2025-11-04 19:02</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `028-editamos un poco el estilo.html`
 
@@ -8824,7 +8829,7 @@ Monoespaciado = Maquina de escribir, recta, militar
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/001-Planificaci%C3%B3n%20de%20interfaces%20gr%C3%A1ficas/104-Examen%20final)
 
 ### crear tablas
-<small>Creado: 2025-11-11 17:56</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `001-crear tablas.sql`
 
@@ -8851,7 +8856,7 @@ CREATE TABLE Categorias(
 ```
 
 ### insertar
-<small>Creado: 2025-11-11 17:56</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-insertar.sql`
 
@@ -8873,7 +8878,7 @@ INSERT INTO Piezas VALUES(
 ```
 
 ### fk
-<small>Creado: 2025-11-11 17:56</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-fk.sql`
 
@@ -8886,7 +8891,7 @@ ON UPDATE CASCADE;
 ```
 
 ### selecciones
-<small>Creado: 2025-11-11 17:56</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-selecciones.sql`
 
@@ -8897,7 +8902,7 @@ SELECT * FROM Piezas;
 ```
 
 ### left join
-<small>Creado: 2025-11-11 17:56</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-left join.sql`
 
@@ -8910,7 +8915,7 @@ ON Piezas.id_categoria = Categorias.Identificador;
 ```
 
 ### ahora creo la vista
-<small>Creado: 2025-11-11 17:56</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `006-ahora creo la vista.sql`
 
@@ -8931,7 +8936,7 @@ SELECT * FROM piezas_y_categorias;
 ```
 
 ### usuario
-<small>Creado: 2025-11-11 17:56</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `007-usuario.sql`
 
@@ -8974,7 +8979,7 @@ FLUSH PRIVILEGES;
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/002-Uso%20de%20estilos/001-Estilos%20en%20l%C3%ADnea%20basados%20en%20etiquetas%20y%20en%20clases.)
 
 ### en linea
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `001-en linea.html`
 
@@ -8992,7 +8997,7 @@ No recomendado en lineas generales, pero puede venir bien en ocasiones particula
 ```
 
 ### estilo interno
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-estilo interno.html`
 
@@ -9020,7 +9025,7 @@ Ventaja: Centralizar estilos dentro del mismo documento
 ```
 
 ### estilo externo
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-estilo externo.html`
 
@@ -9049,7 +9054,7 @@ Ventaja: Centralizar estilos dentro del mismo documento
 ```
 
 ### selector etiqueta id y clase
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-selector etiqueta id y clase.html`
 
@@ -9072,7 +9077,7 @@ Ventaja: Centralizar estilos dentro del mismo documento
 ```
 
 ### clases
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-clases.html`
 
@@ -9106,7 +9111,7 @@ Ventaja: Centralizar estilos dentro del mismo documento
 ```
 
 ### pseudoselectores
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `006-pseudoselectores.html`
 
@@ -9140,7 +9145,7 @@ Ventaja: Centralizar estilos dentro del mismo documento
 ```
 
 ### estilo
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `estilo.css`
 
@@ -9157,7 +9162,7 @@ p{
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/002-Uso%20de%20estilos/002-Crear%20y%20vincular%20hojas%20de%20estilo.)
 
 ### index
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `001-index.html`
 
@@ -9174,7 +9179,7 @@ p{
 ```
 
 ### biblioteca
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-biblioteca.html`
 
@@ -9216,7 +9221,7 @@ p{
 ```
 
 ### biblioteca
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-biblioteca.php`
 
@@ -9289,7 +9294,7 @@ p{
 ```
 
 ### procesar
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-procesar.php`
 
@@ -9326,7 +9331,7 @@ p{
 ```
 
 ### boton borrar
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-boton borrar.php`
 
@@ -9401,7 +9406,7 @@ p{
 ```
 
 ### todojuntobiblioteca
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-todojuntobiblioteca.php`
 
@@ -9527,7 +9532,7 @@ p{
 ```
 
 ### borrar
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `borrar.php`
 
@@ -9540,7 +9545,7 @@ p{
 ```
 
 ### estilo
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `estilo.css`
 
@@ -9551,7 +9556,7 @@ input{
 ```
 
 ### estilo2
-<small>Creado: 2025-10-14 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `estilo2.css`
 
@@ -9616,7 +9621,7 @@ input[type="submit"]{
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/003-Implantaci%C3%B3n%20de%20contenido%20multimedia/001-Tipos%20de%20Im%C3%A1genes%20en%20la%20web.)
 
 ### ejemplo imagenes
-<small>Creado: 2026-02-17 17:01</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-ejemplo imagenes.html`
 
@@ -9632,7 +9637,7 @@ input[type="submit"]{
 ```
 
 ### insertar svg parte 1
-<small>Creado: 2026-02-17 17:09</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-insertar svg parte 1.html`
 
@@ -9648,7 +9653,7 @@ input[type="submit"]{
 ```
 
 ### insertar directamente
-<small>Creado: 2026-02-17 17:10</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-insertar directamente.html`
 
@@ -9715,7 +9720,7 @@ input[type="submit"]{
 ```
 
 ### dibujo
-<small>Creado: 2026-02-17 17:07</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `dibujo.svg`
 
@@ -9796,7 +9801,7 @@ input[type="submit"]{
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/003-Implantaci%C3%B3n%20de%20contenido%20multimedia/004-Optimizaci%C3%B3n%20de%20im%C3%A1genes%20para%20la%20web.)
 
 ### cargamos la imagen
-<small>Creado: 2026-02-17 17:14</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-cargamos la imagen.html`
 
@@ -9812,7 +9817,7 @@ input[type="submit"]{
 ```
 
 ### escalo la imagen
-<small>Creado: 2026-02-17 17:16</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-escalo la imagen.html`
 
@@ -9831,7 +9836,7 @@ input[type="submit"]{
 ```
 
 ### solucion buena
-<small>Creado: 2026-02-17 17:18</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-solucion buena.html`
 
@@ -9842,7 +9847,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### cargo imagen escalada
-<small>Creado: 2026-02-17 17:20</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-cargo imagen escalada.html`
 
@@ -9867,7 +9872,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/003-Implantaci%C3%B3n%20de%20contenido%20multimedia/005-Audio%3A%20formatos.%20Conversiones%20de%20formatos)
 
 ### insertar audio en web
-<small>Creado: 2026-02-17 18:22</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-insertar audio en web.html`
 
@@ -9883,7 +9888,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### ahora quiero controles
-<small>Creado: 2026-02-17 18:22</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-ahora quiero controles.html`
 
@@ -9899,7 +9904,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### audio en Javascript
-<small>Creado: 2026-02-17 18:25</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-audio en Javascript.html`
 
@@ -9919,7 +9924,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### mejor costumbre
-<small>Creado: 2026-02-17 18:28</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `006-mejor costumbre.html`
 
@@ -9947,7 +9952,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### reproductor
-<small>Creado: 2026-02-17 18:35</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `007-reproductor.html`
 
@@ -9986,7 +9991,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### rango
-<small>Creado: 2026-02-17 18:46</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `008-rango.html`
 
@@ -10039,7 +10044,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### rango tambien controla
-<small>Creado: 2026-02-17 18:48</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `009-rango tambien controla.html`
 
@@ -10095,7 +10100,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### ia
-<small>Creado: 2026-02-17 18:53</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `010-ia.html`
 
@@ -10729,7 +10734,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/003-Implantaci%C3%B3n%20de%20contenido%20multimedia/006-V%C3%ADdeo%3A%20codificaci%C3%B3n%20de%20v%C3%ADdeo%2C%20conversiones%20de%20formatos)
 
 ### video
-<small>Creado: 2026-02-17 18:57</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `001-video.html`
 
@@ -10745,7 +10750,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### modal
-<small>Creado: 2026-02-18 17:00</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-modal.html`
 
@@ -10774,7 +10779,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### un poco de javascript
-<small>Creado: 2026-02-18 17:01</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-un poco de javascript.html`
 
@@ -10809,7 +10814,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### rejilla
-<small>Creado: 2026-02-18 17:09</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-rejilla.html`
 
@@ -10861,7 +10866,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### parametros en los botones
-<small>Creado: 2026-02-18 18:31</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-parametros en los botones.html`
 
@@ -10908,7 +10913,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### cargo los videos de verdad
-<small>Creado: 2026-02-18 18:32</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `006-cargo los videos de verdad.html`
 
@@ -10963,7 +10968,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/003-Implantaci%C3%B3n%20de%20contenido%20multimedia/007-Animaciones.)
 
 ### animacion css
-<small>Creado: 2026-02-18 18:34</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `001-animacion css.html`
 
@@ -10983,7 +10988,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### llamamos y creamos animacion
-<small>Creado: 2026-02-18 18:39</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-llamamos y creamos animacion.html`
 
@@ -11015,7 +11020,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### funciones de animacion
-<small>Creado: 2026-02-18 18:41</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-funciones de animacion.html`
 
@@ -11054,7 +11059,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/003-Implantaci%C3%B3n%20de%20contenido%20multimedia/008-Integraci%C3%B3n%20de%20audio%20y%20v%C3%ADdeo%20en%20una%20animaci%C3%B3n.)
 
 ### repaso canvas
-<small>Creado: 2026-02-18 18:51</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `001-repaso canvas.html`
 
@@ -11080,7 +11085,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### animacion
-<small>Creado: 2026-02-18 18:57</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-animacion.html`
 
@@ -11118,7 +11123,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### rebote contra las paredes
-<small>Creado: 2026-02-18 18:58</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-rebote contra las paredes.html`
 
@@ -11159,7 +11164,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### angulo complementario
-<small>Creado: 2026-02-18 19:00</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-angulo complementario.html`
 
@@ -11222,7 +11227,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### js audio synth
-<small>Creado: 2026-02-18 19:02</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-js audio synth.html`
 
@@ -11335,7 +11340,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/004-Integraci%C3%B3n%20de%20contenido%20interactivo/001-Elementos%20interactivos.)
 
 ### demostracion
-<small>Creado: 2026-02-24 17:10</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-demostracion.html`
 
@@ -11357,7 +11362,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### hiperenlace
-<small>Creado: 2026-02-24 17:22</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-hiperenlace.html`
 
@@ -11388,7 +11393,7 @@ Vamos a abrir GIMP y usamos la opción de reescalar
 ```
 
 ### multisombras
-<small>Creado: 2026-02-24 17:24</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-multisombras.html`
 
@@ -11445,7 +11450,7 @@ a:active{
 ```
 
 ### boton fisico
-<small>Creado: 2026-02-24 17:26</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-boton fisico.html`
 
@@ -11545,7 +11550,7 @@ a:active{
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/004-Integraci%C3%B3n%20de%20contenido%20interactivo/002-Comportamientos%20interactivos.%20Comportamiento%20de%20los%20elementos.)
 
 ### speech recongnition
-<small>Creado: 2026-02-24 18:31</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `001-speech recongnition.html`
 
@@ -11599,7 +11604,7 @@ function startRecognition(){
 ```
 
 ### acciones
-<small>Creado: 2026-02-24 18:33</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-acciones.html`
 
@@ -11671,7 +11676,7 @@ function startRecognition(){
 ```
 
 ### ejecuto acciones
-<small>Creado: 2026-02-24 18:37</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-ejecuto acciones.html`
 
@@ -11751,7 +11756,7 @@ function startRecognition(){
 ```
 
 ### sintesis de voz
-<small>Creado: 2026-02-24 18:46</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-sintesis de voz.html`
 
@@ -11774,7 +11779,7 @@ function startRecognition(){
 ```
 
 ### echo
-<small>Creado: 2026-02-24 18:48</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `006-echo.html`
 
@@ -11850,7 +11855,7 @@ function startEcho(){
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/004-Integraci%C3%B3n%20de%20contenido%20interactivo/003-Ejecuci%C3%B3n%20de%20secuencias%20de%20comandos.)
 
 ### atrapo
-<small>Creado: 2026-02-25 18:24</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `001-atrapo.html`
 
@@ -11934,7 +11939,7 @@ async function startEcho(){
 ```
 
 ### proceso
-<small>Creado: 2026-02-25 18:24</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-proceso.php`
 
@@ -11996,7 +12001,7 @@ echo json_encode([
 ```
 
 ### emebeber perro
-<small>Creado: 2026-02-25 18:42</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-emebeber perro.php`
 
@@ -12047,7 +12052,7 @@ echo json_encode([
 ```
 
 ### embeber gato
-<small>Creado: 2026-02-25 18:44</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-embeber gato.php`
 
@@ -12098,7 +12103,7 @@ echo json_encode([
 ```
 
 ### similitudes
-<small>Creado: 2026-02-25 18:56</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-similitudes.php`
 
@@ -12234,7 +12239,7 @@ try {
 ```
 
 ### componentizacion
-<small>Creado: 2026-02-25 20:46</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `006-componentizacion.php`
 
@@ -12274,7 +12279,7 @@ try {
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/005-Dise%C3%B1o%20de%20webs%20accesibles/001-El%20Consorcio%20World%20Wide%20Web%20%28W3C%29.)
 
 ### tabla gantt
-<small>Creado: 2026-03-04 18:40</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `001-tabla gantt.html`
 
@@ -12311,7 +12316,7 @@ try {
 ```
 
 ### estilo y estructura
-<small>Creado: 2026-03-04 18:42</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-estilo y estructura.html`
 
@@ -12390,7 +12395,7 @@ try {
 ```
 
 ### un poco de js
-<small>Creado: 2026-03-04 18:48</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-un poco de js.html`
 
@@ -12495,7 +12500,7 @@ for(var i=0;i<celdas.length;i++){
 ```
 
 ### interactivo
-<small>Creado: 2026-03-04 18:52</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-interactivo.html`
 
@@ -12700,7 +12705,7 @@ document.getElementById("btnDelRow").onclick = function(){
 ```
 
 ### final
-<small>Creado: 2026-03-04 18:56</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-final.html`
 
@@ -13085,7 +13090,7 @@ document.getElementById("btnDelRow").onclick = function(){
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/005-Dise%C3%B1o%20de%20webs%20accesibles/004-T%C3%A9cnicas%20para%20satisfacer%20los%20requisitos%20definidos%20en%20las%20WCAG.)
 
 ### video
-<small>Creado: 2026-03-10 17:34</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `001-video.html`
 
@@ -13101,7 +13106,7 @@ document.getElementById("btnDelRow").onclick = function(){
 ```
 
 ### parseo
-<small>Creado: 2026-03-10 17:39</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `002-parseo.html`
 
@@ -13130,7 +13135,7 @@ document.getElementById("btnDelRow").onclick = function(){
 ```
 
 ### manipulamos json
-<small>Creado: 2026-03-10 17:40</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-manipulamos json.html`
 
@@ -13159,7 +13164,7 @@ document.getElementById("btnDelRow").onclick = function(){
 ```
 
 ### dividir mas
-<small>Creado: 2026-03-10 18:18</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-dividir mas.html`
 
@@ -13220,7 +13225,7 @@ document.getElementById("btnDelRow").onclick = function(){
 ```
 
 ### play al video
-<small>Creado: 2026-03-10 18:21</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-play al video.html`
 
@@ -13294,7 +13299,7 @@ document.getElementById("btnDelRow").onclick = function(){
 ```
 
 ### contenedor de subtitulos
-<small>Creado: 2026-03-10 18:25</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `006-contenedor de subtitulos.html`
 
@@ -13416,7 +13421,7 @@ document.getElementById("btnDelRow").onclick = function(){
 ```
 
 ### desfase
-<small>Creado: 2026-03-10 18:26</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `007-desfase.html`
 
@@ -13534,7 +13539,7 @@ document.getElementById("btnDelRow").onclick = function(){
 ```
 
 ### estilo de los subtitulos
-<small>Creado: 2026-03-10 18:29</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `008-estilo de los subtitulos.html`
 
@@ -13657,7 +13662,7 @@ document.getElementById("btnDelRow").onclick = function(){
 ```
 
 ### [Spanish (auto-generated)] Entrevista Jose Vicente Carratala [DownSub.com]
-<small>Creado: 2026-03-10 17:31</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `[Spanish (auto-generated)] Entrevista Jose Vicente Carratala [DownSub.com].srt`
 
@@ -14168,7 +14173,7 @@ quieras encontrar sobre él
 ```
 
 ### [Spanish (auto-generated)] Entrevista Jose Vicente Carratala [DownSub.com]
-<small>Creado: 2026-03-10 17:31</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `[Spanish (auto-generated)] Entrevista Jose Vicente Carratala [DownSub.com].txt`
 
@@ -14302,7 +14307,7 @@ quieras encontrar sobre él
 ```
 
 ### subtitulos
-<small>Creado: 2026-03-10 17:31</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `subtitulos.txt`
 
@@ -14442,7 +14447,7 @@ quieras encontrar sobre él
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/005-Dise%C3%B1o%20de%20webs%20accesibles/005-Prioridades.%20Puntos%20de%20verificaci%C3%B3n.)
 
 ### web html basica
-<small>Creado: 2026-03-11 17:07</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `001-web html basica.html`
 
@@ -14509,7 +14514,7 @@ quieras encontrar sobre él
 ```
 
 ### estilo
-<small>Creado: 2026-03-11 17:03</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `estilo.css`
 
@@ -14553,7 +14558,7 @@ footer{
 ```
 
 ### jocarsa-accesibilidad
-<small>Creado: 2026-03-11 17:26</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `jocarsa-accesibilidad.css`
 
@@ -14593,7 +14598,7 @@ footer{
 ```
 
 ### jocarsa-accesibilidad
-<small>Creado: 2026-03-11 17:26</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `jocarsa-accesibilidad.js`
 
@@ -14735,7 +14740,7 @@ window.onload = function(){
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/005-Dise%C3%B1o%20de%20webs%20accesibles/006-M%C3%A9todos%20para%20realizar%20revisiones%20preliminares%20y%20evaluaciones%20de%20adecuaci%C3%B3n%20o%20conformidad%20de%20documentos%20web.)
 
 ### buscarenpdf
-<small>Creado: 2026-03-11 18:18</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `buscarenpdf.py`
 
@@ -14787,7 +14792,7 @@ if __name__ == "__main__":
 ```
 
 ### ocr
-<small>Creado: 2026-03-11 18:18</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `ocr.py`
 
@@ -14835,7 +14840,7 @@ if __name__ == "__main__":
 ```
 
 ### ocr2
-<small>Creado: 2026-03-11 18:28</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `ocr2.py`
 
@@ -15246,7 +15251,7 @@ if __name__ == "__main__":
 ```
 
 ### pdfatexto
-<small>Creado: 2026-03-11 18:18</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `pdfatexto.py`
 
@@ -15409,7 +15414,7 @@ if __name__ == "__main__":
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/007-Inteligencia%20artificial/002-Continuamos%20con%20inteligencia%20artificial)
 
 ### ia en php
-<small>Creado: 2026-02-25 17:11</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `003-ia en php.php`
 
@@ -15446,7 +15451,7 @@ echo $result["response"];                             // Y la pinto en pantalla
 ```
 
 ### un poquito interactivo
-<small>Creado: 2026-02-25 17:14</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `004-un poquito interactivo.php`
 
@@ -15486,7 +15491,7 @@ echo $result["response"];                             // Y la pinto en pantalla
 ```
 
 ### estoy jodido
-<small>Creado: 2026-02-25 17:29</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `005-estoy jodido.php`
 
@@ -15525,7 +15530,7 @@ echo $result["response"];                             // Y la pinto en pantalla
 ```
 
 ### microchatgpt
-<small>Creado: 2026-02-25 17:39</small>
+<small>Creado: 2026-04-22 19:43</small>
 
 `006-microchatgpt.php`
 
@@ -15690,6 +15695,34 @@ if($pregunta !== ""){
 
 [📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/007-Inteligencia%20artificial/006-RAG)
 
+
+<a id="stack-con-php-y-python"></a>
+## stack con PHP y Python
+
+[📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/007-Inteligencia%20artificial/007-stack%20con%20PHP%20y%20Python)
+
+
+<a id="rag-mas-ia"></a>
+## RAG mas IA
+
+[📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/007-Inteligencia%20artificial/008-RAG%20mas%20IA)
+
+
+<a id="multimodelo"></a>
+## multimodelo
+
+[📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/007-Inteligencia%20artificial/009-multimodelo)
+
+
+<a id="css3d"></a>
+## css3D
+
+[📁 Ver carpeta en GitHub](https://github.com/jocarsa/interfacesweb/tree/main/007-Inteligencia%20artificial/010-css3D)
+
+
+
+<a id="aplicacion-de-horarios"></a>
+# Aplicacion de horarios
 
 
 <a id="git"></a>

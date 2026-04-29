@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Fichas de cliente aleatorias</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        background: #f4f6fb;
+    }
+
+    #contenedor {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .ficha {
+        position: absolute;
+        width: 220px;
+        min-height: 140px;
+        padding: 18px;
+        border-radius: 18px;
+
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+
+        border: 1px solid rgba(255,255,255,0.9);
+        box-shadow: 0 20px 40px rgba(30, 41, 59, 0.16);
+
+        color: #1f2937;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .ficha:hover {
+        transform: scale(1.08);
+        z-index: 999;
+        box-shadow: 0 30px 70px rgba(30, 41, 59, 0.28);
+    }
+
+    .ficha h3 {
+        margin: 0 0 10px;
+        font-size: 18px;
+    }
+
+    .ficha p {
+        margin: 4px 0;
+        font-size: 13px;
+        line-height: 1.4;
+    }
+
+    .etiqueta {
+        display: inline-block;
+        margin-top: 12px;
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: #e0e7ff;
+        color: #3730a3;
+        font-size: 12px;
+        font-weight: bold;
+    }
+</style>
+</head>
+
+<body>
+
+<div id="contenedor"></div>
+
+<script>
+const contenedor = document.getElementById("contenedor");
+
+const nombres = [
+    "Ana Martínez",
+    "Carlos López",
+    "Lucía Fernández",
+    "Miguel Torres",
+    "Sofía García",
+    "Javier Navarro",
+    "Elena Ruiz",
+    "Pablo Sánchez",
+    "Laura Romero",
+    "David Molina"
+];
+
+const empresas = [
+    "TecnoGlobal",
+    "NovaSoft",
+    "InnovaData",
+    "PixelStudio",
+    "CloudMarket",
+    "Soluciones Delta",
+    "Grupo Atlas",
+    "Digital Norte"
+];
+
+const estados = [
+    "Activo",
+    "Pendiente",
+    "Premium",
+    "En seguimiento",
+    "Nuevo cliente"
+];
+
+function crearFicha(i) {
+    const ficha = document.createElement("div");
+    ficha.className = "ficha";
+
+    const nombre = nombres[Math.floor(Math.random() * nombres.length)];
+    const empresa = empresas[Math.floor(Math.random() * empresas.length)];
+    const estado = estados[Math.floor(Math.random() * estados.length)];
+
+    ficha.innerHTML = `
+        <h3>${nombre}</h3>
+        <p><strong>Empresa:</strong> ${empresa}</p>
+        <p><strong>Email:</strong> cliente${i}@correo.com</p>
+        <p><strong>Teléfono:</strong> 600 ${Math.floor(100000 + Math.random() * 899999)}</p>
+        <span class="etiqueta">${estado}</span>
+    `;
+
+    const x = Math.random() * (window.innerWidth - 180);
+    const y = Math.random() * (window.innerHeight - 120);
+
+    ficha.style.left = x + "px";
+    ficha.style.top = y + "px";
+
+    ficha.style.transform = `
+        rotate(${Math.random() * 20 - 10}deg)
+    `;
+
+    ficha.addEventListener("mouseenter", () => {
+        ficha.style.transform = "scale(1.08) rotate(0deg)";
+    });
+
+    ficha.addEventListener("mouseleave", () => {
+        ficha.style.transform = `
+            rotate(${Math.random() * 20 - 10}deg)
+        `;
+    });
+
+    contenedor.appendChild(ficha);
+}
+
+for (let i = 1; i <= 60; i++) {
+    crearFicha(i);
+}
+</script>
+
+</body>
+</html>

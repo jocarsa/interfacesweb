@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Turnos de exposición proyecto intermodular</title>
+    <meta charset="UTF-8">
+    <style>
+      :root{
+        --fondo:#f5f7fb;
+        --panel:#ffffff;
+        --panel-suave:#eef2f8;
+        --borde:#d7deea;
+        --borde-fuerte:#c3cede;
+        --texto:#1f2937;
+        --texto-suave:#6b7280;
+        --primario:#2563eb;
+        --primario-oscuro:#1d4ed8;
+        --exito:#10b981;
+        --peligro:#ef4444;
+        --sombra:0 10px 30px rgba(15, 23, 42, 0.08);
+        --radio:18px;
+      }
+
+      *{
+        box-sizing:border-box;
+      }
+
+      html,body{
+        margin:0;
+        padding:0;
+        font-family:ubuntu,sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(37,99,235,0.08), transparent 30%),
+          radial-gradient(circle at bottom right, rgba(16,185,129,0.08), transparent 25%),
+          var(--fondo);
+        color:var(--texto);
+        width:100%;
+        height:100%;
+      }
+
+      body{
+        max-width:1400px;
+        margin:auto;
+        padding:40px 24px 60px 24px;
+      }
+
+      header{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:36px;
+        padding:22px 28px;
+        background:rgba(255,255,255,0.75);
+        backdrop-filter:blur(10px);
+        border:1px solid rgba(255,255,255,0.7);
+        border-radius:24px;
+        box-shadow:var(--sombra);
+      }
+
+      h1{
+        margin:0;
+        font-size:32px;
+        font-weight:700;
+        letter-spacing:-0.03em;
+      }
+
+      button{
+        border:none;
+        border-radius:12px;
+        padding:12px 18px;
+        background:linear-gradient(135deg,var(--primario),var(--primario-oscuro));
+        color:white;
+        font-weight:600;
+        font-size:14px;
+        cursor:pointer;
+        box-shadow:0 8px 18px rgba(37,99,235,0.22);
+        transition:transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+      }
+
+      button:hover{
+        transform:translateY(-1px);
+        box-shadow:0 12px 24px rgba(37,99,235,0.28);
+      }
+
+      button:active{
+        transform:translateY(0);
+      }
+
+      main{
+        display:flex;
+        flex-direction:column;
+        gap:30px;
+      }
+
+      h3{
+        margin:0 0 14px 4px;
+        font-size:18px;
+        font-weight:700;
+        color:var(--texto);
+      }
+
+      .semana{
+        display:grid;
+        grid-template-columns:repeat(7, minmax(140px, 1fr));
+        gap:16px;
+        width:100%;
+        min-height:340px;
+        margin-bottom:10px;
+      }
+
+      .dia{
+        background:var(--panel);
+        border:1px solid var(--borde);
+        border-radius:var(--radio);
+        padding:14px;
+        font-size:13px;
+        box-shadow:var(--sombra);
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+        position:relative;
+        overflow:hidden;
+        transition:transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      }
+
+      .dia:hover{
+        transform:translateY(-3px);
+        box-shadow:0 14px 32px rgba(15, 23, 42, 0.12);
+        border-color:var(--borde-fuerte);
+      }
+
+      .nombre-dia{
+        margin:-14px -14px 4px -14px;
+        padding:12px 14px;
+        background:linear-gradient(135deg,#eef4ff,#f8fbff);
+        border-bottom:1px solid var(--borde);
+        font-size:12px;
+        font-weight:700;
+        text-transform:capitalize;
+        color:var(--texto);
+      }
+
+      .desactivado{
+        opacity:0.55;
+        background:linear-gradient(180deg,#fbfcfe,#f2f5fa);
+        filter:saturate(0.75);
+      }
+
+      .desactivado .nombre-dia{
+        background:linear-gradient(135deg,#f3f4f6,#f9fafb);
+        color:var(--texto-suave);
+      }
+
+      .turno{
+        display:flex;
+        align-items:center;
+        gap:8px;
+        background:var(--panel-suave);
+        border:1px solid #e3e8f1;
+        border-radius:12px;
+        padding:6px 8px;
+        font-size:11px;
+        font-weight:500;
+        color:var(--texto-suave);
+        transition:background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+        cursor:pointer;
+      }
+
+      .turno:hover{
+        background:#e9f0ff;
+        border-color:#bfd3ff;
+        transform:scale(1.015);
+      }
+
+      .hora{
+        min-width:52px;
+        font-weight:700;
+        color:var(--texto);
+        text-align:center;
+      }
+
+      .slot{
+        background:linear-gradient(135deg,var(--primario),#3b82f6);
+        border:none;
+        border-radius:9px;
+        width:100%;
+        color:white;
+        text-align:center;
+        padding:7px 8px;
+        font-size:13px;
+        font-weight:700;
+        box-shadow:0 4px 10px rgba(37,99,235,0.2);
+        transition:background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      .slot:hover{
+        transform:scale(1.03);
+        box-shadow:0 8px 16px rgba(37,99,235,0.28);
+        background:linear-gradient(135deg,var(--primario-oscuro),var(--primario));
+      }
+
+      footer{
+        height:20px;
+      }
+
+      #contiene_modal{
+        position:fixed;
+        width:100%;
+        height:100%;
+        backdrop-filter:blur(6px);
+        background:rgba(15,23,42,.32);
+        left:0;
+        top:0;
+        display:none;
+        justify-content:center;
+        align-items:center;
+        padding:20px;
+        z-index:9999;
+      }
+
+      #contiene_modal.visible{
+        display:flex;
+      }
+
+      #modal{
+        width:100%;
+        max-width:980px;
+        background:white;
+        padding:0;
+        border-radius:24px;
+        box-shadow:0px 20px 60px rgba(0,0,0,0.25);
+        overflow:hidden;
+        border:1px solid rgba(255,255,255,0.7);
+        animation:apareceModal 0.25s ease;
+      }
+
+      @keyframes apareceModal{
+        from{
+          opacity:0;
+          transform:translateY(15px) scale(0.98);
+        }
+        to{
+          opacity:1;
+          transform:translateY(0) scale(1);
+        }
+      }
+
+      .modal-cabecera{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:22px 26px;
+        border-bottom:1px solid var(--borde);
+        background:linear-gradient(135deg,#f8fbff,#eef4ff);
+      }
+
+      .modal-cabecera h2{
+        margin:0;
+        font-size:24px;
+        letter-spacing:-0.02em;
+      }
+
+      .cerrar-modal{
+        width:42px;
+        height:42px;
+        border-radius:12px;
+        border:1px solid var(--borde);
+        background:white;
+        color:var(--texto);
+        font-size:22px;
+        line-height:1;
+        box-shadow:none;
+        padding:0;
+      }
+
+      .cerrar-modal:hover{
+        background:#f9fafb;
+        box-shadow:none;
+      }
+
+      .modal-contenido{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:0;
+      }
+
+      .columna-formulario{
+        padding:28px;
+      }
+
+      .columna-formulario + .columna-formulario{
+        border-left:1px solid var(--borde);
+        background:linear-gradient(180deg,#fcfdff,#f8fbff);
+      }
+
+      .columna-formulario h3{
+        margin:0 0 8px 0;
+        font-size:20px;
+      }
+
+      .descripcion-formulario{
+        margin:0 0 22px 0;
+        color:var(--texto-suave);
+        font-size:14px;
+        line-height:1.5;
+      }
+
+      .grupo-campo{
+        display:flex;
+        flex-direction:column;
+        gap:8px;
+        margin-bottom:16px;
+      }
+
+      .grupo-campo label{
+        font-size:13px;
+        font-weight:700;
+        color:var(--texto);
+      }
+
+      .grupo-campo input{
+        width:100%;
+        border:1px solid var(--borde);
+        border-radius:12px;
+        padding:13px 14px;
+        font-size:14px;
+        outline:none;
+        transition:border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+        background:white;
+      }
+
+      .grupo-campo input:focus{
+        border-color:var(--primario);
+        box-shadow:0 0 0 4px rgba(37,99,235,0.12);
+      }
+
+      .acciones-formulario{
+        display:flex;
+        gap:12px;
+        align-items:center;
+        margin-top:8px;
+      }
+
+      .boton-secundario{
+        background:white;
+        color:var(--texto);
+        border:1px solid var(--borde);
+        box-shadow:none;
+      }
+
+      .boton-secundario:hover{
+        background:#f8fafc;
+        box-shadow:none;
+      }
+
+      .mensaje-mockup{
+        margin-top:16px;
+        padding:12px 14px;
+        border-radius:12px;
+        font-size:13px;
+        background:#f3f6fb;
+        color:var(--texto-suave);
+        border:1px dashed var(--borde-fuerte);
+      }
+
+      .mini-nota{
+        font-size:12px;
+        color:var(--texto-suave);
+        margin-top:12px;
+        line-height:1.45;
+      }
+
+      @media (max-width:1200px){
+        .semana{
+          grid-template-columns:repeat(4, minmax(140px, 1fr));
+        }
+      }
+
+      @media (max-width:900px){
+        .modal-contenido{
+          grid-template-columns:1fr;
+        }
+
+        .columna-formulario + .columna-formulario{
+          border-left:none;
+          border-top:1px solid var(--borde);
+        }
+      }
+
+      @media (max-width:800px){
+        body{
+          padding:20px 14px 40px 14px;
+        }
+
+        header{
+          flex-direction:column;
+          align-items:flex-start;
+          gap:16px;
+        }
+
+        .semana{
+          grid-template-columns:repeat(2, minmax(140px, 1fr));
+        }
+      }
+
+      @media (max-width:520px){
+        .semana{
+          grid-template-columns:1fr;
+        }
+
+        h1{
+          font-size:26px;
+        }
+
+        .columna-formulario{
+          padding:20px;
+        }
+
+        .modal-cabecera{
+          padding:18px 20px;
+        }
+
+        .modal-cabecera h2{
+          font-size:20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Turnos de exposición</h1>
+      <button id="iniciar_sesion">Iniciar sesión</button>
+    </header>
+
+    <main>
+      <h3>Semana del 11 al 17 de mayo</h3>
+      <section class="semana" id="semana1">
+      </section>
+
+      <h3>Semana del 1 al 7 de junio</h3>
+      <section class="semana" id="semana2">
+      </section>
+    </main>
+
+    <footer></footer>
+
+    <div id="contiene_modal">
+      <div id="modal">
+        <div class="modal-cabecera">
+          <h2>Acceso de usuarios</h2>
+          <button class="cerrar-modal" id="cerrar_modal" title="Cerrar">&times;</button>
+        </div>
+
+        <div class="modal-contenido">
+          <div class="columna-formulario">
+            <h3>Iniciar sesión</h3>
+            <p class="descripcion-formulario">
+              Accede con tu correo electrónico y tu contraseña para gestionar tus turnos.
+            </p>
+
+            <form id="form_login">
+              <div class="grupo-campo">
+                <label for="login_email">Correo electrónico</label>
+                <input type="email" id="login_email" placeholder="tu@correo.com">
+              </div>
+
+              <div class="grupo-campo">
+                <label for="login_password">Contraseña</label>
+                <input type="password" id="login_password" placeholder="Introduce tu contraseña">
+              </div>
+
+              <div class="acciones-formulario">
+                <button type="submit">Entrar</button>
+              </div>
+
+              <div class="mensaje-mockup" id="mensaje_login">
+                Este formulario es solo un mockup de cliente. Todavía no conecta con servidor.
+              </div>
+            </form>
+          </div>
+
+          <div class="columna-formulario">
+            <h3>Crear nuevo usuario</h3>
+            <p class="descripcion-formulario">
+              Registra una cuenta nueva para poder reservar tu turno de exposición.
+            </p>
+
+            <form id="form_registro">
+              <div class="grupo-campo">
+                <label for="registro_nombre">Nombre completo</label>
+                <input type="text" id="registro_nombre" placeholder="Nombre y apellidos">
+              </div>
+
+              <div class="grupo-campo">
+                <label for="registro_email">Correo electrónico</label>
+                <input type="email" id="registro_email" placeholder="tu@correo.com">
+              </div>
+
+              <div class="grupo-campo">
+                <label for="registro_password">Contraseña</label>
+                <input type="password" id="registro_password" placeholder="Crea una contraseña">
+              </div>
+
+              <div class="grupo-campo">
+                <label for="registro_password2">Repetir contraseña</label>
+                <input type="password" id="registro_password2" placeholder="Repite la contraseña">
+              </div>
+
+              <div class="acciones-formulario">
+                <button type="submit">Crear cuenta</button>
+                <button type="button" class="boton-secundario" id="limpiar_registro">Limpiar</button>
+              </div>
+
+              <div class="mensaje-mockup" id="mensaje_registro">
+                Simulación de alta de usuario en el navegador. Aún no se guarda nada realmente.
+              </div>
+
+              <div class="mini-nota">
+                Más adelante esto podrá conectarse con PHP, base de datos y validación real.
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let tiempo_turno = 25;
+      let hora_inicio = "15:00";
+      let duracion_jornada_minutos = 60 * 6;
+
+      let dias_de_la_semana = ['lunes','martes','miércoles','jueves','viernes','sábado','domingo'];
+      let semanas = document.querySelectorAll(".semana");
+
+      function convertirHoraAMinutos(horaTexto){
+        let partes = horaTexto.split(":");
+        let horas = parseInt(partes[0]);
+        let minutos = parseInt(partes[1]);
+        return horas * 60 + minutos;
+      }
+
+      function formatearHora(minutosTotales){
+        let horas = Math.floor(minutosTotales / 60) % 24;
+        let minutos = minutosTotales % 60;
+
+        let horasTexto = String(horas).padStart(2, "0");
+        let minutosTexto = String(minutos).padStart(2, "0");
+
+        return horasTexto + ":" + minutosTexto;
+      }
+
+      let minutos_inicio = convertirHoraAMinutos(hora_inicio);
+
+      semanas.forEach(function(semana){
+        for(let dia = 1; dia <= 7; dia++){
+          let dia_articulo = document.createElement("article");
+          dia_articulo.classList.add("dia");
+
+          if(dia != 2 && dia != 3){
+            dia_articulo.classList.add("desactivado");
+          }
+
+          semana.appendChild(dia_articulo);
+
+          let cabecera = document.createElement("div");
+          cabecera.classList.add("nombre-dia");
+          cabecera.textContent = dias_de_la_semana[dia - 1];
+          dia_articulo.appendChild(cabecera);
+
+          for(let minutos = 0; minutos < duracion_jornada_minutos; minutos += tiempo_turno){
+            let hora_actual = minutos_inicio + minutos;
+
+            let elemento = document.createElement("div");
+            elemento.classList.add("turno");
+            dia_articulo.appendChild(elemento);
+
+            let hora = document.createElement("div");
+            hora.classList.add("hora");
+            hora.textContent = formatearHora(hora_actual);
+            elemento.appendChild(hora);
+
+            let slot = document.createElement("div");
+            slot.classList.add("slot");
+            slot.textContent = "+";
+            elemento.appendChild(slot);
+
+            elemento.onclick = function(){
+              alert("Aquí elegirás tu slot");
+            }
+          }
+        }
+      });
+
+      let iniciar_sesion = document.querySelector("#iniciar_sesion");
+      let contiene_modal = document.querySelector("#contiene_modal");
+      let cerrar_modal = document.querySelector("#cerrar_modal");
+
+      function abrirModal(){
+        contiene_modal.classList.add("visible");
+      }
+
+      function cerrarModal(){
+        contiene_modal.classList.remove("visible");
+      }
+
+      iniciar_sesion.onclick = function(){
+        abrirModal();
+      }
+
+      cerrar_modal.onclick = function(){
+        cerrarModal();
+      }
+
+      contiene_modal.onclick = function(e){
+        if(e.target === contiene_modal){
+          cerrarModal();
+        }
+      }
+
+      document.addEventListener("keydown", function(e){
+        if(e.key === "Escape"){
+          cerrarModal();
+        }
+      });
+
+      let form_login = document.querySelector("#form_login");
+      let mensaje_login = document.querySelector("#mensaje_login");
+
+      form_login.onsubmit = function(e){
+        e.preventDefault();
+
+        let email = document.querySelector("#login_email").value;
+        let password = document.querySelector("#login_password").value;
+
+        if(email === "" || password === ""){
+          mensaje_login.textContent = "Debes rellenar correo y contraseña para la simulación.";
+          return;
+        }
+
+        mensaje_login.textContent = "Mockup correcto: intentarías iniciar sesión con " + email + ".";
+      }
+
+      let form_registro = document.querySelector("#form_registro");
+      let mensaje_registro = document.querySelector("#mensaje_registro");
+      let limpiar_registro = document.querySelector("#limpiar_registro");
+
+      form_registro.onsubmit = function(e){
+        e.preventDefault();
+
+        let nombre = document.querySelector("#registro_nombre").value;
+        let email = document.querySelector("#registro_email").value;
+        let password1 = document.querySelector("#registro_password").value;
+        let password2 = document.querySelector("#registro_password2").value;
+
+        if(nombre === "" || email === "" || password1 === "" || password2 === ""){
+          mensaje_registro.textContent = "Debes completar todos los campos del formulario.";
+          return;
+        }
+
+        if(password1 !== password2){
+          mensaje_registro.textContent = "Las contraseñas no coinciden.";
+          return;
+        }
+
+        mensaje_registro.textContent = "Mockup correcto: crearías el usuario " + nombre + " con correo " + email + ".";
+      }
+
+      limpiar_registro.onclick = function(){
+        form_registro.reset();
+        mensaje_registro.textContent = "Formulario limpiado. Sigue siendo una simulación de cliente.";
+      }
+    </script>
+  </body>
+</html>

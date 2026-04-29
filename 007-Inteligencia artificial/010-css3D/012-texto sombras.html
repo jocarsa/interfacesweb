@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parallax 3D con volumen en cajas y textos</title>
+
+<style>
+*{ box-sizing:border-box; }
+
+body{
+    margin:0;
+    min-height:100vh;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+    background:radial-gradient(circle at top,#ffffff,#dfe6ee);
+    perspective:1200px;
+}
+
+#escena{
+    width:100vw;
+    height:100vh;
+    padding:40px;
+    transform-style:preserve-3d;
+    transform:translateZ(-380px) scale(0.76);
+}
+
+header,
+main,
+section,
+article,
+footer{
+    position:relative;
+    margin:20px;
+    padding:24px;
+    border-radius:18px;
+    color:white;
+    border:1px solid rgba(255,255,255,0.35);
+    transform-style:preserve-3d;
+}
+
+header{ background:#e74c3c; z-index:1; }
+main{ background:#3498db; z-index:2; }
+section{ background:#2ecc71; z-index:3; }
+article:nth-child(1){ background:#9b59b6; z-index:4; }
+article:nth-child(2){ background:#f39c12; z-index:5; }
+article:nth-child(3){ background:#1abc9c; z-index:6; }
+footer{ background:#34495e; z-index:7; }
+
+h1,h3,p{
+    position:relative;
+    z-index:20;
+    transform-style:preserve-3d;
+}
+
+h1,h3{
+    margin-top:0;
+}
+
+.zinfo{
+    position:absolute;
+    top:10px;
+    right:10px;
+    background:rgba(0,0,0,0.25);
+    padding:6px 10px;
+    border-radius:8px;
+    font-size:12px;
+    font-family:monospace;
+}
+</style>
+</head>
+
+<body>
+
+<div id="escena">
+
+    <header>
+        <h1>Titulo</h1>
+    </header>
+
+    <main>
+        <section>
+
+            <article>
+                <h3>Titulo</h3>
+                <p>Texto de ejemplo para probar profundidad.</p>
+            </article>
+
+            <article>
+                <h3>Titulo</h3>
+                <p>Otro bloque con distinto z-index.</p>
+            </article>
+
+            <article>
+                <h3>Titulo</h3>
+                <p>El efecto parallax depende de la profundidad.</p>
+            </article>
+
+        </section>
+    </main>
+
+    <footer>
+        Footer
+    </footer>
+
+</div>
+
+<script>
+const escena = document.getElementById("escena");
+
+const cajas = document.querySelectorAll(
+    "header, main, section, article, footer"
+);
+
+const textos = document.querySelectorAll(
+    "h1, h3, p"
+);
+
+function rgbDesdeCSS(color){
+    const valores = color.match(/\d+/g).map(Number);
+    return {
+        r: valores[0],
+        g: valores[1],
+        b: valores[2]
+    };
+}
+
+function oscurecerColor(rgb, factor){
+    return {
+        r: Math.max(0, Math.round(rgb.r * factor)),
+        g: Math.max(0, Math.round(rgb.g * factor)),
+        b: Math.max(0, Math.round(rgb.b * factor))
+    };
+}
+
+cajas.forEach(caja => {
+
+    const zIndex = parseInt(getComputedStyle(caja).zIndex) || 0;
+    const profundidad = zIndex * 35;
+    const colorBase = rgbDesdeCSS(getComputedStyle(caja).backgroundColor);
+
+    caja.dataset.zindex = zIndex;
+    caja.dataset.profundidad = profundidad;
+    caja.dataset.r = colorBase.r;
+    caja.dataset.g = colorBase.g;
+    caja.dataset.b = colorBase.b;
+
+    caja.style.transform = `translateZ(${profundidad}px)`;
+
+    const etiqueta = document.createElement("div");
+    etiqueta.className = "zinfo";
+    etiqueta.textContent = `z-index: ${zIndex} | Z: ${profundidad}px`;
+
+    caja.appendChild(etiqueta);
+});
+
+textos.forEach(texto => {
+    texto.dataset.textDepth = 16;
+    texto.style.transform = "translateZ(16px)";
+});
+
+function generarGrosorCaja(elemento, mouseX, mouseY){
+
+    const zIndex = Number(elemento.dataset.zindex);
+
+    const colorBase = {
+        r:Number(elemento.dataset.r),
+        g:Number(elemento.dataset.g),
+        b:Number(elemento.dataset.b)
+    };
+
+    const capas = 8 + zIndex;
+    const intensidad = 0.22 + zIndex * 0.02;
+
+    const offsetX = -mouseX * intensidad;
+    const offsetY = -mouseY * intensidad;
+
+    const sombras = [];
+
+    for(let i = 1; i <= capas; i++){
+
+        const factor = 1 - i * 0.025;
+        const color = oscurecerColor(colorBase, factor);
+
+        sombras.push(`
+            ${offsetX * i}px 
+            ${offsetY * i}px 
+            0 
+            rgb(${color.r},${color.g},${color.b})
+        `);
+    }
+
+    sombras.push(`
+        ${offsetX * capas}px 
+        ${offsetY * capas}px 
+        18px 
+        rgba(0,0,0,0.14)
+    `);
+
+    elemento.style.boxShadow = sombras.join(",");
+}
+
+function generarGrosorTexto(texto, mouseX, mouseY){
+
+    const capas = 6;
+    const offsetX = -mouseX * 0.12;
+    const offsetY = -mouseY * 0.12;
+
+    const sombras = [];
+
+    for(let i = 1; i <= capas; i++){
+
+        const alpha = 0.55 - i * 0.06;
+
+        sombras.push(`
+            ${offsetX * i}px 
+            ${offsetY * i}px 
+            0 
+            rgba(0,0,0,${alpha})
+        `);
+    }
+
+    sombras.push(`
+        ${offsetX * 9}px 
+        ${offsetY * 9}px 
+        8px 
+        rgba(0,0,0,0.22)
+    `);
+
+    texto.style.textShadow = sombras.join(",");
+}
+
+function actualizarParallax(e){
+
+    const x = e.clientX / window.innerWidth - 0.5;
+    const y = e.clientY / window.innerHeight - 0.5;
+
+    const rotY = x * 8;
+    const rotX = -y * 8;
+
+    escena.style.transform = `
+        translateZ(-380px)
+        scale(0.76)
+        rotateX(${rotX}deg)
+        rotateY(${rotY}deg)
+    `;
+
+    const mouseX = x * 8;
+    const mouseY = y * 8;
+
+    cajas.forEach(caja => {
+        generarGrosorCaja(caja, mouseX, mouseY);
+    });
+
+    textos.forEach(texto => {
+        generarGrosorTexto(texto, mouseX, mouseY);
+    });
+}
+
+document.addEventListener("mousemove", actualizarParallax);
+
+actualizarParallax({
+    clientX:window.innerWidth / 2,
+    clientY:window.innerHeight / 2
+});
+</script>
+
+</body>
+</html>

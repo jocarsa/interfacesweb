@@ -1,0 +1,1068 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Turnos de exposición proyecto intermodular</title>
+    <meta charset="UTF-8">
+    <style>
+      :root{
+        --fondo:#f7f8fc;
+        --panel:#ffffff;
+        --panel-suave:#eef2ff;
+        --borde:#d9def0;
+        --borde-fuerte:#b8c0e0;
+        --texto:#1f2430;
+        --texto-suave:#5f6780;
+        --indigo:#4f46e5;
+        --indigo-oscuro:#3730a3;
+        --indigo-suave:#e0e7ff;
+        --naranja:#f97316;
+        --naranja-oscuro:#ea580c;
+        --naranja-suave:#ffedd5;
+        --exito:#16a34a;
+        --error:#dc2626;
+        --sombra:0 10px 30px rgba(79,70,229,0.08);
+        --radio:14px;
+      }
+
+      *{
+        box-sizing:border-box;
+      }
+
+      html,body{
+        margin:0;
+        padding:0;
+        font-family:ubuntu,sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(79,70,229,0.08), transparent 28%),
+          radial-gradient(circle at top right, rgba(249,115,22,0.08), transparent 24%),
+          var(--fondo);
+        color:var(--texto);
+        width:100%;
+        min-height:100%;
+      }
+
+      body{
+        max-width:1440px;
+        margin:auto;
+        padding:24px 18px 40px 18px;
+      }
+
+      header{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:18px;
+        padding:16px 20px;
+        background:rgba(255,255,255,0.92);
+        border:1px solid var(--borde);
+        border-radius:18px;
+        box-shadow:var(--sombra);
+        gap:12px;
+        backdrop-filter:blur(8px);
+      }
+
+      .cabecera-izquierda{
+        display:flex;
+        flex-direction:column;
+        gap:6px;
+      }
+
+      h1{
+        margin:0;
+        font-size:28px;
+        font-weight:700;
+        letter-spacing:-0.02em;
+      }
+
+      .subtitulo{
+        margin:0;
+        color:var(--texto-suave);
+        font-size:14px;
+      }
+
+      .zona-usuario{
+        display:flex;
+        align-items:center;
+        gap:10px;
+        flex-wrap:wrap;
+        justify-content:flex-end;
+      }
+
+      #estado_usuario{
+        font-size:14px;
+        color:var(--texto-suave);
+        background:#fff;
+        border:1px solid var(--borde);
+        padding:8px 12px;
+        border-radius:999px;
+      }
+
+      button{
+        border:none;
+        border-radius:12px;
+        padding:10px 16px;
+        background:var(--indigo);
+        color:white;
+        font-weight:600;
+        font-size:14px;
+        cursor:pointer;
+        transition:background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+        box-shadow:0 6px 18px rgba(79,70,229,0.18);
+      }
+
+      button:hover{
+        background:var(--indigo-oscuro);
+      }
+
+      button:active{
+        transform:scale(0.98);
+      }
+
+      .boton-naranja{
+        background:var(--naranja);
+        box-shadow:0 6px 18px rgba(249,115,22,0.22);
+      }
+
+      .boton-naranja:hover{
+        background:var(--naranja-oscuro);
+      }
+
+      .panel-instrucciones{
+        background:linear-gradient(135deg, #ffffff, #f8f9ff);
+        border:1px solid var(--borde);
+        border-radius:18px;
+        box-shadow:var(--sombra);
+        padding:18px 20px;
+        margin-bottom:22px;
+      }
+
+      .panel-instrucciones h2{
+        margin:0 0 12px 0;
+        font-size:18px;
+        color:var(--indigo-oscuro);
+      }
+
+      .panel-instrucciones p{
+        margin:0 0 10px 0;
+        color:var(--texto-suave);
+        line-height:1.55;
+        font-size:14px;
+      }
+
+      .lista-instrucciones{
+        margin:0;
+        padding-left:18px;
+        color:var(--texto);
+      }
+
+      .lista-instrucciones li{
+        margin:7px 0;
+        line-height:1.5;
+      }
+
+      .leyenda{
+        display:flex;
+        flex-wrap:wrap;
+        gap:10px;
+        margin-top:14px;
+      }
+
+      .chip-leyenda{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        padding:8px 12px;
+        border-radius:999px;
+        background:white;
+        border:1px solid var(--borde);
+        font-size:13px;
+        color:var(--texto-suave);
+      }
+
+      .muestra{
+        width:14px;
+        height:14px;
+        border-radius:4px;
+        display:inline-block;
+      }
+
+      .muestra-indigo{
+        background:var(--indigo-suave);
+        border:1px solid #a5b4fc;
+      }
+
+      .muestra-naranja{
+        background:var(--naranja-suave);
+        border:1px solid #fdba74;
+      }
+
+      .muestra-gris{
+        background:#eceff5;
+        border:1px solid #d9def0;
+      }
+
+      main{
+        display:flex;
+        flex-direction:column;
+        gap:22px;
+      }
+
+      h3{
+        margin:0 0 8px 2px;
+        font-size:17px;
+        font-weight:700;
+        color:var(--texto);
+      }
+
+      .semana{
+        display:grid;
+        grid-template-columns:repeat(7, minmax(120px, 1fr));
+        gap:10px;
+        width:100%;
+      }
+
+      .dia{
+        background:rgba(255,255,255,0.92);
+        border:1px solid var(--borde);
+        border-radius:14px;
+        font-size:12px;
+        display:flex;
+        flex-direction:column;
+        overflow:hidden;
+        min-height:300px;
+        box-shadow:var(--sombra);
+      }
+
+      .nombre-dia{
+        padding:11px 8px;
+        background:linear-gradient(180deg,#fbfbff,#f3f5ff);
+        border-bottom:1px solid var(--borde);
+        font-size:11px;
+        font-weight:700;
+        text-transform:capitalize;
+        text-align:center;
+        color:var(--texto-suave);
+      }
+
+      .desactivado{
+        opacity:0.55;
+        background:#fbfbfd;
+      }
+
+      .turno{
+        display:flex;
+        align-items:center;
+        gap:6px;
+        padding:5px 6px;
+        min-height:32px;
+        border-bottom:1px solid #f0f2f7;
+        cursor:pointer;
+        transition:background 0.18s ease;
+      }
+
+      .turno:hover{
+        background:rgba(79,70,229,0.04);
+      }
+
+      .turno:last-child{
+        border-bottom:none;
+      }
+
+      .hora{
+        min-width:46px;
+        font-size:11px;
+        font-weight:700;
+        color:var(--texto-suave);
+        text-align:right;
+      }
+
+      .slot{
+        background:#eceff5;
+        border:1px solid #e4e8f0;
+        border-radius:8px;
+        width:100%;
+        color:#5f6780;
+        text-align:center;
+        padding:6px 8px;
+        font-size:12px;
+        font-weight:700;
+        transition:
+          background 0.2s ease,
+          border-color 0.2s ease,
+          color 0.2s ease,
+          transform 0.15s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .turno:hover .slot{
+        background:var(--indigo);
+        border-color:var(--indigo);
+        color:white;
+        transform:translateY(-1px);
+        box-shadow:0 8px 20px rgba(79,70,229,0.18);
+      }
+
+      .slot .contador{
+        display:inline-block;
+        min-width:22px;
+      }
+
+      .slot.mio{
+        background:var(--indigo-suave);
+        border-color:#a5b4fc;
+        color:var(--indigo-oscuro);
+      }
+
+      .turno:hover .slot.mio{
+        background:var(--naranja);
+        border-color:var(--naranja);
+        color:white;
+        box-shadow:0 8px 20px rgba(249,115,22,0.22);
+      }
+
+      #contiene_modal{
+        position:fixed;
+        width:100%;
+        height:100%;
+        backdrop-filter:blur(8px);
+        background:rgba(15,23,42,.34);
+        left:0;
+        top:0;
+        display:none;
+        justify-content:center;
+        align-items:center;
+        padding:20px;
+        z-index:9999;
+      }
+
+      #contiene_modal.visible{
+        display:flex;
+      }
+
+      #modal{
+        width:100%;
+        max-width:980px;
+        background:white;
+        padding:0;
+        border-radius:24px;
+        box-shadow:0px 20px 60px rgba(0,0,0,0.25);
+        overflow:hidden;
+        border:1px solid rgba(255,255,255,0.7);
+      }
+
+      .modal-cabecera{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:22px 26px;
+        border-bottom:1px solid var(--borde);
+        background:linear-gradient(135deg,#eef2ff,#fff7ed);
+      }
+
+      .modal-cabecera h2{
+        margin:0;
+        font-size:24px;
+      }
+
+      .cerrar-modal{
+        width:42px;
+        height:42px;
+        border-radius:12px;
+        border:1px solid var(--borde);
+        background:white;
+        color:var(--texto);
+        font-size:22px;
+        line-height:1;
+        padding:0;
+        box-shadow:none;
+      }
+
+      .cerrar-modal:hover{
+        background:#fafbff;
+      }
+
+      .modal-contenido{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+      }
+
+      .columna-formulario{
+        padding:28px;
+      }
+
+      .columna-formulario + .columna-formulario{
+        border-left:1px solid var(--borde);
+        background:linear-gradient(180deg,#fff,#fffaf5);
+      }
+
+      .columna-formulario h3{
+        margin:0 0 8px 0;
+        font-size:20px;
+      }
+
+      .descripcion-formulario{
+        margin:0 0 22px 0;
+        color:var(--texto-suave);
+        font-size:14px;
+        line-height:1.5;
+      }
+
+      .grupo-campo{
+        display:flex;
+        flex-direction:column;
+        gap:8px;
+        margin-bottom:16px;
+      }
+
+      .grupo-campo label{
+        font-size:13px;
+        font-weight:700;
+      }
+
+      .grupo-campo input{
+        width:100%;
+        border:1px solid var(--borde);
+        border-radius:12px;
+        padding:13px 14px;
+        font-size:14px;
+        outline:none;
+        background:white;
+        transition:border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      .grupo-campo input:focus{
+        border-color:var(--indigo);
+        box-shadow:0 0 0 4px rgba(79,70,229,0.12);
+      }
+
+      .acciones-formulario{
+        display:flex;
+        gap:12px;
+        align-items:center;
+        margin-top:8px;
+      }
+
+      .boton-secundario{
+        background:white;
+        color:var(--texto);
+        border:1px solid var(--borde);
+        box-shadow:none;
+      }
+
+      .boton-secundario:hover{
+        background:#fafbff;
+      }
+
+      .mensaje-mockup{
+        margin-top:16px;
+        padding:12px 14px;
+        border-radius:12px;
+        font-size:13px;
+        background:#f5f7ff;
+        color:var(--texto-suave);
+        border:1px dashed var(--borde-fuerte);
+      }
+
+      .toast-wrap{
+        position:fixed;
+        top:24px;
+        right:24px;
+        z-index:10000;
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+      }
+
+      .toast{
+        min-width:280px;
+        max-width:380px;
+        background:white;
+        color:var(--texto);
+        border-radius:16px;
+        border:1px solid var(--borde);
+        box-shadow:0 18px 38px rgba(0,0,0,0.12);
+        padding:14px 16px;
+        display:flex;
+        gap:12px;
+        align-items:flex-start;
+        animation:entraToast 0.25s ease;
+      }
+
+      .toast.ok{
+        border-left:5px solid var(--exito);
+      }
+
+      .toast.error{
+        border-left:5px solid var(--error);
+      }
+
+      .toast.info{
+        border-left:5px solid var(--indigo);
+      }
+
+      .toast-icono{
+        font-size:18px;
+        line-height:1.2;
+      }
+
+      .toast-contenido{
+        flex:1;
+      }
+
+      .toast-titulo{
+        font-weight:700;
+        font-size:14px;
+        margin-bottom:4px;
+      }
+
+      .toast-texto{
+        font-size:13px;
+        color:var(--texto-suave);
+        line-height:1.45;
+      }
+
+      @keyframes entraToast{
+        from{
+          opacity:0;
+          transform:translateY(-8px) translateX(10px);
+        }
+        to{
+          opacity:1;
+          transform:translateY(0) translateX(0);
+        }
+      }
+
+      @media (max-width:1200px){
+        .semana{
+          grid-template-columns:repeat(4, minmax(120px, 1fr));
+        }
+      }
+
+      @media (max-width:900px){
+        .modal-contenido{
+          grid-template-columns:1fr;
+        }
+
+        .columna-formulario + .columna-formulario{
+          border-left:none;
+          border-top:1px solid var(--borde);
+        }
+      }
+
+      @media (max-width:800px){
+        body{
+          padding:18px 12px 30px 12px;
+        }
+
+        header{
+          flex-direction:column;
+          align-items:flex-start;
+        }
+
+        .zona-usuario{
+          justify-content:flex-start;
+        }
+
+        .semana{
+          grid-template-columns:repeat(2, minmax(120px, 1fr));
+        }
+
+        .toast-wrap{
+          left:12px;
+          right:12px;
+          top:12px;
+        }
+
+        .toast{
+          max-width:none;
+          min-width:0;
+          width:100%;
+        }
+      }
+
+      @media (max-width:520px){
+        .semana{
+          grid-template-columns:1fr;
+        }
+
+        h1{
+          font-size:24px;
+        }
+
+        .columna-formulario{
+          padding:20px;
+        }
+
+        .modal-cabecera{
+          padding:18px 20px;
+        }
+
+        .modal-cabecera h2{
+          font-size:20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toast-wrap" id="toast_wrap"></div>
+
+    <header>
+      <div class="cabecera-izquierda">
+        <h1>Turnos de exposición</h1>
+        <p class="subtitulo">Proyecto intermodular · reserva y gestión de franjas horarias</p>
+      </div>
+
+      <div class="zona-usuario">
+        <div id="estado_usuario">No has iniciado sesión</div>
+        <button id="iniciar_sesion">Iniciar sesión</button>
+        <button id="cerrar_sesion" class="boton-naranja" style="display:none;">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <section class="panel-instrucciones">
+      <h2>Instrucciones</h2>
+      <p>
+        En esta pantalla puedes consultar los huecos disponibles para la exposición y gestionar tus reservas de manera sencilla.
+      </p>
+      <ul class="lista-instrucciones">
+        <li>Inicia sesión o crea tu usuario para poder reservar.</li>
+        <li>El número que aparece en cada hueco indica cuántas reservas anónimas existen ya en ese slot.</li>
+        <li>Pulsa sobre un hueco gris para reservarlo.</li>
+        <li>Si un hueco ya es tuyo, aparecerá marcado y podrás volver a pulsarlo para anular tu reserva.</li>
+        <li>Las reservas de otros usuarios son anónimas y nunca muestran nombres.</li>
+      </ul>
+
+      <div class="leyenda">
+        <div class="chip-leyenda"><span class="muestra muestra-gris"></span> Hueco disponible</div>
+        <div class="chip-leyenda"><span class="muestra muestra-indigo"></span> Reserva tuya</div>
+        <div class="chip-leyenda"><span class="muestra muestra-naranja"></span> Acción de anulación al pasar el ratón</div>
+      </div>
+    </section>
+
+    <main>
+      <h3>Semana del 11 al 17 de mayo</h3>
+      <section class="semana" id="semana1"></section>
+
+      <h3>Semana del 1 al 7 de junio</h3>
+      <section class="semana" id="semana2"></section>
+    </main>
+
+    <div id="contiene_modal">
+      <div id="modal">
+        <div class="modal-cabecera">
+          <h2>Acceso de usuarios</h2>
+          <button class="cerrar-modal" id="cerrar_modal" title="Cerrar">&times;</button>
+        </div>
+
+        <div class="modal-contenido">
+          <div class="columna-formulario">
+            <h3>Iniciar sesión</h3>
+            <p class="descripcion-formulario">
+              Accede con tu correo electrónico y tu contraseña para gestionar tus turnos.
+            </p>
+
+            <form id="form_login">
+              <div class="grupo-campo">
+                <label for="login_email">Correo electrónico</label>
+                <input type="email" id="login_email" placeholder="tu@correo.com">
+              </div>
+
+              <div class="grupo-campo">
+                <label for="login_password">Contraseña</label>
+                <input type="password" id="login_password" placeholder="Introduce tu contraseña">
+              </div>
+
+              <div class="acciones-formulario">
+                <button type="submit">Entrar</button>
+              </div>
+
+              <div class="mensaje-mockup" id="mensaje_login">
+                Introduce tus credenciales para acceder.
+              </div>
+            </form>
+          </div>
+
+          <div class="columna-formulario">
+            <h3>Crear nuevo usuario</h3>
+            <p class="descripcion-formulario">
+              Registra una cuenta nueva para poder reservar tu turno de exposición.
+            </p>
+
+            <form id="form_registro">
+              <div class="grupo-campo">
+                <label for="registro_nombre">Nombre completo</label>
+                <input type="text" id="registro_nombre" placeholder="Nombre y apellidos">
+              </div>
+
+              <div class="grupo-campo">
+                <label for="registro_email">Correo electrónico</label>
+                <input type="email" id="registro_email" placeholder="tu@correo.com">
+              </div>
+
+              <div class="grupo-campo">
+                <label for="registro_password">Contraseña</label>
+                <input type="password" id="registro_password" placeholder="Crea una contraseña">
+              </div>
+
+              <div class="grupo-campo">
+                <label for="registro_password2">Repetir contraseña</label>
+                <input type="password" id="registro_password2" placeholder="Repite la contraseña">
+              </div>
+
+              <div class="acciones-formulario">
+                <button type="submit">Crear cuenta</button>
+                <button type="button" class="boton-secundario" id="limpiar_registro">Limpiar</button>
+              </div>
+
+              <div class="mensaje-mockup" id="mensaje_registro">
+                Completa el formulario para crear tu usuario.
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const API = "api.php";
+
+      let tiempo_turno = 25;
+      let hora_inicio = "15:00";
+      let duracion_jornada_minutos = 60 * 6;
+
+      let dias_de_la_semana = ['lunes','martes','miércoles','jueves','viernes','sábado','domingo'];
+
+      let semanas_config = [
+        {contenedor:"#semana1", semana:"2026-05-11"},
+        {contenedor:"#semana2", semana:"2026-06-01"}
+      ];
+
+      let resumenSlots = {};
+      let misReservas = {};
+      let usuarioActual = null;
+
+      function convertirHoraAMinutos(horaTexto){
+        let partes = horaTexto.split(":");
+        return parseInt(partes[0]) * 60 + parseInt(partes[1]);
+      }
+
+      function formatearHora(minutosTotales){
+        let horas = Math.floor(minutosTotales / 60) % 24;
+        let minutos = minutosTotales % 60;
+        return String(horas).padStart(2, "0") + ":" + String(minutos).padStart(2, "0");
+      }
+
+      function claveSlot(semana, dia, hora){
+        return semana + "|" + dia + "|" + hora;
+      }
+
+      function showToast(tipo, titulo, texto){
+        let wrap = document.querySelector("#toast_wrap");
+        let toast = document.createElement("div");
+        toast.className = "toast " + tipo;
+
+        let icono = "ℹ️";
+        if(tipo === "ok") icono = "✅";
+        if(tipo === "error") icono = "⚠️";
+
+        toast.innerHTML = `
+          <div class="toast-icono">${icono}</div>
+          <div class="toast-contenido">
+            <div class="toast-titulo">${titulo}</div>
+            <div class="toast-texto">${texto}</div>
+          </div>
+        `;
+
+        wrap.appendChild(toast);
+
+        setTimeout(function(){
+          toast.style.opacity = "0";
+          toast.style.transform = "translateY(-8px)";
+          toast.style.transition = "all 0.25s ease";
+          setTimeout(function(){
+            toast.remove();
+          }, 250);
+        }, 3200);
+      }
+
+      async function apiGet(action){
+        let r = await fetch(API + "?action=" + encodeURIComponent(action), {
+          credentials: "same-origin"
+        });
+        return await r.json();
+      }
+
+      async function apiPost(action, data){
+        let r = await fetch(API + "?action=" + encodeURIComponent(action), {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          credentials: "same-origin",
+          body: JSON.stringify(data)
+        });
+        return await r.json();
+      }
+
+      function pintarSemanas(){
+        semanas_config.forEach(function(item){
+          let semana = item.semana;
+          let contenedor = document.querySelector(item.contenedor);
+          contenedor.innerHTML = "";
+
+          for(let dia = 1; dia <= 7; dia++){
+            let dia_articulo = document.createElement("article");
+            dia_articulo.classList.add("dia");
+
+            let esDiaActivo = (dia === 2 || dia === 3);
+
+            if(!esDiaActivo){
+              dia_articulo.classList.add("desactivado");
+            }
+
+            let cabecera = document.createElement("div");
+            cabecera.classList.add("nombre-dia");
+            cabecera.textContent = dias_de_la_semana[dia - 1];
+            dia_articulo.appendChild(cabecera);
+
+            if(esDiaActivo){
+              let minutos_inicio = convertirHoraAMinutos(hora_inicio);
+
+              for(let minutos = 0; minutos < duracion_jornada_minutos; minutos += tiempo_turno){
+                let hora = formatearHora(minutos_inicio + minutos);
+                let clave = claveSlot(semana, dia, hora);
+                let total = resumenSlots[clave] ? resumenSlots[clave] : 0;
+                let esMio = !!misReservas[clave];
+
+                let elemento = document.createElement("div");
+                elemento.classList.add("turno");
+
+                let horaDiv = document.createElement("div");
+                horaDiv.classList.add("hora");
+                horaDiv.textContent = hora;
+                elemento.appendChild(horaDiv);
+
+                let slot = document.createElement("div");
+                slot.classList.add("slot");
+
+                if(esMio){
+                  slot.classList.add("mio");
+                  slot.title = "Este slot está reservado por ti. Pulsa para anularlo.";
+                }else{
+                  slot.title = "Pulsa para reservar este slot.";
+                }
+
+                slot.innerHTML = '<span class="contador">' + total + '</span>';
+                elemento.appendChild(slot);
+
+                elemento.onclick = async function(){
+                  if(!usuarioActual){
+                    abrirModal();
+                    showToast("info", "Necesitas iniciar sesión", "Accede o crea una cuenta para gestionar tus reservas.");
+                    return;
+                  }
+
+                  if(esMio){
+                    let respuesta = await apiPost("cancelar_reserva", {
+                      semana: semana,
+                      dia: dia,
+                      hora: hora
+                    });
+
+                    if(!respuesta.ok){
+                      showToast("error", "No se pudo anular", respuesta.error || "Ha ocurrido un error al cancelar la reserva.");
+                      return;
+                    }
+
+                    showToast("ok", "Reserva anulada", "Se ha liberado el slot de " + dias_de_la_semana[dia-1] + " a las " + hora + ".");
+                    await cargarDatosPantalla();
+                    return;
+                  }
+
+                  let respuesta = await apiPost("reservar", {
+                    semana: semana,
+                    dia: dia,
+                    hora: hora
+                  });
+
+                  if(!respuesta.ok){
+                    showToast("error", "No se pudo reservar", respuesta.error || "Ha ocurrido un error al guardar la reserva.");
+                    return;
+                  }
+
+                  showToast("ok", "Reserva confirmada", "Has reservado el slot de " + dias_de_la_semana[dia-1] + " a las " + hora + ".");
+                  await cargarDatosPantalla();
+                };
+
+                dia_articulo.appendChild(elemento);
+              }
+            }
+
+            contenedor.appendChild(dia_articulo);
+          }
+        });
+      }
+
+      async function cargarResumenSlots(){
+        let respuesta = await apiGet("resumen_slots");
+        resumenSlots = {};
+
+        if(respuesta.ok && Array.isArray(respuesta.slots)){
+          respuesta.slots.forEach(function(item){
+            let clave = claveSlot(item.semana, parseInt(item.dia), item.hora);
+            resumenSlots[clave] = parseInt(item.total);
+          });
+        }
+      }
+
+      async function cargarMisReservas(){
+        misReservas = {};
+
+        let respuesta = await apiGet("mis_reservas");
+        if(respuesta.ok && Array.isArray(respuesta.reservas)){
+          respuesta.reservas.forEach(function(item){
+            let clave = claveSlot(item.semana, parseInt(item.dia), item.hora);
+            misReservas[clave] = true;
+          });
+        }
+      }
+
+      async function cargarEstadoSesion(){
+        let respuesta = await apiGet("estado");
+
+        let estadoUsuario = document.querySelector("#estado_usuario");
+        let botonLogin = document.querySelector("#iniciar_sesion");
+        let botonLogout = document.querySelector("#cerrar_sesion");
+
+        if(respuesta.ok && respuesta.logueado){
+          usuarioActual = respuesta.usuario;
+          estadoUsuario.textContent = "Sesión iniciada como " + respuesta.usuario.nombre;
+          botonLogin.style.display = "none";
+          botonLogout.style.display = "inline-block";
+        }else{
+          usuarioActual = null;
+          estadoUsuario.textContent = "No has iniciado sesión";
+          botonLogin.style.display = "inline-block";
+          botonLogout.style.display = "inline-block";
+          botonLogout.style.display = "none";
+        }
+      }
+
+      async function cargarDatosPantalla(){
+        await cargarEstadoSesion();
+        await cargarResumenSlots();
+
+        if(usuarioActual){
+          await cargarMisReservas();
+        }else{
+          misReservas = {};
+        }
+
+        pintarSemanas();
+      }
+
+      let iniciar_sesion = document.querySelector("#iniciar_sesion");
+      let cerrar_sesion = document.querySelector("#cerrar_sesion");
+      let contiene_modal = document.querySelector("#contiene_modal");
+      let cerrar_modal = document.querySelector("#cerrar_modal");
+
+      function abrirModal(){
+        contiene_modal.classList.add("visible");
+      }
+
+      function cerrarModal(){
+        contiene_modal.classList.remove("visible");
+      }
+
+      iniciar_sesion.onclick = function(){
+        abrirModal();
+      };
+
+      cerrar_sesion.onclick = async function(){
+        let respuesta = await apiGet("logout");
+        if(respuesta.ok){
+          showToast("info", "Sesión cerrada", "Tu sesión se ha cerrado correctamente.");
+        }
+        await cargarDatosPantalla();
+      };
+
+      cerrar_modal.onclick = function(){
+        cerrarModal();
+      };
+
+      contiene_modal.onclick = function(e){
+        if(e.target === contiene_modal){
+          cerrarModal();
+        }
+      };
+
+      document.addEventListener("keydown", function(e){
+        if(e.key === "Escape"){
+          cerrarModal();
+        }
+      });
+
+      let form_login = document.querySelector("#form_login");
+      let mensaje_login = document.querySelector("#mensaje_login");
+
+      form_login.onsubmit = async function(e){
+        e.preventDefault();
+
+        let email = document.querySelector("#login_email").value.trim();
+        let password = document.querySelector("#login_password").value;
+
+        let respuesta = await apiPost("login", {
+          email: email,
+          password: password
+        });
+
+        if(!respuesta.ok){
+          mensaje_login.textContent = respuesta.error || "No se pudo iniciar sesión";
+          showToast("error", "Acceso denegado", mensaje_login.textContent);
+          return;
+        }
+
+        mensaje_login.textContent = respuesta.message;
+        cerrarModal();
+        showToast("ok", "Bienvenido", "Has iniciado sesión correctamente.");
+        await cargarDatosPantalla();
+      };
+
+      let form_registro = document.querySelector("#form_registro");
+      let mensaje_registro = document.querySelector("#mensaje_registro");
+      let limpiar_registro = document.querySelector("#limpiar_registro");
+
+      form_registro.onsubmit = async function(e){
+        e.preventDefault();
+
+        let nombre = document.querySelector("#registro_nombre").value.trim();
+        let email = document.querySelector("#registro_email").value.trim();
+        let password = document.querySelector("#registro_password").value;
+        let password2 = document.querySelector("#registro_password2").value;
+
+        let respuesta = await apiPost("register", {
+          nombre: nombre,
+          email: email,
+          password: password,
+          password2: password2
+        });
+
+        if(!respuesta.ok){
+          mensaje_registro.textContent = respuesta.error || "No se pudo registrar";
+          showToast("error", "Registro no completado", mensaje_registro.textContent);
+          return;
+        }
+
+        mensaje_registro.textContent = respuesta.message;
+        cerrarModal();
+        showToast("ok", "Cuenta creada", "Tu usuario se ha creado correctamente y ya has iniciado sesión.");
+        await cargarDatosPantalla();
+      };
+
+      limpiar_registro.onclick = function(){
+        form_registro.reset();
+        mensaje_registro.textContent = "Formulario limpiado.";
+      };
+
+      cargarDatosPantalla();
+    </script>
+  </body>
+</html>

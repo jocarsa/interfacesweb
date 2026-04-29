@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parallax 3D exagerado con parámetros</title>
+
+<style>
+*{ box-sizing:border-box; }
+
+body{
+    margin:0;
+    min-height:100vh;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+    background:radial-gradient(circle at top,#fff,#dfe6ee);
+    perspective:1200px;
+    perspective-origin:center center;
+}
+
+#escena{
+    width:100vw;
+    height:100vh;
+    padding:40px;
+    transform-style:preserve-3d;
+}
+
+.bloque{
+    position:relative;
+    margin:20px;
+    padding:24px;
+    border-radius:18px;
+    color:white;
+    border:1px solid rgba(255,255,255,.35);
+    transform-style:preserve-3d;
+    overflow:visible;
+}
+
+.contenido{
+    position:relative;
+    z-index:2;
+    width:100%;
+    max-width:100%;
+    overflow:hidden;
+    transform-style:preserve-3d;
+}
+
+header{ background:#e74c3c; z-index:1; }
+main{ background:#3498db; z-index:2; }
+section{ background:#2ecc71; z-index:3; }
+article:nth-child(1){ background:#9b59b6; z-index:4; }
+article:nth-child(2){ background:#f39c12; z-index:5; }
+article:nth-child(3){ background:#1abc9c; z-index:6; }
+footer{ background:#34495e; z-index:7; }
+
+h1,h3,p{
+    margin-left:0;
+    margin-right:0;
+    max-width:100%;
+}
+
+h1,h3{ margin-top:0; }
+
+.zinfo{
+    position:absolute;
+    top:10px;
+    right:10px;
+    z-index:5;
+    background:rgba(0,0,0,.25);
+    padding:6px 10px;
+    border-radius:8px;
+    font-size:12px;
+    font-family:monospace;
+}
+</style>
+</head>
+
+<body>
+
+<div id="escena">
+
+    <header class="bloque">
+        <div class="contenido">
+            <h1>Titulo</h1>
+        </div>
+    </header>
+
+    <main class="bloque">
+        <div class="contenido">
+
+            <section class="bloque">
+                <div class="contenido">
+
+                    <article class="bloque">
+                        <div class="contenido">
+                            <h3>Titulo</h3>
+                            <p>Texto de ejemplo para probar profundidad.</p>
+                        </div>
+                    </article>
+
+                    <article class="bloque">
+                        <div class="contenido">
+                            <h3>Titulo</h3>
+                            <p>Otro bloque con distinto z-index.</p>
+                        </div>
+                    </article>
+
+                    <article class="bloque">
+                        <div class="contenido">
+                            <h3>Titulo</h3>
+                            <p>El efecto parallax depende de la profundidad.</p>
+                        </div>
+                    </article>
+
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="bloque">
+        <div class="contenido">
+            Footer
+        </div>
+    </footer>
+
+</div>
+
+<script>
+const CONFIG = {
+    camaraZ: -520,
+    escala: 0.66,
+
+    parallaxRotacion: 15,
+
+    profundidadBase: 42,
+    profundidadContenido: 24,
+
+    grosorBase: 9,
+    grosorPorZ: 3,
+    grosorPaso: 0.9,
+
+    sombraTextoCapas: 7,
+    sombraTextoPaso: 0.42,
+
+    intensidadDireccion: 5.5
+};
+
+const escena = document.getElementById("escena");
+const bloques = document.querySelectorAll(".bloque");
+const contenidos = document.querySelectorAll(".contenido");
+const textos = document.querySelectorAll("h1,h3,p,.contenido");
+
+function rgbDesdeCSS(color){
+    const v = color.match(/\d+/g).map(Number);
+    return { r:v[0], g:v[1], b:v[2] };
+}
+
+function oscurecer(rgb,f){
+    return {
+        r:Math.max(0,Math.round(rgb.r*f)),
+        g:Math.max(0,Math.round(rgb.g*f)),
+        b:Math.max(0,Math.round(rgb.b*f))
+    };
+}
+
+bloques.forEach(bloque=>{
+    const zIndex = parseInt(getComputedStyle(bloque).zIndex) || 0;
+    const profundidad = zIndex * CONFIG.profundidadBase;
+    const color = rgbDesdeCSS(getComputedStyle(bloque).backgroundColor);
+
+    bloque.dataset.zindex = zIndex;
+    bloque.dataset.r = color.r;
+    bloque.dataset.g = color.g;
+    bloque.dataset.b = color.b;
+
+    bloque.style.transform = `translateZ(${profundidad}px)`;
+
+    const etiqueta = document.createElement("div");
+    etiqueta.className = "zinfo";
+    etiqueta.textContent = `z-index: ${zIndex} | Z: ${profundidad}px`;
+    bloque.appendChild(etiqueta);
+});
+
+contenidos.forEach(contenido=>{
+    contenido.style.transform =
+        `translateZ(${CONFIG.profundidadContenido}px)`;
+});
+
+function sombraCaja(el, dirX, dirY){
+    const z = Number(el.dataset.zindex);
+
+    const base = {
+        r:Number(el.dataset.r),
+        g:Number(el.dataset.g),
+        b:Number(el.dataset.b)
+    };
+
+    const capas = CONFIG.grosorBase + z * CONFIG.grosorPorZ;
+    const sombras = [];
+
+    for(let i=1;i<=capas;i++){
+        const c = oscurecer(base, 1 - i * 0.025);
+
+        sombras.push(`
+            ${dirX * i * CONFIG.grosorPaso}px
+            ${dirY * i * CONFIG.grosorPaso}px
+            0
+            rgb(${c.r},${c.g},${c.b})
+        `);
+    }
+
+    sombras.push(`
+        ${dirX * capas * CONFIG.grosorPaso}px
+        ${dirY * capas * CONFIG.grosorPaso}px
+        16px
+        rgba(0,0,0,.16)
+    `);
+
+    el.style.boxShadow = sombras.join(",");
+}
+
+function sombraTexto(el, dirX, dirY){
+    const sombras = [];
+
+    for(let i=1;i<=CONFIG.sombraTextoCapas;i++){
+        sombras.push(`
+            ${dirX * i * CONFIG.sombraTextoPaso}px
+            ${dirY * i * CONFIG.sombraTextoPaso}px
+            0
+            rgba(0,0,0,${0.36 - i * 0.035})
+        `);
+    }
+
+    sombras.push(`
+        ${dirX * 3}px
+        ${dirY * 3}px
+        8px
+        rgba(0,0,0,.2)
+    `);
+
+    el.style.textShadow = sombras.join(",");
+}
+
+function actualizar(e){
+    const x = e.clientX / innerWidth - .5;
+    const y = e.clientY / innerHeight - .5;
+
+    const rotY = x * CONFIG.parallaxRotacion;
+    const rotX = -y * CONFIG.parallaxRotacion;
+
+    escena.style.transform = `
+        translateZ(${CONFIG.camaraZ}px)
+        scale(${CONFIG.escala})
+        rotateX(${rotX}deg)
+        rotateY(${rotY}deg)
+    `;
+
+    const dirX =
+        -Math.sin(rotY * Math.PI / 180) *
+        CONFIG.intensidadDireccion;
+
+    const dirY =
+        Math.sin(rotX * Math.PI / 180) *
+        CONFIG.intensidadDireccion;
+
+    bloques.forEach(b=>sombraCaja(b,dirX,dirY));
+    textos.forEach(t=>sombraTexto(t,dirX,dirY));
+}
+
+document.addEventListener("mousemove",actualizar);
+
+actualizar({
+    clientX:innerWidth/2,
+    clientY:innerHeight/2
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Turnos de exposición proyecto intermodular</title>
+    <meta charset="UTF-8">
+    <style>
+      .semana{display:flex;width:800px;height:300px;justify-content:space-between;}
+      .dia{border:1px solid grey;}
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Turnos de exposición</h1>
+      <button>Iniciar sesion</button>
+    </header>
+    <main>
+      <section class="semana" id="semana1">
+        <!-- Javascript rellena -->
+      </section>
+      <section class="semana" id="semana2">
+        <!-- Javascript rellena -->
+      </section>
+    </main>
+    <footer>
+    </footer>
+    <script>
+      // Primero cojo VARIOS elementos
+      let semanas = document.querySelectorAll(".semana");
+      semanas.forEach(function(semana){
+      	for(let dia = 1;dia<=7;dia++){
+        	let dia_articulo = document.createElement("article")
+          dia_articulo.classList.add("dia")
+          if(dia != 2 && dia != 3){dia_articulo.classList.add("desactivado")}
+          semana.appendChild(dia_articulo)
+        }
+      })
+    </script>
+    
+  </body>
+</html>

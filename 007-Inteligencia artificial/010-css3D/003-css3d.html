@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Infinite CSS3D Client Space</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+    background:
+        radial-gradient(circle at center,
+        #ffffff 0%,
+        #eef2ff 45%,
+        #dbeafe 100%);
+}
+
+#viewport{
+    position:fixed;
+    inset:0;
+    perspective:1200px;
+    overflow:hidden;
+}
+
+#scene{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform-style:preserve-3d;
+}
+
+.card{
+    position:absolute;
+
+    width:240px;
+    min-height:150px;
+    padding:18px;
+
+    border-radius:22px;
+
+    background:rgba(255,255,255,0.62);
+
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,0.9);
+
+    box-shadow:
+        0 20px 60px rgba(30,41,59,0.16),
+        inset 0 1px 0 rgba(255,255,255,0.7);
+
+    color:#111827;
+
+    transform-style:preserve-3d;
+
+    transition:
+        transform .25s,
+        box-shadow .25s,
+        background .25s;
+}
+
+.card:hover{
+    background:rgba(255,255,255,0.92);
+
+    box-shadow:
+        0 40px 120px rgba(30,41,59,0.30);
+
+    z-index:99999;
+}
+
+.card h3{
+    margin:0 0 10px 0;
+    font-size:18px;
+}
+
+.card p{
+    margin:4px 0;
+    font-size:13px;
+    line-height:1.45;
+}
+
+.tag{
+    display:inline-block;
+    margin-top:12px;
+    padding:6px 12px;
+    border-radius:999px;
+
+    background:#e0e7ff;
+    color:#3730a3;
+
+    font-size:12px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div id="viewport">
+    <div id="scene"></div>
+</div>
+
+<script>
+const scene = document.getElementById("scene");
+
+const nombres = [
+    "Ana Martínez","Carlos López","Lucía Fernández","Miguel Torres",
+    "Sofía García","Javier Navarro","Elena Ruiz","Pablo Sánchez",
+    "Laura Romero","David Molina","Marta Gil","Hugo Ramos"
+];
+
+const empresas = [
+    "TecnoGlobal","NovaSoft","InnovaData","PixelStudio",
+    "CloudMarket","Soluciones Delta","Grupo Atlas","Digital Norte"
+];
+
+const estados = [
+    "Activo","Pendiente","Premium","En seguimiento","Nuevo cliente"
+];
+
+function rnd(arr){
+    return arr[Math.floor(Math.random()*arr.length)];
+}
+
+const TOTAL = 350;
+
+for(let i=0;i<TOTAL;i++){
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+        <h3>${rnd(nombres)}</h3>
+        <p><strong>Empresa:</strong> ${rnd(empresas)}</p>
+        <p><strong>Email:</strong> cliente${i}@correo.com</p>
+        <p><strong>Teléfono:</strong> 600 ${Math.floor(100000+Math.random()*899999)}</p>
+        <span class="tag">${rnd(estados)}</span>
+    `;
+
+    const x = (Math.random()-0.5) * 5000;
+    const y = (Math.random()-0.5) * 3000;
+
+    // PROFUNDIDAD INMENSA
+    const z = -Math.random() * 50000;
+
+    const rx = (Math.random()-0.5) * 18;
+    const ry = (Math.random()-0.5) * 18;
+    const rz = (Math.random()-0.5) * 24;
+
+    card.style.transform = `
+        translate3d(${x}px,${y}px,${z}px)
+        rotateX(${rx}deg)
+        rotateY(${ry}deg)
+        rotateZ(${rz}deg)
+    `;
+
+    scene.appendChild(card);
+}
+
+let camX = 0;
+let camY = 0;
+let camZ = 0;
+
+let targetX = 0;
+let targetY = 0;
+let targetZ = 0;
+
+// MOUSE PANORÁMICA
+window.addEventListener("mousemove",e=>{
+
+    const nx = e.clientX/window.innerWidth - 0.5;
+    const ny = e.clientY/window.innerHeight - 0.5;
+
+    targetX = nx * 3000;
+    targetY = ny * 1800;
+});
+
+// SCROLL INFINITO
+window.addEventListener("wheel",e=>{
+
+    e.preventDefault();
+
+    targetZ += e.deltaY * 8;
+
+},{passive:false});
+
+// ANIMACIÓN SUAVE
+function loop(){
+
+    camX += (targetX-camX)*0.06;
+    camY += (targetY-camY)*0.06;
+    camZ += (targetZ-camZ)*0.08;
+
+    scene.style.transform = `
+        translate3d(${-camX}px,${-camY}px,${camZ}px)
+    `;
+
+    requestAnimationFrame(loop);
+}
+
+loop();
+</script>
+
+</body>
+</html>

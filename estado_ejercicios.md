@@ -1,6 +1,6 @@
 # interfacesweb — Estado de ejercicios
 
-Generado: 2026-04-21 17:00
+Generado: 2026-04-29 19:00
 
 ---
 
@@ -89,3 +89,12 @@ Generado: 2026-04-21 17:00
 - 🔴 Corrector IA
 - 🔴 entrenamiento
 - 🔴 RAG
+- 🔴 stack con PHP y Python
+- 🔴 RAG mas IA
+- 🔴 multimodelo
+- 🔴 css3D
+
+
+## Aplicacion de horarios
+
+_Sin subunidades_

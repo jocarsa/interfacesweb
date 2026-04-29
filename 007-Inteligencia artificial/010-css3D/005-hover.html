@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Clientes CSS3D con giro al click</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+    background:#f4f6fb;
+}
+
+/* ---------------------------------- */
+/* VIEWPORT 3D */
+/* ---------------------------------- */
+
+#viewport{
+    position:fixed;
+    inset:0;
+    perspective:1800px;
+    overflow:hidden;
+}
+
+#scene{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform-style:preserve-3d;
+}
+
+/* ---------------------------------- */
+/* TARJETA */
+/* ---------------------------------- */
+
+.card{
+    position:absolute;
+
+    width:240px;
+    height:170px;
+
+    transform-style:preserve-3d;
+
+    cursor:pointer;
+
+    transition:
+        transform .8s cubic-bezier(.2,.8,.2,1),
+        opacity .25s,
+        filter .25s;
+
+    user-select:none;
+}
+
+/* CONTENEDOR INTERNO QUE GIRA */
+
+.card-inner{
+    position:absolute;
+    inset:0;
+
+    transform-style:preserve-3d;
+
+    transition:transform .8s cubic-bezier(.2,.8,.2,1);
+}
+
+/* CLICK -> GIRAR */
+
+.card.flipped .card-inner{
+    transform:rotateY(180deg);
+}
+
+/* ---------------------------------- */
+/* CARAS */
+/* ---------------------------------- */
+
+.face{
+    position:absolute;
+    inset:0;
+
+    border-radius:22px;
+
+    background:rgba(255,255,255,0.72);
+
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+
+    border:1px solid rgba(255,255,255,0.95);
+
+    box-shadow:
+        0 18px 45px rgba(30,41,59,0.14);
+
+    color:#111827;
+
+    padding:18px;
+
+    overflow:hidden;
+
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+}
+
+.front{
+    transform:rotateY(0deg);
+}
+
+.back{
+    transform:rotateY(180deg);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:72px;
+}
+
+/* ---------------------------------- */
+/* TEXTO */
+/* ---------------------------------- */
+
+.card h3{
+    margin:0 0 10px 0;
+    font-size:18px;
+}
+
+.card p{
+    margin:4px 0;
+    font-size:13px;
+    line-height:1.45;
+}
+
+.tag{
+    display:inline-block;
+
+    margin-top:12px;
+    padding:6px 12px;
+
+    border-radius:999px;
+
+    background:#e0e7ff;
+    color:#3730a3;
+
+    font-size:12px;
+    font-weight:bold;
+}
+
+/* ---------------------------------- */
+/* HIGHLIGHT BUSCADOR */
+/* ---------------------------------- */
+
+.card.highlight{
+    z-index:9999;
+}
+
+.card.highlight .face{
+    border:2px solid rgba(79,70,229,0.85);
+
+    box-shadow:
+        0 0 0 8px rgba(79,70,229,0.12),
+        0 28px 90px rgba(79,70,229,0.35);
+}
+
+.card.dimmed{
+    opacity:0.15;
+    filter:blur(1px) grayscale(1);
+}
+
+/* ---------------------------------- */
+/* OVERLAY BUSCADOR */
+/* ---------------------------------- */
+
+#overlay{
+    position:fixed;
+
+    top:24px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:min(520px,calc(100vw - 40px));
+
+    z-index:100000;
+
+    padding:14px;
+
+    border-radius:24px;
+
+    background:rgba(255,255,255,0.78);
+
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,0.95);
+
+    box-shadow:
+        0 20px 60px rgba(30,41,59,0.16);
+}
+
+#search{
+    width:100%;
+
+    border:0;
+    outline:0;
+
+    padding:15px 18px;
+
+    border-radius:18px;
+
+    font-size:16px;
+
+    background:white;
+}
+
+#counter{
+    margin-top:10px;
+
+    padding-left:6px;
+
+    font-size:13px;
+
+    color:#64748b;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="overlay">
+    <input id="search" type="text" placeholder="Buscar clientes...">
+    <div id="counter">Mostrando todas las fichas</div>
+</div>
+
+<div id="viewport">
+    <div id="scene"></div>
+</div>
+
+<script>
+
+const scene = document.getElementById("scene");
+const search = document.getElementById("search");
+const counter = document.getElementById("counter");
+
+/* ---------------------------------- */
+/* DATOS */
+/* ---------------------------------- */
+
+const nombres = [
+    "Ana Martínez","Carlos López","Lucía Fernández","Miguel Torres",
+    "Sofía García","Javier Navarro","Elena Ruiz","Pablo Sánchez",
+    "Laura Romero","David Molina","Marta Gil","Hugo Ramos",
+    "Clara Soler","Raúl Ibáñez","Nuria Vidal","Mario Ortega"
+];
+
+const empresas = [
+    "TecnoGlobal","NovaSoft","InnovaData","PixelStudio",
+    "CloudMarket","Soluciones Delta","Grupo Atlas",
+    "Digital Norte","Blue Factory","Orange Byte"
+];
+
+const estados = [
+    "Activo","Pendiente","Premium",
+    "En seguimiento","Nuevo cliente"
+];
+
+const emojis = [
+    "😀","🚀","⭐","🔥","💼","📊",
+    "🧠","🎯","💎","🌟","🧩","📁"
+];
+
+function rnd(arr){
+    return arr[Math.floor(Math.random()*arr.length)];
+}
+
+/* ---------------------------------- */
+/* CREAR TARJETAS */
+/* ---------------------------------- */
+
+const TOTAL = 260;
+const cards = [];
+
+for(let i=0;i<TOTAL;i++){
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const nombre = rnd(nombres);
+    const empresa = rnd(empresas);
+    const estado = rnd(estados);
+    const emoji = rnd(emojis);
+
+    const email = `cliente${i}@correo.com`;
+
+    card.innerHTML = `
+        <div class="card-inner">
+
+            <div class="face front">
+                <h3>${nombre}</h3>
+
+                <p><strong>Empresa:</strong> ${empresa}</p>
+
+                <p><strong>Email:</strong> ${email}</p>
+
+                <p><strong>Estado:</strong> ${estado}</p>
+
+                <span class="tag">${estado}</span>
+            </div>
+
+            <div class="face back">
+                ${emoji}
+            </div>
+
+        </div>
+    `;
+
+    /* POSICIÓN 3D */
+
+    const x = (Math.random()-0.5) * 3600;
+    const y = (Math.random()-0.5) * 1800;
+    const z = -Math.random() * 18000;
+
+    const rx = (Math.random()-0.5) * 5;
+    const ry = (Math.random()-0.5) * 5;
+    const rz = (Math.random()-0.5) * 10;
+
+    const transform = `
+        translate3d(${x}px,${y}px,${z}px)
+        rotateX(${rx}deg)
+        rotateY(${ry}deg)
+        rotateZ(${rz}deg)
+    `;
+
+    card.style.transform = transform;
+
+    card.dataset.search = `
+        ${nombre}
+        ${empresa}
+        ${estado}
+        ${email}
+    `.toLowerCase();
+
+    /* CLICK -> FLIP */
+
+    card.addEventListener("click",e=>{
+
+        e.stopPropagation();
+
+        card.classList.toggle("flipped");
+    });
+
+    scene.appendChild(card);
+
+    cards.push(card);
+}
+
+/* ---------------------------------- */
+/* BUSCADOR */
+/* ---------------------------------- */
+
+search.addEventListener("input",()=>{
+
+    const q = search.value.trim().toLowerCase();
+
+    let total = 0;
+
+    cards.forEach(card=>{
+
+        card.classList.remove("highlight");
+        card.classList.remove("dimmed");
+
+        if(q === ""){
+            return;
+        }
+
+        if(card.dataset.search.includes(q)){
+
+            card.classList.add("highlight");
+
+            total++;
+
+        }else{
+
+            card.classList.add("dimmed");
+        }
+    });
+
+    if(q === ""){
+
+        counter.textContent =
+            "Mostrando todas las fichas";
+
+    }else{
+
+        counter.textContent =
+            total + " coincidencias";
+    }
+});
+
+/* ---------------------------------- */
+/* CÁMARA */
+/* ---------------------------------- */
+
+let camX = 0;
+let camY = 0;
+let camZ = 0;
+
+let targetX = 0;
+let targetY = 0;
+let targetZ = 0;
+
+/* RATÓN -> PAN */
+
+window.addEventListener("mousemove",e=>{
+
+    const nx =
+        e.clientX / window.innerWidth - 0.5;
+
+    const ny =
+        e.clientY / window.innerHeight - 0.5;
+
+    targetX = nx * 900;
+    targetY = ny * 500;
+});
+
+/* SCROLL -> ZOOM */
+
+window.addEventListener("wheel",e=>{
+
+    e.preventDefault();
+
+    targetZ += e.deltaY * 3;
+
+},{passive:false});
+
+/* LOOP */
+
+function loop(){
+
+    camX += (targetX - camX) * 0.06;
+    camY += (targetY - camY) * 0.06;
+    camZ += (targetZ - camZ) * 0.08;
+
+    scene.style.transform = `
+        translate3d(
+            ${-camX}px,
+            ${-camY}px,
+            ${camZ}px
+        )
+    `;
+
+    requestAnimationFrame(loop);
+}
+
+loop();
+
+</script>
+
+</body>
+</html>
