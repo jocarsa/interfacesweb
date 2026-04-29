@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Mapa mental HTML / 2D / 3D / Alvéolo</title>
+
+<style>
+*{ box-sizing:border-box; }
+
+body{
+    margin:0;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+    background:radial-gradient(circle at center,#ffffff,#e8eef7);
+}
+
+#toolbar{
+    position:fixed;
+    top:16px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:100;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    justify-content:center;
+    padding:10px;
+    border-radius:18px;
+    background:rgba(255,255,255,0.72);
+    border:1px solid rgba(148,163,184,0.35);
+    backdrop-filter:blur(14px);
+    box-shadow:0 15px 45px rgba(15,23,42,0.12);
+}
+
+#toolbar button{
+    border:0;
+    padding:10px 14px;
+    border-radius:13px;
+    background:#f8fafc;
+    color:#334155;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+#toolbar button.active{
+    color:white;
+    background:linear-gradient(135deg,#4f46e5,#f97316);
+}
+
+#source{ display:none; }
+
+#listView{
+    display:none;
+    width:100vw;
+    height:100vh;
+    overflow:auto;
+    padding:110px 8vw 80px;
+    background:#f8fafc;
+    color:#1e293b;
+    font-size:18px;
+    line-height:1.6;
+}
+
+#listView ul{
+    background:white;
+    border-radius:20px;
+    padding:24px 34px;
+    box-shadow:0 18px 45px rgba(15,23,42,0.08);
+}
+
+#viewport{
+    width:100vw;
+    height:100vh;
+    perspective:900px;
+    perspective-origin:center center;
+    overflow:hidden;
+    cursor:default;
+}
+
+#scene{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:0;
+    height:0;
+    transform-style:preserve-3d;
+}
+
+.node{
+    position:absolute;
+    width:230px;
+    min-height:58px;
+    padding:14px 18px;
+    border-radius:18px;
+    background:rgba(255,255,255,0.86);
+    border:1px solid rgba(100,116,139,0.25);
+    box-shadow:0 18px 45px rgba(15,23,42,0.14);
+    color:#1e293b;
+    text-align:center;
+    font-size:14px;
+    line-height:1.35;
+    backdrop-filter:blur(10px);
+    transform-style:preserve-3d;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+}
+
+.node:hover{
+    background:white;
+    box-shadow:0 26px 70px rgba(79,70,229,0.25);
+}
+
+.root{
+    width:300px;
+    min-height:95px;
+    font-size:23px;
+    font-weight:bold;
+    color:white;
+    background:linear-gradient(135deg,#4f46e5,#f97316);
+}
+
+.level1{
+    width:260px;
+    font-weight:bold;
+    background:rgba(255,247,237,0.92);
+    border-color:rgba(249,115,22,0.35);
+}
+
+.level2{
+    width:220px;
+    font-size:13px;
+}
+
+.connector{
+    position:absolute;
+    height:2px;
+    background:linear-gradient(90deg,rgba(99,102,241,0.25),rgba(249,115,22,0.55));
+    transform-origin:left center;
+    transform-style:preserve-3d;
+    border-radius:999px;
+    box-shadow:0 0 12px rgba(99,102,241,0.18);
+}
+
+#help{
+    position:fixed;
+    left:18px;
+    bottom:18px;
+    z-index:100;
+    padding:12px 16px;
+    border-radius:16px;
+    background:rgba(255,255,255,0.72);
+    border:1px solid rgba(148,163,184,0.35);
+    backdrop-filter:blur(14px);
+    color:#475569;
+    font-size:13px;
+}
+.node{
+    transition:
+        transform 0.45s cubic-bezier(.2,.9,.2,1),
+        opacity 0.35s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+.node.appearing{
+    opacity:0;
+}
+
+.connector{
+    transition:
+        transform 0.45s cubic-bezier(.2,.9,.2,1),
+        width 0.45s cubic-bezier(.2,.9,.2,1),
+        opacity 0.35s ease;
+}
+
+.connector.appearing{
+    opacity:0;
+}
+</style>
+</head>
+
+<body>
+
+<div id="toolbar">
+    <button data-view="list">Jerarquía HTML</button>
+    <button data-view="2d">Mapa mental 2D</button>
+    <button data-view="3d">Mapa mental 3D</button>
+    <button data-view="alveolo2d">Alvéolo 2D</button>
+    <button data-view="alveolo3d" class="active">Alvéolo 3D</button>
+</div>
+
+<div id="help">
+    Ratón: panorámica XY · Rueda: profundidad · Botón central + arrastrar: orbitar · Click en nodo: centrar sin cambiar zoom
+</div>
+
+<div id="source">
+    <ul>
+    <li>DAM
+        <ul>
+            <li>Primer curso
+                <ul>
+                    <li>Sistemas informáticos
+                        <ul>
+                            <li>Explotación de sistemas microinformáticos
+                                <ul>
+                                    <li>Placas base. Formatos.</li>
+                                    <li>Estructura y componentes: procesador (Set de Instrucciones, Registros, Contador, Unidad Aritmético-Lógica, Interrupciones); memoria interna, tipos y características (RAM, xPROM y otras); interfaces de entrada/salida; discos Periféricos. Adaptadores para la conexión de dispositivos.</li>
+                                    <li>Normas de seguridad y prevención de riesgos laborales.</li>
+                                    <li>Características de las redes. Ventajas e inconvenientes.</li>
+                                    <li>Tipos de redes.</li>
+                                    <li>Componentes de una red informática.</li>
+                                    <li>Topologías de red.</li>
+                                    <li>Tipos de cableado. Conectores.</li>
+                                    <li>Mapa físico y lógico de una red local.</li>
+                                </ul>
+                            </li>
+                            <li>Instalación de sistemas operativos
+                                <ul>
+                                    <li>Evolución histórica y clasificación.</li>
+                                    <li>Funciones de un sistema operativo.</li>
+                                    <li>Tipos de sistemas operativos.</li>
+                                    <li>Tipos de aplicaciones.</li>
+                                    <li>Licencias y tipos de licencias.</li>
+                                    <li>Procedimiento de instalación.</li>
+                                    <li>Gestores de arranque. Configuración y reparación.</li>
+                                    <li>Tecnologías de virtualización. Tipos.</li>
+                                    <li>Consideraciones previas a la instalación de sistemas operativos libres y propietarios.</li>
+                                    <li>Instalación de sistemas operativos libres y propietarios. Requisitos, versiones y licencias.</li>
+                                    <li>Instalación / desinstalación de aplicaciones. Requisitos, versiones y licencias.</li>
+                                    <li>Actualización y recuperación de sistemas operativos y aplicaciones.</li>
+                                    <li>Documentación de la instalación y de las incidencias detectadas.</li>
+                                </ul>
+                            </li>
+                            <li>Gestión de la información
+                                <ul>
+                                    <li>Gestión de sistemas de archivos mediante comandos y entornos gráficos.</li>
+                                    <li>Estructura de directorios de sistemas operativos libres y propietarios.</li>
+                                    <li>Búsqueda de información del sistema mediante comandos y herramientas gráficas.</li>
+                                    <li>Identificación del software instalado mediante comandos y herramientas gráficas.</li>
+                                    <li>Realización y restauración de copias de seguridad.</li>
+                                    <li>Herramientas de administración de discos. Particiones y volúmenes. Desfragmentación y chequeo. Cifrado.</li>
+                                    <li>Tareas automáticas. Planificación.</li>
+                                </ul>
+                            </li>
+                            <li>Configuración de sistemas operativos
+                                <ul>
+                                    <li>Configuración de usuarios y grupos.</li>
+                                    <li>Seguridad de cuentas de usuario.</li>
+                                    <li>Seguridad de contraseñas.</li>
+                                    <li>Acceso a recursos. Permisos locales. Listas de control de acceso.</li>
+                                    <li>Servicios y procesos.</li>
+                                    <li>Comandos de sistemas operativos libres y propietarios.</li>
+                                    <li>Herramientas de monitorización del sistema. Registros y logs.</li>
+                                </ul>
+                            </li>
+                            <li>Conexión de sistemas en red
+                                <ul>
+                                    <li>Configuración del protocolo TCP/IP en un cliente de red. Direcciones IP. Máscaras de subred. Puertas de enlace. Servidores de nombres de dominio. IPv4. IPv6. Configuración estática. Configuración dinámica automática.</li>
+                                    <li>Ficheros de configuración de red.</li>
+                                    <li>Gestión de puertos.</li>
+                                    <li>Resolución de problemas de conectividad en sistemas operativos en red. Herramientas de diagnóstico.</li>
+                                    <li>Herramientas gráficas y comandos utilizados en sistemas operativos libres y propietarios.</li>
+                                    <li>Monitorización de redes.</li>
+                                    <li>Protocolos TCP/IP.</li>
+                                    <li>Configuración de los adaptadores de red en sistemas operativos libres y propietarios.</li>
+                                    <li>Interconexión de redes: adaptadores de red y dispositivos de interconexión. Enrutamiento.</li>
+                                    <li>Redes cableadas. Tipos y características. Adaptadores de red. Conmutadores, enrutadores, entre otros. Seguridad.</li>
+                                    <li>Redes inalámbricas. Tipos y características. Adaptadores. Dispositivos de interconexión. Seguridad.</li>
+                                    <li>Seguridad de comunicaciones.</li>
+                                    <li>Tecnologías de acceso a redes de área extensa.</li>
+                                </ul>
+                            </li>
+                            <li>Gestión de recursos en una red
+                                <ul>
+                                    <li>Permisos y derechos. Permisos de red. Permisos locales. Herencia. Listas de control de acceso.</li>
+                                    <li>Configuración de recursos compartidos. Permisos de acceso y directivas de seguridad.</li>
+                                    <li>Requisitos de seguridad del sistema y de los datos.</li>
+                                    <li>Servidores de ficheros.</li>
+                                    <li>Servidores de impresión.</li>
+                                    <li>Servidores de aplicaciones.</li>
+                                    <li>Técnicas de conexión remota.</li>
+                                    <li>Cortafuegos.</li>
+                                    <li>Implantación y explotación de dominios.</li>
+                                </ul>
+                            </li>
+                            <li>Explotación de aplicaciones informáticas de propósito general
+                                <ul>
+                                    <li>Software: tipos, requisitos, licencias.</li>
+                                    <li>Herramientas ofimáticas y de trabajo colaborativo.</li>
+                                    <li>Utilidades de propósito general: antimalware, correo, transferencia de ficheros, recuperación de datos, mantenimiento del sistema, entre otros.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Bases de datos
+                        <ul>
+                            <li>Almacenamiento de la información
+                                <ul>
+                                    <li>Ficheros (planos, indexados, acceso directo, entre otros).</li>
+                                    <li>Bases de datos. Conceptos, usos y tipos según el modelo de datos, la ubicación de la información.</li>
+                                    <li>Sistemas gestores de base de datos: Funciones, componentes y tipos.</li>
+                                    <li>Bases de datos centralizadas y bases de datos distribuidas. Técnicas de fragmentación.</li>
+                                    <li>Legislación sobre protección de datos.</li>
+                                    <li>Big Data: introducción, análisis de datos, inteligencia de negocios.</li>
+                                </ul>
+                            </li>
+                            <li>Bases de datos relacionales
+                                <ul>
+                                    <li>Modelo de datos.</li>
+                                    <li>Terminología del modelo relacional.</li>
+                                    <li>Tipos de datos.</li>
+                                    <li>Claves primarias.</li>
+                                    <li>Restricciones de validación.</li>
+                                    <li>Índices. Características.</li>
+                                    <li>El valor NULL.</li>
+                                    <li>Claves ajenas.</li>
+                                    <li>Vistas.</li>
+                                    <li>Usuarios. Privilegios.</li>
+                                    <li>Lenguaje de descripción de datos (DDL).</li>
+                                    <li>Lenguaje de control de datos (DCL).</li>
+                                </ul>
+                            </li>
+                            <li>Realización de consultas
+                                <ul>
+                                    <li>Proyección, selección y ordenación de registros.</li>
+                                    <li>Operadores. Operadores de comparación. Operadores lógicos.</li>
+                                    <li>Consultas de resumen.</li>
+                                    <li>Agrupamiento de registros.</li>
+                                    <li>Composiciones internas.</li>
+                                    <li>Composiciones externas.</li>
+                                    <li>Subconsultas.</li>
+                                    <li>Combinación de múltiples selecciones.</li>
+                                    <li>Optimización de consultas.</li>
+                                </ul>
+                            </li>
+                            <li>Tratamiento de datos
+                                <ul>
+                                    <li>Inserción, borrado y modificación de registros.</li>
+                                    <li>Integridad referencial.</li>
+                                    <li>Subconsultas y composiciones en órdenes de edición.</li>
+                                    <li>Transacciones.</li>
+                                    <li>Políticas de bloqueo. Concurrencia.</li>
+                                </ul>
+                            </li>
+                            <li>Programación de bases de datos
+                                <ul>
+                                    <li>Introducción. Lenguaje de programación.</li>
+                                    <li>Variables del sistema y variables de usuario.</li>
+                                    <li>Funciones.</li>
+                                    <li>Estructuras de control de flujo.</li>
+                                    <li>Procedimientos almacenados. Funciones de usuario.</li>
+                                    <li>Eventos y disparadores.</li>
+                                    <li>Excepciones.</li>
+                                    <li>Cursores.</li>
+                                </ul>
+                            </li>
+                            <li>Interpretación de Diagramas Entidad/Relación
+                                <ul>
+                                    <li>El modelo E/R. Entidades y relaciones. Cardinalidades. Debilidad.</li>
+                                    <li>El modelo E/R ampliado. Generalización y especialización. Agregación.</li>
+                                    <li>Paso del diagrama E/R al modelo relacional.</li>
+                                    <li>Restricciones semánticas del modelo relacional.</li>
+                                    <li>Normalización de modelos relacionales.</li>
+                                </ul>
+                            </li>
+                            <li>Uso de bases de datos no relacionales
+                                <ul>
+                                    <li>Características de las bases de datos no relacionales.</li>
+                                    <li>Tipos de bases de datos no relacionales.</li>
+                                    <li>Elementos de las bases de datos no relacionales.</li>
+                                    <li>Sistemas gestores de bases de datos no relacionales.</li>
+                                    <li>Herramientas de los sistemas gestores de bases de datos no relacionales para la gestión de la información almacenada.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Programación
+                        <ul>
+                            <li>Identificación de los elementos de un programa informático
+                                <ul>
+                                    <li>Estructura y bloques fundamentales.</li>
+                                    <li>Variables.</li>
+                                    <li>Tipos de datos.</li>
+                                    <li>Literales.</li>
+                                    <li>Constantes.</li>
+                                    <li>Operadores y expresiones.</li>
+                                    <li>Conversiones de tipo.</li>
+                                    <li>Comentarios.</li>
+                                </ul>
+                            </li>
+                            <li>Utilización de objetos
+                                <ul>
+                                    <li>Características de los objetos.</li>
+                                    <li>Instanciación de objetos.</li>
+                                    <li>Utilización de métodos. Parámetros.</li>
+                                    <li>Utilización de propiedades.</li>
+                                    <li>Utilización de métodos estáticos.</li>
+                                    <li>Constructores.</li>
+                                    <li>Destrucción de objetos y liberación de memoria.</li>
+                                </ul>
+                            </li>
+                            <li>Uso de estructuras de control
+                                <ul>
+                                    <li>Estructuras de selección.</li>
+                                    <li>Estructuras de repetición.</li>
+                                    <li>Estructuras de salto.</li>
+                                    <li>Control de excepciones.</li>
+                                    <li>Aserciones.</li>
+                                    <li>Prueba, depuración y documentación de la aplicación.</li>
+                                </ul>
+                            </li>
+                            <li>Desarrollo de clases
+                                <ul>
+                                    <li>Concepto de clase.</li>
+                                    <li>Estructura y miembros de una clase. Visibilidad.</li>
+                                    <li>Creación de propiedades.</li>
+                                    <li>Creación de métodos.</li>
+                                    <li>Creación de constructores.</li>
+                                    <li>Utilización de clases y objetos.</li>
+                                    <li>Utilización de clases heredadas.</li>
+                                </ul>
+                            </li>
+                            <li>Lectura y escritura de información
+                                <ul>
+                                    <li>Flujos. Tipos: bytes y caracteres. Clases relacionadas.</li>
+                                    <li>Ficheros de datos. Registros.</li>
+                                    <li>Apertura y cierre de ficheros. Modos de acceso. Escritura y lectura de información en ficheros.</li>
+                                    <li>Utilización de los sistemas de ficheros.</li>
+                                    <li>Creación y eliminación de ficheros y directorios.</li>
+                                    <li>Entrada desde teclado. Salida a pantalla. Formatos de visualización.</li>
+                                    <li>Interfaces gráficas.</li>
+                                    <li>Concepto de evento.</li>
+                                    <li>Creación de controladores de eventos.</li>
+                                </ul>
+                            </li>
+                            <li>Aplicación de las estructuras de almacenamiento
+                                <ul>
+                                    <li>Estructuras estáticas y dinámicas.</li>
+                                    <li>Creación de matrices (arrays).</li>
+                                    <li>Matrices (arrays) multidimensionales.</li>
+                                    <li>Genericidad.</li>
+                                    <li>Cadenas de caracteres. Expresiones regulares.</li>
+                                    <li>Colecciones: Listas, Conjuntos y Diccionarios.</li>
+                                    <li>Operaciones agregadas: filtrado, reducción y recolección.</li>
+                                </ul>
+                            </li>
+                            <li>Utilización avanzada de clases
+                                <ul>
+                                    <li>Composición de clases.</li>
+                                    <li>Herencia y polimorfismo.</li>
+                                    <li>Jerarquía de clases: Superclases y subclases.</li>
+                                    <li>Clases y métodos abstractos y finales.</li>
+                                    <li>Interfaces.</li>
+                                    <li>Sobreescritura de métodos.</li>
+                                    <li>Constructores y herencia.</li>
+                                </ul>
+                            </li>
+                            <li>Mantenimiento de la persistencia de los objetos
+                                <ul>
+                                    <li>Bases de datos orientadas a objetos.</li>
+                                    <li>Características de las bases de datos orientadas a objetos.</li>
+                                    <li>Instalación del gestor de bases de datos.</li>
+                                    <li>Creación de bases de datos.</li>
+                                    <li>Mecanismos de consulta.</li>
+                                    <li>El lenguaje de consultas: sintaxis, expresiones, operadores.</li>
+                                    <li>Recuperación, modificación y borrado de información.</li>
+                                    <li>Tipos de datos objeto; atributos y métodos.</li>
+                                    <li>Tipos de datos colección.</li>
+                                </ul>
+                            </li>
+                            <li>Gestión de bases de datos
+                                <ul>
+                                    <li>Acceso a bases de datos. Estándares. Características.</li>
+                                    <li>Establecimiento de conexiones.</li>
+                                    <li>Almacenamiento, recuperación, actualización y eliminación de información en bases de datos.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Lenguajes de marcas y sistemas de gestión de información
+                        <ul>
+                            <li>Reconocimiento de las características de lenguajes de marcas
+                                <ul>
+                                    <li>Clasificación.</li>
+                                    <li>Características y ámbitos de aplicación.</li>
+                                    <li>Estructura y sintaxis.</li>
+                                    <li>Herramientas de edición.</li>
+                                    <li>Elaboración de documentos bien formados.</li>
+                                    <li>Utilización de espacios de nombres.</li>
+                                </ul>
+                            </li>
+                            <li>Utilización de lenguajes de marcas en entornos web
+                                <ul>
+                                    <li>Estándares web. Versiones. Clasificación.</li>
+                                    <li>Estructura de un documento HTML.</li>
+                                    <li>Identificación de etiquetas y atributos de HTML.</li>
+                                    <li>Herramientas de diseño web.</li>
+                                    <li>Hojas de estilo (CSS).</li>
+                                    <li>Validación de documentos HTML y CSS.</li>
+                                    <li>Lenguajes de marcas para la sindicación de contenidos.</li>
+                                </ul>
+                            </li>
+                            <li>Manipulación de documentos Web
+                                <ul>
+                                    <li>Lenguajes de script de cliente. Características y sintaxis básica. Estándares.</li>
+                                    <li>Selección y acceso a elementos.</li>
+                                    <li>Creación y modificación de elementos.</li>
+                                    <li>Eliminación de elementos.</li>
+                                    <li>Manipulación de estilos.</li>
+                                </ul>
+                            </li>
+                            <li>Definición de esquemas y vocabularios en lenguajes de marcas
+                                <ul>
+                                    <li>Tecnologías para la definición de documentos. Estructura y sintaxis.</li>
+                                    <li>Creación de descripciones de documentos.</li>
+                                    <li>Asociación de descripciones con documentos. Validación.</li>
+                                    <li>Herramientas de creación y validación.</li>
+                                </ul>
+                            </li>
+                            <li>Conversión y adaptación de documentos para el intercambio de información
+                                <ul>
+                                    <li>Tecnologías de transformación de documentos. Estándares. Ámbitos de aplicación.</li>
+                                    <li>Descripción de la estructura y de la sintaxis.</li>
+                                    <li>Creación y utilización de plantillas. Herramientas y depuración.</li>
+                                    <li>Conversión entre diferentes formatos de documentos.</li>
+                                </ul>
+                            </li>
+                            <li>Almacenamiento de información
+                                <ul>
+                                    <li>Sistemas de almacenamiento de información. Características. Tecnologías.</li>
+                                    <li>Lenguajes de consulta y manipulación en documentos.</li>
+                                    <li>Consulta y manipulación de información.</li>
+                                    <li>Importación y exportación de bases de datos relacionales en diferentes formatos.</li>
+                                    <li>Herramientas de tratamiento y almacenamiento de información en sistemas nativos.</li>
+                                    <li>Almacenamiento y manipulación de información en sistemas nativos.</li>
+                                </ul>
+                            </li>
+                            <li>Sistemas de gestión empresarial
+                                <ul>
+                                    <li>Aplicaciones de gestión empresarial. Tipos. Características.</li>
+                                    <li>Instalación.</li>
+                                    <li>Administración y configuración.</li>
+                                    <li>Integración de módulos.</li>
+                                    <li>Mecanismos de acceso seguro a la información. Roles y privilegios.</li>
+                                    <li>Elaboración de informes.</li>
+                                    <li>Exportación de información.</li>
+                                    <li>Elaboración de documentación.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Entornos de desarrollo
+                        <ul>
+                            <li>Desarrollo de software
+                                <ul>
+                                    <li>Concepto de programa informático.</li>
+                                    <li>Código fuente, código objeto y código ejecutable; tecnologías de virtualización.</li>
+                                    <li>Tipos de lenguajes de programación. Paradigmas.</li>
+                                    <li>Características de los lenguajes más difundidos.</li>
+                                    <li>Fases del desarrollo de una aplicación: análisis, diseño, codificación, pruebas, documentación, explotación y mantenimiento, entre otras.</li>
+                                    <li>Proceso de obtención de código ejecutable a partir del código fuente; herramientas implicadas.</li>
+                                    <li>Metodologías ágiles. Técnicas. Características.</li>
+                                </ul>
+                            </li>
+                            <li>Instalación y uso de entornos de desarrollo
+                                <ul>
+                                    <li>Funciones de un entorno de desarrollo.</li>
+                                    <li>Instalación de un entorno de desarrollo.</li>
+                                    <li>Uso básico de un entorno de desarrollo.</li>
+                                    <li>Personalización del entorno de desarrollo: temas, estilos de codificación, módulos y extensiones, entre otras.</li>
+                                    <li>Edición de programas.</li>
+                                    <li>Generación de ejecutables en distintos entornos.</li>
+                                    <li>Herramientas y automatización.</li>
+                                </ul>
+                            </li>
+                            <li>Diseño y realización de pruebas
+                                <ul>
+                                    <li>Planificación de Pruebas.</li>
+                                    <li>Tipos de pruebas: Funcionales, estructurales y regresión, entre otras.</li>
+                                    <li>Procedimientos y casos de prueba.</li>
+                                    <li>Pruebas de Código: Cubrimiento, valores límite y clases de equivalencia, entre otras.</li>
+                                    <li>Pruebas unitarias; herramientas de automatización.</li>
+                                    <li>Documentación de las incidencias.</li>
+                                    <li>Dobles de prueba. Tipos. Características.</li>
+                                </ul>
+                            </li>
+                            <li>Optimización y documentación
+                                <ul>
+                                    <li>Refactorización. Concepto. Limitaciones. Patrones de refactorización más usuales. Refactorización y pruebas. Herramientas de ayuda a la refactorización.</li>
+                                    <li>Analizadores de código.</li>
+                                    <li>Control de versiones. Estructura de las herramientas de control de versiones. Repositorio. Herramientas de control de versiones. Uso integrado en el entorno.</li>
+                                </ul>
+                            </li>
+                            <li>de desarrollo
+                                <ul>
+                                    <li>Repositorios remotos.</li>
+                                    <li>Documentación. Uso de comentarios. Alternativas.</li>
+                                    <li>Integración continua. Herramientas.</li>
+                                </ul>
+                            </li>
+                            <li>Elaboración de diagramas de clases
+                                <ul>
+                                    <li>Clases. Atributos, métodos y visibilidad.</li>
+                                    <li>Objetos. Instanciación.</li>
+                                    <li>Relaciones. Asociación, navegabilidad y multiplicidad. Herencia, composición, agregación. Realización y dependencia.</li>
+                                    <li>Notación de los diagramas de clases.</li>
+                                    <li>Herramientas.</li>
+                                    <li>Generación automática de código. Ingeniería inversa.</li>
+                                </ul>
+                            </li>
+                            <li>Elaboración de diagramas de comportamiento
+                                <ul>
+                                    <li>Tipos. Campo de aplicación.</li>
+                                    <li>Diagrama de casos de uso. Actores, escenario, relación de comunicación.</li>
+                                    <li>Diagrama de secuencia. Línea de vida de un objeto, activación, envío de mensajes.</li>
+                                    <li>Diagrama de comunicación. Objetos, mensajes.</li>
+                                    <li>Diagrama de actividad. Diagrama de estados.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+            <li>Segundo curso
+                <ul>
+                    <li>Acceso a datos
+                        <ul>
+                            <li>Manejo de ficheros
+                                <ul>
+                                    <li>Clases asociadas a las operaciones de gestión de ficheros y directorios: creación, borrado, copia, movimiento, recorrido, entre otras.</li>
+                                    <li>Formas de acceso a un fichero. Ventajas.</li>
+                                    <li>Clases para gestión de flujos de datos desde/hacia ficheros. Flujos de bytes y de caracteres.</li>
+                                    <li>Operaciones sobre ficheros secuenciales y aleatorios.</li>
+                                    <li>Serialización/deserialización de objetos.</li>
+                                    <li>Trabajo con ficheros: de intercambio de datos (XML y JSON, entre otros). Analizadores sintácticos (parser) y vinculación (binding). Conversión entre diferentes formatos.</li>
+                                    <li>Excepciones: detección y tratamiento.</li>
+                                    <li>Desarrollo de aplicaciones que utilizan ficheros.</li>
+                                </ul>
+                            </li>
+                            <li>Manejo de conectores
+                                <ul>
+                                    <li>El desfase objeto-relacional.</li>
+                                    <li>Protocolos de acceso a bases de datos. Conectores.</li>
+                                    <li>Establecimiento de conexiones. Pooling de conexiones.</li>
+                                    <li>Ejecución de sentencias de descripción de datos.</li>
+                                    <li>Ejecución de sentencias de modificación de datos.</li>
+                                    <li>Ejecución de consultas. Manipulación del resultado.</li>
+                                    <li>Ejecución de procedimientos almacenados en la base de datos. Parámetros.</li>
+                                    <li>Gestión de transacciones.</li>
+                                    <li>Desarrollo de programas que utilizan bases de datos.</li>
+                                </ul>
+                            </li>
+                            <li>Herramientas de mapeo objeto relacional (ORM)
+                                <ul>
+                                    <li>Concepto de mapeo objeto relacional.</li>
+                                    <li>Características de las herramientas ORM. Herramientas ORM más utilizadas.</li>
+                                    <li>Instalación de una herramienta ORM. Configuración.</li>
+                                    <li>Estructura de un fichero de mapeo. Elementos, propiedades.</li>
+                                    <li>Mapeo basado en anotaciones.</li>
+                                    <li>Clases persistentes.</li>
+                                    <li>Sesiones; estados de un objeto.</li>
+                                    <li>Carga, almacenamiento y modificación de objetos.</li>
+                                    <li>Consultas SQL.</li>
+                                    <li>Gestión de transacciones.</li>
+                                    <li>Desarrollo de programas que utilizan bases de datos a través de herramientas ORM.</li>
+                                </ul>
+                            </li>
+                            <li>Bases de datos objeto relacionales y orientadas a objetos
+                                <ul>
+                                    <li>Gestores de bases de datos objeto relacionales. Características. Ventajas.</li>
+                                    <li>Gestión de objetos con SQL; ANSI SQL.</li>
+                                    <li>Acceso a las funciones del gestor de base de datos objeto-relacional desde el lenguaje de programación.</li>
+                                    <li>Gestores de bases de datos orientadas a objetos. Características. Ventajas.</li>
+                                    <li>Gestión de la persistencia de objetos.</li>
+                                    <li>El interfaz de programación de aplicaciones de la base de datos orientada a objetos. Consultas y persistencia de datos. Lenguaje OQL.</li>
+                                    <li>Gestión de transacciones.</li>
+                                    <li>Desarrollo de programas que gestionan objetos en bases de datos.</li>
+                                </ul>
+                            </li>
+                            <li>Bases de datos documentales
+                                <ul>
+                                    <li>Bases de datos documentales nativas. Características. Ventajas.</li>
+                                    <li>Establecimiento y cierre de conexiones.</li>
+                                    <li>Colecciones y documentos.</li>
+                                    <li>Creación y borrado de colecciones; clases y métodos.</li>
+                                    <li>Añadir, modificar y eliminar documentos; clases y métodos.</li>
+                                    <li>Lenguajes de consulta. Realización de consultas; clases y métodos.</li>
+                                    <li>Desarrollo de programas que utilizan bases de datos documentales.</li>
+                                </ul>
+                            </li>
+                            <li>Programación de componentes de acceso a datos
+                                <ul>
+                                    <li>Concepto de componente; características. Ventajas.</li>
+                                    <li>Propiedades y atributos.</li>
+                                    <li>Eventos; asociación de acciones a eventos.</li>
+                                    <li>Persistencia del componente. Serialización.</li>
+                                    <li>Herramientas para desarrollo de componentes.</li>
+                                    <li>Desarrollo, empaquetado y utilización de componentes.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Desarrollo de interfaces
+                        <ul>
+                            <li>Generación de interfaces de usuario
+                                <ul>
+                                    <li>Patrones de arquitectura de las aplicaciones gráficas.</li>
+                                    <li>Librerías de componentes nativas y multiplataforma. Características.</li>
+                                    <li>Herramientas propietarias y libres de edición de interfaces.</li>
+                                    <li>Lenguajes descriptivos para la definición de interfaces.</li>
+                                    <li>Componentes: características y campo de aplicación.</li>
+                                    <li>Enlace de componentes a orígenes de datos.</li>
+                                    <li>Asociación de acciones a eventos.</li>
+                                    <li>Edición del código generado por la herramienta de diseño.</li>
+                                    <li>Clases, propiedades, métodos.</li>
+                                    <li>Eventos; escuchadores.</li>
+                                </ul>
+                            </li>
+                            <li>Generación de interfaces naturales de usuario
+                                <ul>
+                                    <li>Herramientas para el aprendizaje automático. Entrenamiento.</li>
+                                    <li>Interfaces naturales. Tipos.</li>
+                                    <li>Voz y Habla. Reconocimiento.</li>
+                                    <li>Partes y movimientos del cuerpo. Detección.</li>
+                                    <li>Realidad aumentada.</li>
+                                </ul>
+                            </li>
+                            <li>Creación de componentes visuales
+                                <ul>
+                                    <li>Concepto de componente; características.</li>
+                                    <li>Propiedades, atributos y métodos.</li>
+                                    <li>Eventos; asociación de acciones a eventos.</li>
+                                    <li>Persistencia del componente.</li>
+                                    <li>Herramientas para desarrollo de componentes visuales.</li>
+                                    <li>Prueba de los componentes.</li>
+                                    <li>Empaquetado de componentes.</li>
+                                </ul>
+                            </li>
+                            <li>Diseño de interfaces gráficas
+                                <ul>
+                                    <li>Usabilidad y accesibilidad. Características. Pautas. Estándares.</li>
+                                    <li>Medidas de usabilidad y accesibilidad de las aplicaciones; herramientas.</li>
+                                    <li>Esquemas (Wireframes) y Maquetas (Mockups).</li>
+                                    <li>Pautas de diseño de la estructura de la interfaz de usuario; menús, ventanas, cuadros de diálogo, atajos de teclado, entre otros.</li>
+                                    <li>Pautas de diseño del aspecto de la interfaz de usuario: colores, fuentes, iconos, distribución de los elementos.</li>
+                                    <li>Pautas de diseño de los elementos interactivos de la interfaz de usuario: Botones de comando, listas desplegables, entre otros.</li>
+                                    <li>Pautas de diseño de la secuencia de control de la aplicación.</li>
+                                </ul>
+                            </li>
+                            <li>Creación de informes
+                                <ul>
+                                    <li>Informes incrustados y no incrustados en la aplicación.</li>
+                                    <li>Herramientas gráficas integradas en el IDE y externas al mismo.</li>
+                                    <li>Estructura general. Secciones.</li>
+                                    <li>Filtrado de datos.</li>
+                                    <li>Numeración de líneas, recuentos y totales.</li>
+                                    <li>Gráficos.</li>
+                                    <li>Librerías para generación de informes. Clases, métodos y atributos.</li>
+                                    <li>Conexión con las fuentes de datos. Ejecución de consultas.</li>
+                                </ul>
+                            </li>
+                            <li>Documentación de aplicaciones
+                                <ul>
+                                    <li>Ficheros de ayuda. Formatos.</li>
+                                    <li>Herramientas de generación de ayudas.</li>
+                                    <li>Tablas de contenidos, índices, sistemas de búsqueda, entre otros.</li>
+                                    <li>Tipos de manuales: Manual de usuario, guía de referencia, guías rápidas, manuales de instalación, configuración y administración. Preguntas más frecuentes. Destinatarios y estructura.</li>
+                                    <li>Elaboración de tutoriales.</li>
+                                </ul>
+                            </li>
+                            <li>Distribución de aplicaciones
+                                <ul>
+                                    <li>Componentes de una aplicación. Empaquetado.</li>
+                                    <li>Instaladores.</li>
+                                    <li>Paquetes autoinstalables.</li>
+                                    <li>Firma digital de aplicaciones.</li>
+                                    <li>Herramientas para crear paquetes de instalación.</li>
+                                    <li>Personalización de la instalación: Logotipos, fondos, diálogos, botones, idioma, entre otros.</li>
+                                    <li>Asistentes de instalación y desinstalación.</li>
+                                    <li>Canales de distribución: repositorios (stores), ad-hoc, sitios web, correo electrónico, entre otros.</li>
+                                </ul>
+                            </li>
+                            <li>Realización de pruebas
+                                <ul>
+                                    <li>Objetivo, importancia y limitaciones del proceso de prueba. Estrategias.</li>
+                                    <li>Pruebas de integración: ascendentes y descendentes.</li>
+                                    <li>Pruebas de sistema: configuración, recuperación, entre otras.</li>
+                                    <li>Pruebas de uso de recursos.</li>
+                                    <li>Pruebas de seguridad.</li>
+                                    <li>Pruebas manuales y automáticas. Herramientas software para la realización de pruebas.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Programación multimedia y dispositivos móviles
+                        <ul>
+                            <li>Análisis de tecnologías para aplicaciones en dispositivos móviles
+                                <ul>
+                                    <li>Dispositivos móviles. Evolución. Tipos. Características.</li>
+                                    <li>Hardware para dispositivos móviles: pantalla, procesador, memoria, cámara, batería, sensores, conectividad, entre otros. Limitaciones.</li>
+                                    <li>Tecnologías de desarrollo. Nativas y multiplataforma. Entornos de trabajo. Módulos y librerías. Lenguajes.</li>
+                                    <li>Emuladores. Configuraciones. Perfiles. Dispositivos soportados.</li>
+                                    <li>Aplicaciones móviles. Estructura. Jerarquía de clases.</li>
+                                    <li>Modelo de estados de una aplicación móvil: activo, pausa y destruido.</li>
+                                    <li>Ciclo de vida de una aplicación: descubrimiento, instalación, ejecución, actualización y borrado.</li>
+                                    <li>Modificación de aplicaciones existentes.</li>
+                                    <li>Utilización del entorno de ejecución del administrador de aplicaciones.</li>
+                                </ul>
+                            </li>
+                            <li>Desarrollo de aplicaciones para dispositivos móviles
+                                <ul>
+                                    <li>Herramientas. Flujo de trabajo.</li>
+                                    <li>Componentes de una aplicación. Recursos.</li>
+                                    <li>Interfaces de usuario. Clases asociadas.</li>
+                                    <li>Contexto gráfico. Imágenes.</li>
+                                    <li>Métodos de entrada. Eventos.</li>
+                                    <li>Gestión de las preferencias de la aplicación.</li>
+                                    <li>Bases de datos y almacenamiento.</li>
+                                    <li>Persistencia.</li>
+                                    <li>Tareas en segundo plano. Servicios.</li>
+                                    <li>Seguridad y permisos.</li>
+                                    <li>Conectividad. Tipos. Clases asociadas. Gestión de las comunicaciones.</li>
+                                    <li>Manejo de conexiones HTTP y HTTPS. Acceso a servicios web.</li>
+                                    <li>Sensores.</li>
+                                    <li>Posicionamiento. Localización. Mapas.</li>
+                                </ul>
+                            </li>
+                            <li>Utilización de librerías multimedia integradas
+                                <ul>
+                                    <li>Conceptos sobre aplicaciones multimedia.</li>
+                                    <li>Arquitectura del API utilizado.</li>
+                                    <li>Fuentes de datos multimedia. Clases.</li>
+                                    <li>Procesamiento de objetos multimedia. Clases. Estados, métodos y eventos.</li>
+                                    <li>Reproducción de objetos multimedia. Clases. Estados, métodos y eventos.</li>
+                                    <li>Animación de objetos.</li>
+                                </ul>
+                            </li>
+                            <li>Análisis de motores de juegos
+                                <ul>
+                                    <li>Animación 2D y 3D.</li>
+                                    <li>Arquitectura del juego. Componentes.</li>
+                                    <li>Motores de juegos: Tipos y utilización.</li>
+                                    <li>Áreas de especialización, librerías utilizadas y lenguajes de programación.</li>
+                                    <li>Componentes de un motor de juegos.</li>
+                                    <li>Librerías que proporcionan las funciones básicas de un Motor 2D/3D. Clases.</li>
+                                    <li>Estudio de juegos existentes.</li>
+                                    <li>Aplicación de modificaciones sobre juegos existentes.</li>
+                                </ul>
+                            </li>
+                            <li>Desarrollo de juegos 2D y 3D
+                                <ul>
+                                    <li>Técnicas de programación 2D/3D.</li>
+                                    <li>Fases de desarrollo.</li>
+                                    <li>Componentes de los objetos: materiales y texturas. Propiedades físicas (peso, gravedad, fricciones, colisiones, entre otros).</li>
+                                    <li>Fuentes de audio. Propiedades.</li>
+                                    <li>Cámaras e iluminación.</li>
+                                    <li>Creación de escenas. Jerarquía de objetos.</li>
+                                    <li>Análisis de ejecución. Optimización del código.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Programación de servicios y procesos
+                        <ul>
+                            <li>Programación multiproceso
+                                <ul>
+                                    <li>Ejecutables. Procesos. Servicios.</li>
+                                    <li>Estados de un proceso. Planificación de procesos.</li>
+                                    <li>Hilos.</li>
+                                    <li>Programación concurrente.</li>
+                                    <li>Programación paralela y distribuida.</li>
+                                    <li>Comunicación entre procesos.</li>
+                                    <li>Gestión de procesos. Herramientas de monitorización.</li>
+                                    <li>Sincronización entre procesos.</li>
+                                    <li>Programación de aplicaciones multiproceso.</li>
+                                </ul>
+                            </li>
+                            <li>Programación multihilo
+                                <ul>
+                                    <li>Contexto de ejecución de los hilos. Recursos compartidos.</li>
+                                    <li>Estados de un hilo. Cambios de estado.</li>
+                                    <li>Librerías y clases.</li>
+                                    <li>Gestión de hilos. Prioridades.</li>
+                                    <li>Sincronización de hilos.</li>
+                                    <li>Compartición de información entre hilos. Problemas.</li>
+                                    <li>Programación de aplicaciones multihilo.</li>
+                                </ul>
+                            </li>
+                            <li>Programación de comunicaciones en red
+                                <ul>
+                                    <li>Comunicación entre aplicaciones. Modelos.</li>
+                                    <li>Roles cliente y servidor.</li>
+                                    <li>Librerías y clases.</li>
+                                    <li>Sockets. Tipos. Características.</li>
+                                    <li>Creación de sockets.</li>
+                                    <li>Enlazado y establecimiento de conexiones.</li>
+                                    <li>Utilización de sockets para la transmisión y recepción de información.</li>
+                                    <li>Programación de aplicaciones cliente y servidor.</li>
+                                    <li>Utilización de hilos para la implementación de comunicaciones simultáneas con el servidor.</li>
+                                </ul>
+                            </li>
+                            <li>Generación de servicios en red
+                                <ul>
+                                    <li>Protocolos estándar de comunicación en red a nivel de aplicación. Ventajas de su utilización.</li>
+                                    <li>Servicios web.</li>
+                                    <li>Librerías de clases y componentes.</li>
+                                    <li>Programación de servidores.</li>
+                                    <li>Establecimiento y finalización de conexiones.</li>
+                                    <li>Transmisión de información.</li>
+                                    <li>Implementación de comunicaciones simultáneas.</li>
+                                    <li>Utilización de aplicaciones clientes.</li>
+                                    <li>Monitorización del servicio. Herramientas.</li>
+                                </ul>
+                            </li>
+                            <li>Utilización de técnicas de programación segura
+                                <ul>
+                                    <li>Prácticas de programación segura.</li>
+                                    <li>Criptografía de clave pública y clave privada.</li>
+                                    <li>Principales aplicaciones de la criptografía.</li>
+                                    <li>Protocolos criptográficos.</li>
+                                    <li>Política de seguridad. Roles.</li>
+                                    <li>Programación de mecanismos de control de acceso.</li>
+                                    <li>Encriptación de información.</li>
+                                    <li>Protocolos seguros de comunicaciones.</li>
+                                    <li>Programación de aplicaciones con comunicaciones seguras.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Sistemas de gestión empresarial
+                        <ul>
+                            <li>Identificación de sistemas ERP-CRM
+                                <ul>
+                                    <li>Concepto de ERP (Sistemas de planificación de recursos empresariales).</li>
+                                    <li>Revisión de los ERP actuales.</li>
+                                    <li>Concepto de CRM (Sistemas de gestión de relaciones con clientes).</li>
+                                    <li>Revisión de los CRM actuales.</li>
+                                    <li>Tipos de licencias de los ERP-CRM.</li>
+                                    <li>Sistemas gestores de bases de datos compatibles con el software.</li>
+                                    <li>Instalación y configuración del sistema informático.</li>
+                                    <li>Verificación de la instalación y configuración de los sistemas operativos y de gestión de datos.</li>
+                                    <li>Documentación de las operaciones realizadas.</li>
+                                </ul>
+                            </li>
+                            <li>Instalación y configuración de sistemas ERP-CRM
+                                <ul>
+                                    <li>Tipos de instalación. Monopuesto. Cliente/servidor. En la nube.</li>
+                                    <li>Módulos de un sistema ERP-CRM: descripción, tipología e interconexión entre módulos.</li>
+                                    <li>Procesos de instalación del sistema ERP-CRM.</li>
+                                    <li>Parámetros de configuración del sistema ERP-CRM: descripción, tipología y uso.</li>
+                                    <li>Actualización del sistema ERP-CRM y aplicación de actualizaciones.</li>
+                                    <li>Servicios de acceso al sistema ERP-CRM: características y parámetros de configuración, instalación.</li>
+                                    <li>Entornos de desarrollo, pruebas y explotación.</li>
+                                </ul>
+                            </li>
+                            <li>Organización y consulta de la información
+                                <ul>
+                                    <li>Definición de campos.</li>
+                                    <li>Consultas de acceso a datos.</li>
+                                    <li>Interfaces de entrada de datos y de procesos. Formularios.</li>
+                                    <li>Informes y listados de la aplicación.</li>
+                                    <li>Gestión de pedidos, albaranes, facturas, asientos predefinidos, trazabilidad, producción, entre otros.</li>
+                                    <li>Gráficos.</li>
+                                    <li>Herramientas de monitorización y de evaluación del rendimiento.</li>
+                                    <li>Incidencias: identificación y resolución.</li>
+                                    <li>Procesos de extracción de datos en sistemas de ERP-CRM y almacenes de datos. Automatización.</li>
+                                    <li>Inteligencia de negocio (Business Intelligence).</li>
+                                </ul>
+                            </li>
+                            <li>Implantación de sistemas ERP-CRM en una empresa
+                                <ul>
+                                    <li>Tipos de empresa. Necesidades de la empresa.</li>
+                                    <li>Selección de los módulos del sistema ERP-CRM.</li>
+                                    <li>Tablas y vistas que es preciso adaptar.</li>
+                                    <li>Consultas necesarias para obtener información.</li>
+                                    <li>Creación de formularios personalizados.</li>
+                                    <li>Creación de informes personalizados.</li>
+                                    <li>Paneles de control (Dashboards).</li>
+                                    <li>Integración con otros sistemas de gestión.</li>
+                                </ul>
+                            </li>
+                            <li>Desarrollo de componentes
+                                <ul>
+                                    <li>Arquitectura del ERP-CRM.</li>
+                                    <li>Lenguaje proporcionado por el sistema ERP-CRM. Características y sintaxis del lenguaje. Declaración de datos. Estructuras de programación. Sentencias del lenguaje.</li>
+                                    <li>Entornos de desarrollo y herramientas del sistema ERP y CRM.</li>
+                                    <li>Inserción, modificación y eliminación de datos en los objetos.</li>
+                                    <li>Operaciones de consulta. Herramientas.</li>
+                                    <li>Formularios e informes.</li>
+                                    <li>Procesamiento de datos y obtención de la información.</li>
+                                    <li>Llamadas a funciones, librerías de funciones (APIs).</li>
+                                    <li>Depuración y tratamiento de errores.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Proyecto de desarrollo de aplicaciones multiplataforma
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>
+</div>
+
+<div id="listView"></div>
+
+<div id="viewport">
+    <div id="scene"></div>
+</div>
+
+<script>
+const source = document.querySelector("#source > ul > li");
+const sourceList = document.querySelector("#source > ul");
+const listView = document.getElementById("listView");
+const viewport = document.getElementById("viewport");
+const scene = document.getElementById("scene");
+
+let mode = "alveolo3d";
+
+let cameraX = 0, cameraY = 0, cameraZ = -900;
+let targetX = 0, targetY = 0, targetZ = -900;
+
+let rotX = 0, rotY = 0;
+let targetRotX = 0, targetRotY = 0;
+
+let middleDragging = false;
+let lastMouseX = 0, lastMouseY = 0;
+
+let nodes = [];
+let connectors = [];
+
+let distanceMultiplier = 1;
+let expandedPath = [];
+
+let previousVisibleKeys = new Set();
+let currentVisibleKeys = new Set();
+
+function getDirectText(li){
+    let text = "";
+
+    li.childNodes.forEach(node => {
+        if(node.nodeType === Node.TEXT_NODE){
+            text += node.textContent.trim() + " ";
+        }
+    });
+
+    return text.trim();
+}
+
+function getChildren(li){
+    const ul = Array.from(li.children).find(child => child.tagName === "UL");
+    if(!ul) return [];
+    return Array.from(ul.children).filter(child => child.tagName === "LI");
+}
+
+function buildTree(li, level = 0, parent = null, index = 0, path = []){
+    const item = {
+        text: getDirectText(li),
+        level,
+        parent,
+        index,
+        path,
+        children: [],
+        x: 0,
+        y: 0,
+        z: 0,
+        node: null
+    };
+
+    item.children = getChildren(li).map((child, childIndex) => {
+        return buildTree(
+            child,
+            level + 1,
+            item,
+            childIndex,
+            [...path, childIndex]
+        );
+    });
+
+    return item;
+}
+
+function itemKey(item){
+    return item.path.join("-");
+}
+
+function countLeaves(item){
+    if(item.children.length === 0) return 1;
+    return item.children.reduce((sum, child) => sum + countLeaves(child), 0);
+}
+
+function is3DMode(){
+    return mode === "3d" || mode === "alveolo3d";
+}
+
+function levelScale(level){
+    return Math.max(0.28, Math.pow(0.78, level));
+}
+
+function levelClass(level){
+    if(level === 0) return "root";
+    if(level === 1) return "level1";
+    return "level2";
+}
+
+function clearScene(){
+    scene.innerHTML = "";
+    nodes = [];
+    connectors = [];
+}
+
+function applyNodeTransform(node){
+    node.animX += (node.x - node.animX) * 0.12;
+    node.animY += (node.y - node.animY) * 0.12;
+    node.animZ += (node.z - node.animZ) * 0.12;
+
+    node.appearProgress += (1 - node.appearProgress) * 0.12;
+
+    const billboard = is3DMode()
+        ? `rotateY(${-rotY}deg) rotateX(${-rotX}deg)`
+        : "";
+
+    node.element.style.opacity = node.appearProgress;
+
+    node.element.style.transform =
+        `translate3d(${node.animX}px, ${node.animY}px, ${node.animZ}px)
+         ${billboard}
+         translate(-50%, -50%)
+         scale(${node.scale * node.appearProgress})`;
+}
+
+function createNode(item){
+    const div = document.createElement("div");
+    div.className = `node ${levelClass(item.level)}`;
+    div.textContent = item.text || "(sin título)";
+
+    if(item.children.length > 0 && item.level >= 2){
+        div.style.borderColor = "rgba(79,70,229,0.55)";
+        div.style.boxShadow = "0 18px 45px rgba(79,70,229,0.22)";
+        div.title = "Click para desplegar";
+    }
+
+    const key = itemKey(item);
+    currentVisibleKeys.add(key);
+
+    const isNewNode = !previousVisibleKeys.has(key);
+    const parentNode = item.parent && item.parent.node ? item.parent.node : null;
+
+    const node = {
+        element: div,
+        x: item.x,
+        y: item.y,
+        z: item.z,
+        level: item.level,
+        scale: levelScale(item.level),
+        item,
+
+        animX: isNewNode && parentNode ? parentNode.x : item.x,
+        animY: isNewNode && parentNode ? parentNode.y : item.y,
+        animZ: isNewNode && parentNode ? parentNode.z : item.z,
+
+        appearProgress: isNewNode ? 0 : 1
+    };
+
+    item.node = node;
+
+    div.addEventListener("click", event => {
+        event.stopPropagation();
+
+        targetX = -node.x;
+        targetY = -node.y;
+
+        if(item.children.length > 0 && item.level >= 2){
+            const expansionLevel = item.level - 2;
+
+            expandedPath = expandedPath.slice(0, expansionLevel);
+            expandedPath[expansionLevel] = item.index;
+
+            rebuildCurrentView();
+        }
+    });
+
+    scene.appendChild(div);
+    nodes.push(node);
+    applyNodeTransform(node);
+
+    return node;
+}
+
+function createConnector(a, b){
+    const line = document.createElement("div");
+    line.className = "connector";
+
+    const key = itemKey(b.item);
+    const isNewConnector = !previousVisibleKeys.has(key);
+
+    const connector = {
+        element: line,
+        a,
+        b,
+        progress: isNewConnector ? 0 : 1
+    };
+
+    scene.insertBefore(line, scene.firstChild);
+    connectors.push(connector);
+    updateConnector(connector);
+
+    return connector;
+}
+
+function updateConnector(connector){
+    const a = connector.a;
+    const b = connector.b;
+    const line = connector.element;
+
+    connector.progress += (1 - connector.progress) * 0.12;
+
+    const bx = a.animX + (b.animX - a.animX) * connector.progress;
+    const by = a.animY + (b.animY - a.animY) * connector.progress;
+    const bz = a.animZ + (b.animZ - a.animZ) * connector.progress;
+
+    const dx = bx - a.animX;
+    const dy = by - a.animY;
+    const dz = bz - a.animZ;
+
+    const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+    const yaw = Math.atan2(dy, dx) * 180 / Math.PI;
+    const pitch = -Math.atan2(dz, Math.sqrt(dx * dx + dy * dy)) * 180 / Math.PI;
+
+    line.style.opacity = connector.progress;
+    line.style.width = distance + "px";
+
+    line.style.transform =
+        `translate3d(${a.animX}px, ${a.animY}px, ${a.animZ}px)
+         rotateZ(${yaw}deg)
+         rotateY(${pitch}deg)`;
+}
+
+function shouldRender(item){
+    if(item.level <= 2) return true;
+
+    const relevantPath = item.path.slice(1, item.level - 1);
+
+    for(let i = 0; i < relevantPath.length; i++){
+        if(expandedPath[i] !== relevantPath[i]){
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function renderVisibleTree(item){
+    if(!shouldRender(item)) return;
+
+    createNode(item);
+
+    item.children.forEach(child => {
+        if(shouldRender(child)){
+            renderVisibleTree(child);
+            createConnector(item.node, child.node);
+        }
+    });
+}
+
+function calculateLevelDistance(level){
+    const baseDistance = 520;
+    return baseDistance * Math.pow(0.5, level - 1) * distanceMultiplier;
+}
+
+function layoutRadial(item, startAngle, endAngle, radius, is3d){
+    const angle = (startAngle + endAngle) / 2;
+
+    item.x = Math.cos(angle) * radius;
+    item.y = Math.sin(angle) * radius;
+
+    item.z = is3d
+        ? Math.sin(angle * 2.1 + item.level) * 260 * levelScale(item.level)
+        : 0;
+
+    if(item.level === 0){
+        item.x = 0;
+        item.y = 0;
+        item.z = 0;
+    }
+
+    const totalLeaves = item.children.reduce((sum, child) => sum + countLeaves(child), 0);
+    let currentAngle = startAngle;
+
+    item.children.forEach(child => {
+        const leaves = countLeaves(child);
+        const portion = totalLeaves === 0 ? 1 : leaves / totalLeaves;
+
+        const childStart = currentAngle;
+        const childEnd = currentAngle + (endAngle - startAngle) * portion;
+
+        layoutRadial(
+            child,
+            childStart,
+            childEnd,
+            radius + calculateLevelDistance(child.level),
+            is3d
+        );
+
+        currentAngle = childEnd;
+    });
+}
+
+function calculateLocalRadius(count, level){
+    const baseRadius = 720;
+    const generationRadius = baseRadius / Math.pow(2, level - 1);
+
+    return generationRadius * distanceMultiplier;
+}
+
+function circlePosition(index, total, radius){
+    if(total === 1){
+        return { x: 0, y: -radius, z: 0 };
+    }
+
+    const angle = (Math.PI * 2 / total) * index - Math.PI / 2;
+
+    return {
+        x: Math.cos(angle) * radius,
+        y: Math.sin(angle) * radius,
+        z: 0
+    };
+}
+
+function spherePosition(index, total, radius){
+    if(total === 1){
+        return { x: 0, y: -radius, z: 0 };
+    }
+
+    const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+    const y = 1 - (index / (total - 1)) * 2;
+    const r = Math.sqrt(1 - y * y);
+    const theta = goldenAngle * index;
+
+    return {
+        x: Math.cos(theta) * r * radius,
+        y: y * radius,
+        z: Math.sin(theta) * r * radius
+    };
+}
+
+function layoutAlveolo(item, is3d){
+    const count = item.children.length;
+
+    if(count === 0) return;
+
+    const radius = calculateLocalRadius(count, item.level + 1);
+
+    item.children.forEach((child, index) => {
+        const local = is3d
+            ? spherePosition(index, count, radius)
+            : circlePosition(index, count, radius);
+
+        child.x = item.x + local.x;
+        child.y = item.y + local.y;
+        child.z = item.z + local.z;
+
+        layoutAlveolo(child, is3d);
+    });
+}
+
+function buildRadialMindMap(is3d){
+    previousVisibleKeys = new Set(currentVisibleKeys);
+    currentVisibleKeys = new Set();
+
+    clearScene();
+
+    const tree = buildTree(source);
+
+    layoutRadial(
+        tree,
+        -Math.PI / 2,
+        Math.PI * 1.5,
+        0,
+        is3d
+    );
+
+    renderVisibleTree(tree);
+}
+
+function buildAlveoloMindMap(is3d){
+    previousVisibleKeys = new Set(currentVisibleKeys);
+    currentVisibleKeys = new Set();
+
+    clearScene();
+
+    const tree = buildTree(source);
+
+    tree.x = 0;
+    tree.y = 0;
+    tree.z = 0;
+
+    layoutAlveolo(tree, is3d);
+    renderVisibleTree(tree);
+}
+
+function rebuildCurrentView(){
+    if(mode === "2d") buildRadialMindMap(false);
+    if(mode === "3d") buildRadialMindMap(true);
+    if(mode === "alveolo2d") buildAlveoloMindMap(false);
+    if(mode === "alveolo3d") buildAlveoloMindMap(true);
+}
+
+function setView(newMode){
+    mode = newMode;
+    expandedPath = [];
+    previousVisibleKeys = new Set();
+    currentVisibleKeys = new Set();
+
+    document.querySelectorAll("#toolbar button").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.view === mode);
+    });
+
+    if(mode === "list"){
+        viewport.style.display = "none";
+        listView.style.display = "block";
+
+        listView.innerHTML = "";
+        listView.appendChild(sourceList.cloneNode(true));
+        return;
+    }
+
+    listView.style.display = "none";
+    viewport.style.display = "block";
+
+    targetX = 0;
+    targetY = 0;
+    targetZ = is3DMode() ? -900 : 0;
+
+    cameraZ = targetZ;
+
+    targetRotX = 0;
+    targetRotY = 0;
+
+    rebuildCurrentView();
+}
+
+viewport.addEventListener("mousedown", event => {
+    if(event.button === 1){
+        event.preventDefault();
+        middleDragging = true;
+        lastMouseX = event.clientX;
+        lastMouseY = event.clientY;
+        viewport.style.cursor = "grabbing";
+    }
+});
+
+window.addEventListener("mouseup", event => {
+    if(event.button === 1){
+        middleDragging = false;
+        viewport.style.cursor = "default";
+    }
+});
+
+viewport.addEventListener("mousemove", event => {
+    if(middleDragging && is3DMode()){
+        const dx = event.clientX - lastMouseX;
+        const dy = event.clientY - lastMouseY;
+
+        targetRotY += dx * 0.25;
+        targetRotX -= dy * 0.25;
+
+        lastMouseX = event.clientX;
+        lastMouseY = event.clientY;
+        return;
+    }
+
+    if(!middleDragging){
+        const nx = (event.clientX / window.innerWidth - 0.5) * 2;
+        const ny = (event.clientY / window.innerHeight - 0.5) * 2;
+
+        targetX += -nx * 2.2;
+        targetY += -ny * 1.8;
+    }
+});
+
+viewport.addEventListener("auxclick", event => {
+    if(event.button === 1){
+        event.preventDefault();
+    }
+});
+
+viewport.addEventListener("wheel", event => {
+    event.preventDefault();
+
+    if(is3DMode()){
+        targetZ += event.deltaY * 1.2;
+    }else{
+        targetX -= event.deltaX;
+        targetY -= event.deltaY;
+    }
+},{ passive:false });
+
+window.addEventListener("keydown", event => {
+    if(event.key === "+"){
+        distanceMultiplier *= 1.08;
+        rebuildCurrentView();
+    }
+
+    if(event.key === "-"){
+        distanceMultiplier /= 1.08;
+        rebuildCurrentView();
+    }
+
+    if(event.key === "0"){
+        distanceMultiplier = 1;
+        rebuildCurrentView();
+    }
+});
+
+function updateCamera(){
+    cameraX += (targetX - cameraX) * 0.08;
+    cameraY += (targetY - cameraY) * 0.08;
+    cameraZ += (targetZ - cameraZ) * 0.08;
+
+    rotX += (targetRotX - rotX) * 0.08;
+    rotY += (targetRotY - rotY) * 0.08;
+
+    scene.style.transform =
+        `translate3d(${cameraX}px, ${cameraY}px, ${cameraZ}px)
+         rotateX(${rotX}deg)
+         rotateY(${rotY}deg)`;
+
+    nodes.forEach(applyNodeTransform);
+    connectors.forEach(updateConnector);
+
+    requestAnimationFrame(updateCamera);
+}
+
+document.querySelectorAll("#toolbar button").forEach(button => {
+    button.addEventListener("click", () => {
+        setView(button.dataset.view);
+    });
+});
+
+setView("alveolo3d");
+updateCamera();
+</script>
+
+</body>
+</html>

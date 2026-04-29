@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Mapa mental HTML / 2D / 3D</title>
+
+<style>
+*{ box-sizing:border-box; }
+
+body{
+    margin:0;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+    background:radial-gradient(circle at center,#ffffff,#e8eef7);
+}
+
+#toolbar{
+    position:fixed;
+    top:16px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:100;
+    display:flex;
+    gap:10px;
+    padding:10px;
+    border-radius:18px;
+    background:rgba(255,255,255,0.72);
+    border:1px solid rgba(148,163,184,0.35);
+    backdrop-filter:blur(14px);
+    box-shadow:0 15px 45px rgba(15,23,42,0.12);
+}
+
+#toolbar button{
+    border:0;
+    padding:10px 16px;
+    border-radius:13px;
+    background:#f8fafc;
+    color:#334155;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+#toolbar button.active{
+    color:white;
+    background:linear-gradient(135deg,#4f46e5,#f97316);
+}
+
+#source{
+    display:none;
+}
+
+#listView{
+    display:none;
+    width:100vw;
+    height:100vh;
+    overflow:auto;
+    padding:95px 8vw 80px;
+    background:#f8fafc;
+    color:#1e293b;
+    font-size:18px;
+    line-height:1.6;
+}
+
+#listView ul{
+    background:white;
+    border-radius:20px;
+    padding:24px 34px;
+    box-shadow:0 18px 45px rgba(15,23,42,0.08);
+}
+
+#viewport{
+    width:100vw;
+    height:100vh;
+    perspective:900px;
+    perspective-origin:center center;
+    overflow:hidden;
+}
+
+#scene{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:0;
+    height:0;
+    transform-style:preserve-3d;
+}
+
+.node{
+    position:absolute;
+    width:230px;
+    min-height:58px;
+    padding:14px 18px;
+    border-radius:18px;
+    background:rgba(255,255,255,0.86);
+    border:1px solid rgba(100,116,139,0.25);
+    box-shadow:0 18px 45px rgba(15,23,42,0.14);
+    color:#1e293b;
+    text-align:center;
+    font-size:14px;
+    line-height:1.35;
+    backdrop-filter:blur(10px);
+    transform-style:preserve-3d;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:box-shadow .25s, background .25s;
+}
+
+.node:hover{
+    background:white;
+    box-shadow:0 26px 70px rgba(79,70,229,0.25);
+}
+
+.root{
+    width:300px;
+    min-height:95px;
+    font-size:23px;
+    font-weight:bold;
+    color:white;
+    background:linear-gradient(135deg,#4f46e5,#f97316);
+}
+
+.level1{
+    width:260px;
+    font-weight:bold;
+    background:rgba(255,247,237,0.92);
+    border-color:rgba(249,115,22,0.35);
+}
+
+.level2{
+    width:220px;
+    font-size:13px;
+}
+
+.connector{
+    position:absolute;
+    height:2px;
+    background:linear-gradient(90deg,rgba(99,102,241,0.25),rgba(249,115,22,0.55));
+    transform-origin:left center;
+    transform-style:preserve-3d;
+    border-radius:999px;
+    box-shadow:0 0 12px rgba(99,102,241,0.18);
+}
+</style>
+</head>
+
+<body>
+
+<div id="toolbar">
+    <button data-view="list">Jerarquía HTML</button>
+    <button data-view="2d">Mapa mental 2D</button>
+    <button data-view="3d" class="active">Mapa mental 3D</button>
+</div>
+
+<div id="source">
+    <ul>
+        <li>
+            Diseño de interfaces web
+            <ul>
+                <li>
+                    Planificación de interfaces gráficas
+                    <ul>
+                        <li>Elementos del diseño: percepción visual.</li>
+                        <li>Color, tipografía, iconos.</li>
+                        <li>Interacción persona-ordenador.</li>
+                        <li>Interpretación de guías de estilo. Elementos.</li>
+                        <li>Generación de documentos y sitios Web.</li>
+                        <li>Componentes de una interfaz Web.</li>
+                        <li>Aplicaciones para desarrollo Web.</li>
+                        <li>Lenguajes de marcas.</li>
+                        <li>Mapa de navegación. Prototipos.</li>
+                        <li>Maquetación Web. Elementos de ordenación.</li>
+                        <li>Plantilla de diseño.</li>
+                    </ul>
+                </li>
+
+                <li>
+                    Uso de estilos
+                    <ul>
+                        <li>Estilos en línea basados en etiquetas y en clases.</li>
+                        <li>Crear y vincular hojas de estilo.</li>
+                        <li>Crear y vincular hojas de estilo en cascada externa.</li>
+                        <li>Herramientas y test de verificación.</li>
+                    </ul>
+                </li>
+
+                <li>
+                    Implantación de contenido multimedia
+                    <ul>
+                        <li>Tipos de Imágenes en la Web.</li>
+                        <li>Derechos de la propiedad intelectual. Licencias. Ley de la propiedad intelectual. Derechos de autor.</li>
+                        <li>Imágenes: mapa de bits, imagen vectorial. Software para crear y procesar imágenes. Formatos de imágenes.</li>
+                        <li>Optimización de imágenes para la Web.</li>
+                        <li>Audio: formatos. Conversiones de formatos.</li>
+                        <li>Vídeo: codificación de vídeo, conversiones de formatos.</li>
+                        <li>Animaciones.</li>
+                        <li>Animación de imágenes y texto.</li>
+                        <li>Integración de audio y vídeo en una animación.</li>
+                    </ul>
+                </li>
+
+                <li>
+                    Integración de contenido interactivo
+                    <ul>
+                        <li>Elementos interactivos básicos y avanzados.</li>
+                        <li>Comportamientos interactivos. Comportamiento de los elementos.</li>
+                        <li>Ejecución de secuencias de comandos.</li>
+                    </ul>
+                </li>
+
+                <li>
+                    Diseño de webs accesibles
+                    <ul>
+                        <li>El Consorcio World Wide Web (W3C).</li>
+                        <li>Pautas de Accesibilidad al Contenido en la Web (WCAG).</li>
+                        <li>Principios generales de diseño accesible.</li>
+                        <li>Técnicas para satisfacer los requisitos definidos en las WCAG.</li>
+                        <li>Prioridades. Puntos de verificación. Niveles de adecuación.</li>
+                        <li>Métodos para realizar revisiones preliminares y evaluaciones de adecuación o conformidad de documentos Web.</li>
+                        <li>Herramientas de análisis de accesibilidad Web.</li>
+                        <li>Chequeo de la accesibilidad Web desde diferentes navegadores.</li>
+                    </ul>
+                </li>
+
+                <li>
+                    Implementación de la usabilidad en la Web. Diseño amigable
+                    <ul>
+                        <li>Análisis de la usabilidad. Técnicas.</li>
+                        <li>Identificación del objetivo de la Web.</li>
+                        <li>Tipos de usuario.</li>
+                        <li>Barreras identificadas por los usuarios.</li>
+                        <li>Información fácilmente accesible.</li>
+                        <li>Velocidad de conexión.</li>
+                        <li>Importancia del uso de estándares externos.</li>
+                        <li>Navegación fácilmente recordada frente a navegación redescubierta.</li>
+                        <li>Facilidad de navegación en la Web.</li>
+                        <li>Verificación de la usabilidad en diferentes navegadores y tecnologías.</li>
+                        <li>Herramientas y test de verificación.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<div id="listView"></div>
+
+<div id="viewport">
+    <div id="scene"></div>
+</div>
+
+<script>
+const source = document.querySelector("#source > ul > li");
+const sourceList = document.querySelector("#source > ul");
+const listView = document.getElementById("listView");
+const viewport = document.getElementById("viewport");
+const scene = document.getElementById("scene");
+
+let mode = "3d";
+
+let cameraX = 0;
+let cameraY = 0;
+let cameraZ = -900;
+
+let targetX = 0;
+let targetY = 0;
+let targetZ = -900;
+
+function getDirectText(li){
+    let text = "";
+    li.childNodes.forEach(node => {
+        if(node.nodeType === Node.TEXT_NODE){
+            text += node.textContent.trim();
+        }
+    });
+    return text;
+}
+
+function getChildren(li){
+    const ul = Array.from(li.children).find(child => child.tagName === "UL");
+    if(!ul) return [];
+    return Array.from(ul.children).filter(child => child.tagName === "LI");
+}
+
+function createNode(text, x, y, z, level){
+    const div = document.createElement("div");
+    div.className = "node level" + level;
+
+    if(level === 0){
+        div.classList.add("root");
+    }
+
+    div.textContent = text;
+
+    div.style.transform =
+        `translate3d(${x}px, ${y}px, ${z}px) translate(-50%, -50%)`;
+
+    div.addEventListener("click", () => {
+        targetX = -x;
+        targetY = -y;
+        targetZ = mode === "3d" ? -z - 650 : -z;
+    });
+
+    scene.appendChild(div);
+
+    return { element:div, x, y, z };
+}
+
+function createConnector(a, b){
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const dz = b.z - a.z;
+
+    const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+    const yaw = Math.atan2(dy, dx) * 180 / Math.PI;
+    const pitch = -Math.atan2(dz, Math.sqrt(dx * dx + dy * dy)) * 180 / Math.PI;
+
+    const line = document.createElement("div");
+    line.className = "connector";
+    line.style.width = distance + "px";
+
+    line.style.transform =
+        `translate3d(${a.x}px, ${a.y}px, ${a.z}px)
+         rotateZ(${yaw}deg)
+         rotateY(${pitch}deg)`;
+
+    scene.appendChild(line);
+}
+
+function clearScene(){
+    scene.innerHTML = "";
+}
+
+function buildMindMap(is3d){
+    clearScene();
+
+    const root = createNode(getDirectText(source), 0, 0, 0, 0);
+    const mainBranches = getChildren(source);
+
+    const radius1 = 430;
+    const radius2 = 760;
+
+    mainBranches.forEach((branch, i) => {
+        const angle = (Math.PI * 2 / mainBranches.length) * i - Math.PI / 2;
+
+        const x1 = Math.cos(angle) * radius1;
+        const y1 = Math.sin(angle) * radius1;
+        const z1 = is3d ? -160 + Math.sin(i * 1.7) * 180 : 0;
+
+        const branchNode = createNode(getDirectText(branch), x1, y1, z1, 1);
+        createConnector(root, branchNode);
+
+        const children = getChildren(branch);
+        const spread = Math.PI / 2.2;
+
+        children.forEach((child, j) => {
+            const t = children.length === 1 ? 0.5 : j / (children.length - 1);
+            const childAngle = angle - spread / 2 + spread * t;
+
+            const x2 = Math.cos(childAngle) * radius2;
+            const y2 = Math.sin(childAngle) * radius2;
+            const z2 = is3d ? z1 - 280 + Math.sin((j + 1) * 1.25 + i) * 220 : 0;
+
+            const childNode = createNode(getDirectText(child), x2, y2, z2, 2);
+            createConnector(branchNode, childNode);
+        });
+    });
+}
+
+function setView(newMode){
+    mode = newMode;
+
+    document.querySelectorAll("#toolbar button").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.view === mode);
+    });
+
+    if(mode === "list"){
+        viewport.style.display = "none";
+        listView.style.display = "block";
+        listView.innerHTML = "";
+        listView.appendChild(sourceList.cloneNode(true));
+        return;
+    }
+
+    listView.style.display = "none";
+    viewport.style.display = "block";
+
+    targetX = 0;
+    targetY = 0;
+    targetZ = mode === "3d" ? -900 : 0;
+
+    buildMindMap(mode === "3d");
+}
+
+viewport.addEventListener("mousemove", event => {
+    const nx = (event.clientX / window.innerWidth - 0.5) * 2;
+    const ny = (event.clientY / window.innerHeight - 0.5) * 2;
+
+    targetX += (-nx * 18);
+    targetY += (-ny * 14);
+});
+
+viewport.addEventListener("wheel", event => {
+    event.preventDefault();
+
+    if(mode === "3d"){
+        targetZ += event.deltaY * 1.2;
+    }else{
+        targetX -= event.deltaX;
+        targetY -= event.deltaY;
+    }
+},{ passive:false });
+
+function updateCamera(){
+    cameraX += (targetX - cameraX) * 0.08;
+    cameraY += (targetY - cameraY) * 0.08;
+    cameraZ += (targetZ - cameraZ) * 0.08;
+
+    scene.style.transform =
+        `translate3d(${cameraX}px, ${cameraY}px, ${cameraZ}px)`;
+
+    requestAnimationFrame(updateCamera);
+}
+
+document.querySelectorAll("#toolbar button").forEach(button => {
+    button.addEventListener("click", () => {
+        setView(button.dataset.view);
+    });
+});
+
+setView("3d");
+updateCamera();
+</script>
+
+</body>
+</html>

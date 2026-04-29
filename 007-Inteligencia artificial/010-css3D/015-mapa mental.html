@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Mapa mental desde UL LI</title>
+<style>
+*{ box-sizing:border-box; }
+
+body{
+    margin:0;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+    background:radial-gradient(circle at center,#ffffff,#edf2f7);
+}
+
+#source{
+    display:none;
+}
+
+#mindmap{
+    position:relative;
+    width:100vw;
+    height:100vh;
+}
+
+svg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:1;
+}
+
+line{
+    stroke:#94a3b8;
+    stroke-width:2;
+    opacity:0.65;
+}
+
+.node{
+    position:absolute;
+    max-width:230px;
+    padding:13px 17px;
+    border-radius:18px;
+    background:rgba(255,255,255,0.88);
+    border:1px solid rgba(100,116,139,0.25);
+    box-shadow:0 12px 35px rgba(15,23,42,0.12);
+    text-align:center;
+    font-size:14px;
+    color:#1e293b;
+    transform:translate(-50%,-50%);
+    backdrop-filter:blur(10px);
+    z-index:2;
+}
+
+.root{
+    width:280px;
+    padding:22px;
+    font-size:22px;
+    font-weight:bold;
+    color:white;
+    background:linear-gradient(135deg,#4f46e5,#f97316);
+    box-shadow:0 20px 50px rgba(79,70,229,0.35);
+    z-index:5;
+}
+
+.level1{
+    font-weight:bold;
+    background:rgba(255,247,237,0.94);
+    border-color:rgba(249,115,22,0.35);
+}
+
+.level2{
+    font-size:13px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="source">
+    <ul>
+        <li>
+            Diseño de interfaces web
+            <ul>
+                <li>
+                    Planificación de interfaces gráficas
+                    <ul>
+                        <li>Elementos del diseño: percepción visual.</li>
+                        <li>Color, tipografía, iconos.</li>
+                        <li>Interacción persona-ordenador.</li>
+                        <li>Interpretación de guías de estilo. Elementos.</li>
+                        <li>Generación de documentos y sitios Web.</li>
+                        <li>Componentes de una interfaz Web.</li>
+                        <li>Aplicaciones para desarrollo Web.</li>
+                        <li>Lenguajes de marcas.</li>
+                        <li>Mapa de navegación. Prototipos.</li>
+                        <li>Maquetación Web. Elementos de ordenación.</li>
+                        <li>Plantilla de diseño.</li>
+                    </ul>
+                </li>
+
+                <li>
+                    Uso de estilos
+                    <ul>
+                        <li>Estilos en línea basados en etiquetas y en clases.</li>
+                        <li>Crear y vincular hojas de estilo.</li>
+                        <li>Crear y vincular hojas de estilo en cascada externa.</li>
+                        <li>Herramientas y test de verificación.</li>
+                    </ul>
+                </li>
+
+                <li>
+                    Implantación de contenido multimedia
+                    <ul>
+                        <li>Tipos de Imágenes en la Web.</li>
+                        <li>Derechos de la propiedad intelectual. Licencias. Ley de la propiedad intelectual. Derechos de autor.</li>
+                        <li>Imágenes: mapa de bits, imagen vectorial. Software para crear y procesar imágenes. Formatos de imágenes.</li>
+                        <li>Optimización de imágenes para la Web.</li>
+                        <li>Audio: formatos. Conversiones de formatos.</li>
+                        <li>Vídeo: codificación de vídeo, conversiones de formatos.</li>
+                        <li>Animaciones.</li>
+                        <li>Animación de imágenes y texto.</li>
+                        <li>Integración de audio y vídeo en una animación.</li>
+                    </ul>
+                </li>
+
+                <li>
+                    Integración de contenido interactivo
+                    <ul>
+                        <li>Elementos interactivos básicos y avanzados.</li>
+                        <li>Comportamientos interactivos. Comportamiento de los elementos.</li>
+                        <li>Ejecución de secuencias de comandos.</li>
+                    </ul>
+                </li>
+
+                <li>
+                    Diseño de webs accesibles
+                    <ul>
+                        <li>El Consorcio World Wide Web (W3C).</li>
+                        <li>Pautas de Accesibilidad al Contenido en la Web (WCAG).</li>
+                        <li>Principios generales de diseño accesible.</li>
+                        <li>Técnicas para satisfacer los requisitos definidos en las WCAG.</li>
+                        <li>Prioridades. Puntos de verificación. Niveles de adecuación.</li>
+                        <li>Métodos para realizar revisiones preliminares y evaluaciones de adecuación o conformidad de documentos Web.</li>
+                        <li>Herramientas de análisis de accesibilidad Web.</li>
+                        <li>Chequeo de la accesibilidad Web desde diferentes navegadores.</li>
+                    </ul>
+                </li>
+
+                <li>
+                    Implementación de la usabilidad en la Web. Diseño amigable
+                    <ul>
+                        <li>Análisis de la usabilidad. Técnicas.</li>
+                        <li>Identificación del objetivo de la Web.</li>
+                        <li>Tipos de usuario.</li>
+                        <li>Barreras identificadas por los usuarios.</li>
+                        <li>Información fácilmente accesible.</li>
+                        <li>Velocidad de conexión.</li>
+                        <li>Importancia del uso de estándares externos.</li>
+                        <li>Navegación fácilmente recordada frente a navegación redescubierta.</li>
+                        <li>Facilidad de navegación en la Web.</li>
+                        <li>Verificación de la usabilidad en diferentes navegadores y tecnologías.</li>
+                        <li>Herramientas y test de verificación.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<div id="mindmap">
+    <svg id="lines"></svg>
+</div>
+
+<script>
+const source = document.querySelector("#source > ul > li");
+const mindmap = document.getElementById("mindmap");
+const svg = document.getElementById("lines");
+
+const cx = window.innerWidth / 2;
+const cy = window.innerHeight / 2;
+
+function getDirectText(li){
+    let text = "";
+
+    li.childNodes.forEach(node => {
+        if(node.nodeType === Node.TEXT_NODE){
+            text += node.textContent.trim();
+        }
+    });
+
+    return text;
+}
+
+function getChildren(li){
+    const ul = Array.from(li.children).find(child => child.tagName === "UL");
+    if(!ul) return [];
+    return Array.from(ul.children).filter(child => child.tagName === "LI");
+}
+
+function createNode(text, x, y, level){
+    const div = document.createElement("div");
+    div.className = "node level" + level;
+
+    if(level === 0){
+        div.classList.add("root");
+    }
+
+    div.textContent = text;
+    div.style.left = x + "px";
+    div.style.top = y + "px";
+
+    mindmap.appendChild(div);
+
+    return { element:div, x:x, y:y };
+}
+
+function drawLine(a,b){
+    const line = document.createElementNS("http://www.w3.org/2000/svg","line");
+    line.setAttribute("x1",a.x);
+    line.setAttribute("y1",a.y);
+    line.setAttribute("x2",b.x);
+    line.setAttribute("y2",b.y);
+    svg.appendChild(line);
+}
+
+const root = createNode(getDirectText(source), cx, cy, 0);
+const mainBranches = getChildren(source);
+
+const radius1 = Math.min(window.innerWidth, window.innerHeight) * 0.30;
+const radius2 = Math.min(window.innerWidth, window.innerHeight) * 0.47;
+
+mainBranches.forEach((branch, i) => {
+    const angle = (Math.PI * 2 / mainBranches.length) * i - Math.PI / 2;
+
+    const x1 = cx + Math.cos(angle) * radius1;
+    const y1 = cy + Math.sin(angle) * radius1;
+
+    const branchNode = createNode(getDirectText(branch), x1, y1, 1);
+    drawLine(root, branchNode);
+
+    const children = getChildren(branch);
+    const spread = Math.PI / 3;
+
+    children.forEach((child, j) => {
+        const childAngle = angle - spread / 2 + spread * (j / Math.max(children.length - 1, 1));
+
+        const x2 = cx + Math.cos(childAngle) * radius2;
+        const y2 = cy + Math.sin(childAngle) * radius2;
+
+        const childNode = createNode(getDirectText(child), x2, y2, 2);
+        drawLine(branchNode, childNode);
+    });
+});
+</script>
+
+</body>
+</html>
